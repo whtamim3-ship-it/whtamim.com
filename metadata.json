@@ -1,0 +1,6 @@
+{
+  "name": "whtamim — Motion Design & SaaS Video Studio",
+  "description": "Apple-inspired SaaS Motion Design & Product Launch Video Studio by whtamim.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
