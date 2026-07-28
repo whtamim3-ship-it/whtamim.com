@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowUpRight, Sparkles, Calculator } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { playSubtleClickSound } from '../utils/motion';
+import { StudioTimeWidget } from './StudioTimeWidget';
+import { BrandLogo } from './BrandLogo';
 
 interface NavbarProps {
   currentView: 'home' | 'work';
@@ -37,6 +39,27 @@ export const Navbar: React.FC<NavbarProps> = ({
     { name: 'Contact', href: '#contact' },
   ];
 
+  // Close menu on Escape key press & handle body scroll-lock
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setStudioMenuOpen(false);
+      }
+    };
+
+    if (studioMenuOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [studioMenuOpen]);
+
   useEffect(() => {
     if (currentView === 'work') {
       setActiveSection('#work');
@@ -49,7 +72,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
 
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const isScrolledNow = window.scrollY > 20;
+      setScrolled((prev) => (prev !== isScrolledNow ? isScrolledNow : prev));
 
       // Skip scroll section detection if user recently clicked a nav item
       if (isManualClickingRef.current || currentView === 'work') return;
@@ -60,12 +84,12 @@ export const Navbar: React.FC<NavbarProps> = ({
         document.documentElement.scrollHeight - 120;
 
       if (isAtBottom) {
-        setActiveSection('#contact');
+        setActiveSection((prev) => (prev !== '#contact' ? '#contact' : prev));
         return;
       }
 
       if (window.scrollY < 200) {
-        setActiveSection('#');
+        setActiveSection((prev) => (prev !== '#' ? '#' : prev));
         return;
       }
 
@@ -90,7 +114,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         }
       }
 
-      setActiveSection(current);
+      setActiveSection((prev) => (prev !== current ? current : prev));
     };
 
     window.addEventListener('hashchange', handleHashChange);
@@ -129,22 +153,16 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled || currentView === 'work'
-          ? 'py-4 bg-[#F5F5F7]/85 backdrop-blur-md border-b border-neutral-200/80 shadow-xs'
-          : 'py-6 bg-transparent'
+          ? 'py-3.5 sm:py-4 bg-[#F5F5F7]/85 dark:bg-[#0A0A0C]/85 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800/80 shadow-xs'
+          : 'py-5 sm:py-6 bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between">
-        {/* Brand Logo - whtamim */}
-        <a
-          href="#"
-          onClick={(e) => handleLinkClick(e, '#')}
-          className="text-[#1D1D1F] font-bold text-xl sm:text-22px tracking-tighter hover:opacity-70 transition-opacity font-mono"
-        >
-          whtamim
-        </a>
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between relative">
+        {/* Brand Logo */}
+        <BrandLogo onClick={(e) => handleLinkClick(e, '#')} />
 
-        {/* Minimal Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1 p-1 rounded-full bg-white/40 backdrop-blur-xl border border-white/60 shadow-2xs">
+        {/* Minimal Desktop Navigation Links - Centered */}
+        <nav className="hidden md:flex items-center gap-1 p-1 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-2xs md:absolute md:left-1/2 md:-translate-x-1/2 z-10">
           {navLinks.map((link) => {
             const isActive = activeSection === link.href;
             return (
@@ -154,20 +172,20 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={(e) => handleLinkClick(e, link.href)}
                 className={`relative px-4 py-1.5 rounded-full text-13px transition-colors duration-200 select-none ${
                   isActive
-                    ? 'text-[#1D1D1F] font-semibold'
-                    : 'text-[#86868B] hover:text-[#1D1D1F] font-medium'
+                    ? 'text-[#1D1D1F] dark:text-[#F5F5F7] font-semibold'
+                    : 'text-[#86868B] dark:text-[#98989D] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] font-medium'
                 }`}
               >
                 {/* Soft glass hover capsule when NOT active */}
                 {!isActive && (
-                  <span className="absolute inset-0 rounded-full bg-white/45 backdrop-blur-md border border-[#1D1D1F]/[0.05] opacity-0 hover:opacity-100 transition-opacity duration-200 pointer-events-none shadow-2xs" />
+                  <span className="absolute inset-0 rounded-full bg-white/45 dark:bg-white/10 backdrop-blur-md border border-[#1D1D1F]/[0.05] dark:border-white/[0.08] opacity-0 hover:opacity-100 transition-opacity duration-200 pointer-events-none shadow-2xs" />
                 )}
 
                 {/* Sliding Active Capsule using Motion layoutId */}
                 {isActive && (
                   <motion.span
                     layoutId="activeNavSegmentCapsule"
-                    className="absolute inset-0 rounded-full bg-white/80 backdrop-blur-md border border-[#1D1D1F]/[0.08] shadow-[0_6px_18px_rgba(29,29,31,0.06)] pointer-events-none"
+                    className="absolute inset-0 rounded-full bg-white/80 dark:bg-white/20 backdrop-blur-md border border-[#1D1D1F]/[0.08] dark:border-white/[0.15] shadow-[0_6px_18px_rgba(29,29,31,0.06)] dark:shadow-[0_6px_18px_rgba(0,0,0,0.4)] pointer-events-none"
                     transition={{
                       type: 'spring',
                       stiffness: 420,
@@ -184,13 +202,16 @@ export const Navbar: React.FC<NavbarProps> = ({
         </nav>
 
         {/* Right CTA - Start a Project & Menu */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
+          {/* Active Status Light Indicator */}
+          <StudioTimeWidget variant="pill" />
+
           <button
             onClick={() => {
               playSubtleClickSound();
               setStudioMenuOpen(!studioMenuOpen);
             }}
-            className="md:hidden flex items-center justify-center p-2 rounded-full border border-neutral-200 bg-white text-[#1D1D1F]"
+            className="md:hidden flex items-center justify-center p-2 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#161618] text-[#1D1D1F] dark:text-white cursor-pointer"
             aria-label="Toggle Menu"
           >
             {studioMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -203,7 +224,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               playSubtleClickSound();
               onNavigateToHome('#contact');
             }}
-            className="px-5 py-2 rounded-full bg-[#1D1D1F] text-white text-13px font-medium hover:bg-[#007AFF] transition-all"
+            className="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-[#1D1D1F] dark:bg-white text-white dark:text-[#0A0A0C] text-12px sm:text-13px font-medium hover:bg-[#007AFF] dark:hover:bg-[#0A84FF] dark:hover:text-white transition-all shadow-2xs"
           >
             Start a Project
           </a>
@@ -213,7 +234,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               playSubtleClickSound();
               setStudioMenuOpen(!studioMenuOpen);
             }}
-            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-neutral-200 bg-white text-[#1D1D1F]/80 text-12px font-mono hover:border-neutral-400 hover:text-[#1D1D1F] transition-all"
+            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#161618] text-[#1D1D1F]/80 dark:text-white/80 text-12px font-mono hover:border-neutral-400 dark:hover:border-neutral-600 hover:text-[#1D1D1F] dark:hover:text-white transition-all cursor-pointer"
           >
             {studioMenuOpen ? <X className="w-3.5 h-3.5" /> : <Menu className="w-3.5 h-3.5" />}
             <span>Menu</span>
@@ -221,84 +242,145 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Studio & Navigation Drawer */}
-      {studioMenuOpen && (
-        <div className="fixed inset-x-0 top-[73px] bg-[#F5F5F7]/95 backdrop-blur-2xl border-b border-neutral-200/80 p-8 shadow-2xl animate-in slide-in-from-top-2 duration-200">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-            {/* Quick Links Column */}
-            <div className="md:col-span-6 space-y-4">
-              <span className="text-11px font-mono uppercase tracking-widest text-[#86868B] block mb-2 font-bold">
-                Navigation
-              </span>
-              <div className="grid grid-cols-2 gap-2">
-                {navLinks.map((link) => {
-                  const isActive = activeSection === link.href;
-                  return (
-                    <a
-                      key={link.name}
-                      href={link.href}
-                      onClick={(e) => handleLinkClick(e, link.href)}
-                      className={`relative text-15px py-2.5 px-4 rounded-full flex items-center justify-between transition-colors duration-200 ${
-                        isActive
-                          ? 'bg-white/80 text-[#1D1D1F] font-semibold border border-[#1D1D1F]/[0.08] shadow-[0_6px_18px_rgba(29,29,31,0.06)]'
-                          : 'text-[#6E6E73] hover:text-[#1D1D1F] hover:bg-white/45'
-                      }`}
+      {/* Studio & Navigation Drawer Overlay */}
+      <AnimatePresence>
+        {studioMenuOpen && (
+          <>
+            {/* Dark Backdrop Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-40 bg-black/40 dark:bg-black/60 backdrop-blur-xs cursor-pointer"
+              onClick={() => {
+                playSubtleClickSound();
+                setStudioMenuOpen(false);
+              }}
+              aria-hidden="true"
+            />
+
+            {/* Responsive Menu Drawer Panel */}
+            <motion.div
+              initial={{ opacity: 0, y: -8, scale: 0.99 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.99 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+              className="fixed inset-x-0 top-[60px] sm:top-[70px] md:top-[76px] z-50 max-h-[calc(100vh-80px)] overflow-y-auto bg-[#F5F5F7]/95 dark:bg-[#0A0A0C]/95 backdrop-blur-2xl border-b border-neutral-200/80 dark:border-neutral-800/80 p-4 sm:p-6 lg:p-8 shadow-2xl transition-colors duration-300"
+            >
+              <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 items-start">
+                {/* Navigation Column */}
+                <div className="md:col-span-5 lg:col-span-6 space-y-3 sm:space-y-4">
+                  <div className="flex items-center justify-between pb-1 border-b border-neutral-200/60 dark:border-neutral-800/60">
+                    <span className="text-11px font-mono uppercase tracking-widest text-[#86868B] dark:text-[#98989D] font-bold">
+                      Navigation
+                    </span>
+                    <span className="text-11px font-mono text-neutral-400 dark:text-neutral-500">
+                      5 Pages
+                    </span>
+                  </div>
+
+                  {/* Grid layout on mobile (2 cols) vs list layout on desktop/tablet */}
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-1 gap-1.5 sm:gap-2">
+                    {navLinks.map((link) => {
+                      const isActive = activeSection === link.href;
+                      return (
+                        <a
+                          key={link.name}
+                          href={link.href}
+                          onClick={(e) => handleLinkClick(e, link.href)}
+                          className={`relative text-13px sm:text-14px py-2 sm:py-2.5 px-3.5 sm:px-4 rounded-xl sm:rounded-2xl flex items-center justify-between transition-all duration-200 ${
+                            isActive
+                              ? 'bg-white/90 dark:bg-white/15 text-[#1D1D1F] dark:text-white font-semibold border border-[#1D1D1F]/[0.08] dark:border-white/10 shadow-2xs'
+                              : 'text-[#6E6E73] dark:text-[#98989D] hover:text-[#1D1D1F] dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/10 border border-transparent'
+                          }`}
+                        >
+                          <span className="relative z-10 font-medium">{link.name}</span>
+                          <span className={`relative z-10 text-12px transition-transform duration-200 ${isActive ? 'text-[#007AFF] translate-x-0.5' : 'opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5'}`}>
+                            →
+                          </span>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Studio Tools & Status Column */}
+                <div className="md:col-span-7 lg:col-span-6 space-y-3 sm:space-y-4 pt-3 md:pt-0 md:border-l border-neutral-200/80 dark:border-neutral-800/80 md:pl-6 lg:pl-8">
+                  <div className="flex items-center justify-between pb-1 border-b border-neutral-200/60 dark:border-neutral-800/60">
+                    <span className="text-11px font-mono uppercase tracking-widest text-[#86868B] dark:text-[#98989D] font-bold">
+                      Studio Tools
+                    </span>
+                    <span className="text-11px font-mono text-neutral-400 dark:text-neutral-500">
+                      Interactive Utilities
+                    </span>
+                  </div>
+
+                  {/* Tools Cards: 1 column on mobile, 2 columns on tablet/desktop */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                    <button
+                      onClick={() => {
+                        playSubtleClickSound();
+                        setStudioMenuOpen(false);
+                        onOpenAIStoryboard();
+                      }}
+                      className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/90 dark:border-neutral-800 hover:border-[#007AFF] text-left transition-all group shadow-2xs cursor-pointer"
                     >
-                      <span className="relative z-10">{link.name}</span>
-                      <span className="relative z-10 text-12px opacity-50">→</span>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <Sparkles className="w-4 h-4 text-[#007AFF]" />
+                        <ArrowUpRight className="w-3.5 h-3.5 text-[#86868B] group-hover:text-[#007AFF] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                      </div>
+                      <div className="text-13px sm:text-14px font-bold text-[#1D1D1F] dark:text-white">
+                        AI Storyboard
+                      </div>
+                      <div className="text-11px sm:text-12px text-[#86868B] dark:text-[#98989D] mt-0.5 leading-snug">
+                        Generate script & visual shotlist
+                      </div>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        playSubtleClickSound();
+                        setStudioMenuOpen(false);
+                        onOpenEstimator();
+                      }}
+                      className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/90 dark:border-neutral-800 hover:border-[#007AFF] text-left transition-all group shadow-2xs cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <Calculator className="w-4 h-4 text-[#007AFF]" />
+                        <ArrowUpRight className="w-3.5 h-3.5 text-[#86868B] group-hover:text-[#007AFF] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                      </div>
+                      <div className="text-13px sm:text-14px font-bold text-[#1D1D1F] dark:text-white">
+                        Project Estimator
+                      </div>
+                      <div className="text-11px sm:text-12px text-[#86868B] dark:text-[#98989D] mt-0.5 leading-snug">
+                        Calculate scope & budget estimate
+                      </div>
+                    </button>
+                  </div>
+
+                  {/* Compact Live Studio Status */}
+                  <div className="pt-1">
+                    <StudioTimeWidget variant="compact" />
+                  </div>
+
+                  {/* Direct Contact Footer */}
+                  <div className="pt-1 flex items-center justify-between text-11px sm:text-12px font-mono text-[#86868B] dark:text-[#98989D]">
+                    <span>Direct Inquiries:</span>
+                    <a
+                      href="mailto:whtamim3@gmail.com"
+                      className="text-[#1D1D1F] dark:text-white underline font-medium hover:text-[#007AFF] transition-colors"
+                    >
+                      whtamim3@gmail.com
                     </a>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Studio Tools & Direct Inquiries Column */}
-            <div className="md:col-span-6 space-y-4 pt-4 md:pt-0 md:border-l border-neutral-200 md:pl-8">
-              <span className="text-11px font-mono uppercase tracking-widest text-[#86868B] block mb-2 font-bold">
-                Studio Tools
-              </span>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button
-                  onClick={() => {
-                    playSubtleClickSound();
-                    setStudioMenuOpen(false);
-                    onOpenAIStoryboard();
-                  }}
-                  className="p-4 rounded-2xl bg-white border border-neutral-200 hover:border-[#007AFF] text-left transition-all group shadow-xs"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <Sparkles className="w-4 h-4 text-[#007AFF]" />
-                    <ArrowUpRight className="w-3.5 h-3.5 text-[#86868B] group-hover:text-[#007AFF] transition-colors" />
                   </div>
-                  <div className="text-14px font-bold text-[#1D1D1F]">AI Storyboard</div>
-                  <div className="text-12px text-[#86868B] mt-0.5">Generate video script & visual frames</div>
-                </button>
-
-                <button
-                  onClick={() => {
-                    playSubtleClickSound();
-                    setStudioMenuOpen(false);
-                    onOpenEstimator();
-                  }}
-                  className="p-4 rounded-2xl bg-white border border-neutral-200 hover:border-[#007AFF] text-left transition-all group shadow-xs"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <Calculator className="w-4 h-4 text-[#007AFF]" />
-                    <ArrowUpRight className="w-3.5 h-3.5 text-[#86868B] group-hover:text-[#007AFF] transition-colors" />
-                  </div>
-                  <div className="text-14px font-bold text-[#1D1D1F]">Project Estimator</div>
-                  <div className="text-12px text-[#86868B] mt-0.5">Calculate scope & budget estimate</div>
-                </button>
+                </div>
               </div>
-
-              <div className="pt-2 text-12px font-mono text-[#86868B]">
-                Direct Contact: <a href="mailto:whtamim3@gmail.com" className="text-[#1D1D1F] underline font-medium hover:text-[#007AFF]">whtamim3@gmail.com</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
+

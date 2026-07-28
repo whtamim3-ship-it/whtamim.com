@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Mail, Send, CheckCircle2, Linkedin, ArrowUpRight, Loader2, Sparkles } from 'lucide-react';
 import { playSubtleClickSound } from '../utils/motion';
 import { TextReveal } from './TextReveal';
+import { SectionReveal } from './SectionReveal';
+import { StudioTimeWidget } from './StudioTimeWidget';
 
 interface ContactSectionProps {
   preFilledBrief?: string;
@@ -12,8 +14,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief }
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
-  const [projectType, setProjectType] = useState('SaaS Launch Commercial');
-  const [budget, setBudget] = useState('$3,500 – $6,000');
+  const [projectType, setProjectType] = useState('Promotional Video');
+  const [budget, setBudget] = useState('$800 – $1,500');
   const [message, setMessage] = useState('');
 
   const [submitting, setSubmitting] = useState(false);
@@ -62,8 +64,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief }
   };
 
   return (
-    <section id="contact" className="py-24 px-6 sm:px-8 max-w-7xl mx-auto border-t border-neutral-200/80 bg-[#F5F5F7] text-[#1D1D1F]">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <SectionReveal id="contact" className="py-24 w-full border-t border-neutral-200/80 bg-[#F5F5F7] text-[#1D1D1F]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         {/* Left Info & Direct Links */}
         <div className="lg:col-span-5 space-y-6">
           <div>
@@ -76,7 +79,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief }
           </div>
 
           <TextReveal as="p" delay={0.16} yOffset={20} className="text-16px text-[#86868B] leading-relaxed">
-            Ready to give your SaaS or AI product the commercial video it deserves? Let's discuss your timeline, key features, and vision.
+            Ready to bring your video concept to life? Let's discuss your timeline, footage, and vision.
           </TextReveal>
 
           <TextReveal delay={0.24} yOffset={20} className="space-y-4 pt-4">
@@ -120,13 +123,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief }
           </TextReveal>
 
           <TextReveal delay={0.32} yOffset={20}>
-            <div className="p-5 rounded-2xl bg-white border border-neutral-200/80 shadow-xs">
-              <span className="text-11px font-mono text-[#007AFF] font-bold block mb-1">
-                ● AVAILABILITY & TURNAROUND
-              </span>
-              <p className="text-13px text-[#86868B]">
-                Average production timeline is 2–3 weeks from brief to final 4K master delivery. Currently booking Q3/Q4 client slots.
-              </p>
+            <div className="space-y-4">
+              <StudioTimeWidget variant="compact" />
+              <div className="p-5 rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-xs">
+                <span className="text-11px font-mono text-[#007AFF] dark:text-[#0A84FF] font-bold block mb-1">
+                  ● PRODUCTION TURNAROUND
+                </span>
+                <p className="text-13px text-[#86868B] dark:text-[#98989D]">
+                  Average production timeline is 1–2 weeks depending on scope. Currently available for new projects.
+                </p>
+              </div>
             </div>
           </TextReveal>
         </div>
@@ -134,7 +140,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief }
         {/* Right Inquiry Form */}
         <div className="lg:col-span-7">
           <TextReveal delay={0.2} yOffset={24}>
-            <div className="p-8 rounded-[24px] bg-white border border-neutral-200/80 shadow-md">
+            <div className="p-5 sm:p-8 rounded-[24px] bg-white border border-neutral-200/80 shadow-md">
             {submitted ? (
               <div className="py-12 text-center space-y-4 animate-in fade-in duration-300">
                 <div className="w-16 h-16 rounded-full bg-[#007AFF]/10 text-[#007AFF] flex items-center justify-center mx-auto">
@@ -208,9 +214,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief }
                       onChange={(e) => setBudget(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-[#F5F5F7] border border-neutral-200 text-[#1D1D1F] text-14px focus:outline-none focus:border-[#007AFF] transition-colors"
                     >
-                      <option value="$2,000 – $3,500">$2,000 – $3,500 (UI Micro-Motion)</option>
-                      <option value="$3,500 – $6,000">$3,500 – $6,000 (Standard Commercial)</option>
-                      <option value="$6,000 – $10,000+">$6,000 – $10,000+ (Full Product Launch Package)</option>
+                      <option value="$300 – $800">$300 – $800</option>
+                      <option value="$800 – $1,500">$800 – $1,500</option>
+                      <option value="$1,500 – $3,000">$1,500 – $3,000</option>
+                      <option value="$3,000+">$3,000+</option>
                     </select>
                   </div>
                 </div>
@@ -257,6 +264,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief }
           </TextReveal>
         </div>
       </div>
-    </section>
+      </div>
+    </SectionReveal>
   );
 };

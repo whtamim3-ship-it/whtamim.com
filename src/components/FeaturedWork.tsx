@@ -4,6 +4,7 @@ import { CaseStudy } from '../types';
 import { calculateTilt, playSubtleClickSound } from '../utils/motion';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { TextReveal } from './TextReveal';
+import { SectionReveal } from './SectionReveal';
 
 interface FeaturedWorkProps {
   onSelectCaseStudy: (study: CaseStudy) => void;
@@ -18,8 +19,9 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
   const featuredProjects = CASE_STUDIES.slice(0, 3);
 
   return (
-    <section id="work" className="py-24 px-6 sm:px-8 max-w-7xl mx-auto bg-[#F5F5F7]">
-      {/* Section Header */}
+    <SectionReveal id="work" className="py-24 w-full bg-[#F5F5F7]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+        {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
         <div>
           <TextReveal as="span" delay={0} yOffset={16} className="text-11px font-mono uppercase tracking-widest text-[#86868B] font-bold block mb-3">
@@ -30,7 +32,7 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
           </TextReveal>
         </div>
         <TextReveal as="p" delay={0.16} yOffset={20} className="text-15px text-[#86868B] max-w-md">
-          A selection of production-ready launch films, UI motion animations, and commercial case studies built for technology startups.
+          A selection of promotional ads, kinetic motion graphics, and documentary projects crafted for brands, creators, and studios.
         </TextReveal>
       </div>
 
@@ -62,7 +64,8 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
           <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
         </button>
       </TextReveal>
-    </section>
+      </div>
+    </SectionReveal>
   );
 };
 
@@ -159,22 +162,22 @@ const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project, onSe
         />
 
         {/* Top Badges */}
-        <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-          <span className="px-3 py-1 rounded-full bg-black/60 text-white backdrop-blur-md text-11px font-mono tracking-wider">
+        <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 flex items-center gap-1.5 sm:gap-2">
+          <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-black/60 text-white backdrop-blur-md text-[10px] sm:text-11px font-mono tracking-wider">
             {project.duration}
           </span>
-          <span className="px-3 py-1 rounded-full bg-white/20 text-white backdrop-blur-md text-11px font-mono">
+          <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/20 text-white backdrop-blur-md text-[10px] sm:text-11px font-mono">
             {project.year}
           </span>
         </div>
 
-        <div className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white text-[#1D1D1F] flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#1D1D1F] group-hover:text-white transition-all">
-          <ArrowUpRight className="w-4 h-4" />
+        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white text-[#1D1D1F] flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#1D1D1F] group-hover:text-white transition-all">
+          <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </div>
       </div>
 
       {/* Card Content */}
-      <div className="p-6 sm:p-7 flex flex-col justify-between flex-grow">
+      <div className="p-5 sm:p-7 flex flex-col justify-between flex-grow">
         <div>
           {/* Category */}
           <span className="text-11px font-mono uppercase tracking-wider text-[#86868B] font-semibold block mb-2">
@@ -182,7 +185,7 @@ const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project, onSe
           </span>
 
           {/* Project Title */}
-          <h3 className="text-20px sm:text-22px font-bold text-[#1D1D1F] mb-2 group-hover:text-[#007AFF] transition-colors leading-snug">
+          <h3 className="text-18px sm:text-22px font-bold text-[#1D1D1F] mb-2 group-hover:text-[#007AFF] transition-colors leading-snug">
             {project.title}
           </h3>
 
@@ -193,9 +196,9 @@ const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project, onSe
         </div>
 
         {/* Bottom Metadata */}
-        <div className="pt-4 border-t border-neutral-100 flex items-center justify-between text-11px font-mono text-[#86868B]">
-          <span>{project.client}</span>
-          <span className="text-[#1D1D1F] font-semibold">{project.budgetTier}</span>
+        <div className="pt-4 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between gap-2 flex-wrap text-11px font-mono text-[#86868B] dark:text-[#98989D]">
+          <span className="truncate max-w-[60%]">Client: {project.client}</span>
+          <span className="text-[#007AFF] font-medium shrink-0">{project.industry}</span>
         </div>
       </div>
     </div>

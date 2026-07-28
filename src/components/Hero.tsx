@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Play, Volume2, VolumeX, ArrowDown } from 'lucide-react';
 import { playSubtleClickSound } from '../utils/motion';
 import { TextReveal } from './TextReveal';
+import { SectionReveal } from './SectionReveal';
 
 interface HeroProps {
   onOpenShowreel: () => void;
@@ -22,30 +23,16 @@ export const Hero: React.FC<HeroProps> = ({
   };
 
   return (
-    <section className="relative min-h-screen w-full flex flex-col justify-between pt-28 pb-12 px-6 sm:px-8 bg-[#F5F5F7] text-[#1D1D1F] overflow-hidden">
-      <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-center items-center text-center my-auto">
-        {/* Creator Portrait Badge */}
-        <TextReveal delay={0} yOffset={16}>
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white border border-neutral-200/80 shadow-xs mb-8">
-            <img
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop"
-              alt="whtamim portrait"
-              className="w-5 h-5 rounded-full object-cover border border-neutral-300"
-            />
-            <span className="text-12px font-mono text-[#86868B]">
-              <strong className="text-[#1D1D1F] font-semibold">whtamim</strong> — SaaS Video Editor & Motion Designer
-            </span>
-          </div>
-        </TextReveal>
-
+    <SectionReveal className="relative min-h-screen w-full flex flex-col justify-between pt-24 sm:pt-28 md:pt-32 pb-12 bg-[#F5F5F7] text-[#1D1D1F] overflow-hidden">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex-1 flex flex-col justify-center items-center text-center my-auto">
         {/* Headline */}
-        <TextReveal as="h1" delay={0.08} yOffset={20} className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[1.05] text-[#1D1D1F] max-w-5xl mb-6">
-          Crafting Motion That Elevates Digital Products.
+        <TextReveal as="h1" delay={0.08} yOffset={20} className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[1.05] text-[#1D1D1F] dark:text-white max-w-5xl mb-6">
+          Real Footage. Real Stories. Real Results.
         </TextReveal>
 
         {/* Small Supporting Paragraph */}
-        <TextReveal as="p" delay={0.16} yOffset={20} className="text-16px sm:text-18px md:text-20px text-[#86868B] font-normal leading-relaxed max-w-2xl mb-10">
-          Production-grade launch films, motion graphics, and UI walkthroughs built specifically for category-defining SaaS & AI startups.
+        <TextReveal as="p" delay={0.16} yOffset={20} className="text-16px sm:text-18px md:text-20px text-[#86868B] dark:text-[#98989D] font-normal leading-relaxed max-w-2xl mb-10">
+          Video editing and cinematography for brands, weddings, and creators.
         </TextReveal>
 
         {/* Primary CTAs */}
@@ -97,8 +84,8 @@ export const Hero: React.FC<HeroProps> = ({
           </video>
 
           {/* Video Control Bar Overlay */}
-          <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-center justify-between text-white text-12px font-mono">
-            <span className="opacity-80">2026 Showreel Preview</span>
+          <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-center justify-between text-white text-[11px] sm:text-12px font-mono">
+            <span className="opacity-80 truncate pr-2">2026 Showreel Preview</span>
 
             <button
               onClick={toggleAudio}
@@ -126,7 +113,7 @@ export const Hero: React.FC<HeroProps> = ({
           <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
         </a>
       </TextReveal>
-    </section>
+    </SectionReveal>
   );
 };
 

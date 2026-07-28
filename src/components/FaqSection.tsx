@@ -3,6 +3,7 @@ import { ChevronDown, HelpCircle, ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { playSubtleClickSound } from '../utils/motion';
 import { TextReveal } from './TextReveal';
+import { SectionReveal } from './SectionReveal';
 
 interface FAQItem {
   id: string;
@@ -15,38 +16,32 @@ const FAQ_ITEMS: FAQItem[] = [
   {
     id: 'turnaround-time',
     question: 'What is your typical turnaround time for a video project?',
-    answer: 'Most SaaS commercial launch films and UI motion projects take between 2 to 4 weeks from discovery to final multi-format delivery. Rapid 7–10 day rush turnarounds are also available for time-sensitive product launches.',
+    answer: 'Most projects take 1-2 weeks depending on scope.',
     category: 'Timeline & Scope',
   },
   {
     id: 'required-assets',
     question: 'What assets do you need from my team to get started?',
-    answer: 'All I need is access to your Figma design files, brand guidelines, and a short walkthrough of your software. If you already have a script or voiceover, fantastic — otherwise, I write the production script and craft visual storyboards from scratch.',
+    answer: 'Raw footage, brand references, and a short brief.',
     category: 'Onboarding',
-  },
-  {
-    id: 'revision-process',
-    question: 'How do revisions work during the production process?',
-    answer: 'Every project includes two dedicated revision rounds at key milestones (Script & Storyboard phase, and Motion Rough Cut) to guarantee total alignment. Feedback is collected seamlessly via Frame.io for frame-accurate time-coded notes.',
-    category: 'Workflow',
-  },
-  {
-    id: 'software-stack',
-    question: 'What tools and software do you use for motion design?',
-    answer: 'I construct and animate UI models primarily in Adobe After Effects, Cinema 4D, Figma, and Premiere Pro. Keyframe physics are driven by custom expression-based spring dynamics, Bezier velocity curves, and 3D depth maps.',
-    category: 'Technical',
-  },
-  {
-    id: 'delivery-formats',
-    question: 'What video formats and aspect ratios are delivered?',
-    answer: 'You will receive crisp 4K master files formatted for all channels: 16:9 for website hero embeds & YouTube, 9:16 vertical cuts for Instagram Reels & TikTok, and 1:1 square cuts for LinkedIn & X (Twitter) feeds.',
-    category: 'Deliverables',
   },
   {
     id: 'pricing-structure',
     question: 'How is project pricing calculated?',
-    answer: 'Pricing is fixed and transparent based on video duration, visual complexity (2D UI rigging vs. 3D spatial renders), and requested formats. You can use the Project Estimator tool on this site to calculate a tailored scope estimate instantly.',
+    answer: 'Project-based, depending on scope and length.',
     category: 'Pricing',
+  },
+  {
+    id: 'revision-process',
+    question: 'How do revisions work during the production process?',
+    answer: 'Every project includes dedicated revision rounds at key milestones to guarantee total satisfaction.',
+    category: 'Workflow',
+  },
+  {
+    id: 'delivery-formats',
+    question: 'What video formats and aspect ratios are delivered?',
+    answer: 'You will receive 4K master files formatted for all platforms: 16:9 for web/YouTube, 9:16 for Reels/TikTok, and 1:1 for social feeds.',
+    category: 'Deliverables',
   },
 ];
 
@@ -64,11 +59,12 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
   };
 
   return (
-    <section
+    <SectionReveal
       id="faq"
-      className="py-24 px-6 sm:px-8 max-w-7xl mx-auto border-t border-neutral-200/80 bg-[#F5F5F7] text-[#1D1D1F]"
+      className="py-24 w-full border-t border-neutral-200/80 bg-[#F5F5F7] text-[#1D1D1F]"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         {/* Left Section Header */}
         <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-6">
           <TextReveal as="span" delay={0} yOffset={16} className="text-11px font-mono uppercase tracking-widest text-[#86868B] font-bold block">
@@ -176,6 +172,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
           })}
         </div>
       </div>
-    </section>
+      </div>
+    </SectionReveal>
   );
 };

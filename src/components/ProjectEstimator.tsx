@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Calculator, Check, ArrowRight, X, Sparkles, ShieldAlert } from 'lucide-react';
+import { Calculator, Check, ArrowRight, X, Sparkles, ShieldAlert, Clock, Cpu, Layers, Monitor, Zap } from 'lucide-react';
+import { motion } from 'motion/react';
 import { playSubtleClickSound } from '../utils/motion';
 
 interface ProjectEstimatorProps {
@@ -15,6 +16,8 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
 }) => {
   const [projectType, setProjectType] = useState<'saas' | 'ui' | 'demo' | 'doc'>('saas');
   const [duration, setDuration] = useState<'30s' | '60s' | '90s'>('60s');
+  const [complexity, setComplexity] = useState<'standard' | 'advanced' | 'cinematic'>('advanced');
+  const [resolution, setResolution] = useState<'1080p' | '4k' | '8k'>('4k');
   const [formats, setFormats] = useState<string[]>(['16:9']);
   const [speed, setSpeed] = useState<'standard' | 'rush'>('standard');
 
@@ -34,10 +37,10 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
   // Calculate live estimate
   const getBaseCost = () => {
     switch (projectType) {
-      case 'saas': return 4500;
-      case 'ui': return 3200;
-      case 'demo': return 3800;
-      case 'doc': return 6500;
+      case 'saas': return 1200;
+      case 'ui': return 800;
+      case 'demo': return 1000;
+      case 'doc': return 1500;
     }
   };
 
@@ -49,18 +52,72 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
     }
   };
 
+  const getComplexityMultiplier = () => {
+    switch (complexity) {
+      case 'standard': return 0.9;
+      case 'advanced': return 1.1;
+      case 'cinematic': return 1.35;
+    }
+  };
+
+  const getResolutionAddon = () => {
+    switch (resolution) {
+      case '1080p': return 0;
+      case '4k': return 400;
+      case '8k': return 1200;
+    }
+  };
+
   const baseCost = getBaseCost();
   const durMult = getDurationMultiplier();
+  const compMult = getComplexityMultiplier();
+  const resAddon = getResolutionAddon();
   const formatAddon = (formats.length - 1) * 600;
   const speedAddon = speed === 'rush' ? 1200 : 0;
 
-  const minEstimate = Math.round((baseCost * durMult + formatAddon + speedAddon) * 0.9);
-  const maxEstimate = Math.round((baseCost * durMult + formatAddon + speedAddon) * 1.15);
+  const minEstimate = Math.round((baseCost * durMult * compMult + resAddon + formatAddon + speedAddon) * 0.9);
+  const maxEstimate = Math.round((baseCost * durMult * compMult + resAddon + formatAddon + speedAddon) * 1.15);
+
+  // Calculate rendering time in minutes
+  const getBaseRenderMinutes = () => {
+    switch (complexity) {
+      case 'standard': return 30; // 30 mins for clean 2D UI
+      case 'advanced': return 150; // 2.5 hours for 3D UI & depth cameras
+      case 'cinematic': return 420; // 7 hours for raytraced C4D/Octane
+    }
+  };
+
+  const getResRenderMultiplier = () => {
+    switch (resolution) {
+      case '1080p': return 0.7;
+      case '4k': return 2.2;
+      case '8k': return 5.5;
+    }
+  };
+
+  const baseMinutes = getBaseRenderMinutes();
+  const resMult = getResRenderMultiplier();
+  const formatMult = 1 + (formats.length - 1) * 0.3;
+  const totalRenderMinutes = Math.round(baseMinutes * durMult * resMult * formatMult);
+
+  const renderHours = Math.floor(totalRenderMinutes / 60);
+  const renderMins = totalRenderMinutes % 60;
+  const formattedRenderTime = renderHours > 0 
+    ? `~${renderHours} hr${renderHours > 1 ? 's' : ''}${renderMins > 0 ? ` ${renderMins}m` : ''}`
+    : `~${renderMins} mins`;
+
+  // Calculate approximate frame stats for the UI
+  const totalSeconds = duration === '30s' ? 30 : duration === '60s' ? 60 : 90;
+  const totalFrames = totalSeconds * 60 * formats.length; // 60fps master
+  const avgTimePerFrame = (totalRenderMinutes * 60 / totalFrames).toFixed(1);
+
+  // Normalize progress percentage (say 1800 mins is 100%)
+  const progressPercent = Math.min(100, Math.max(12, Math.round((totalRenderMinutes / 1800) * 100)));
 
   const handleExportBrief = () => {
-    const brief = `Configured Scope: ${projectType.toUpperCase()} Video (${duration}), Formats: ${formats.join(
+    const brief = `Configured Scope: ${projectType.toUpperCase()} Video (${duration}), Complexity: ${complexity.toUpperCase()}, Resolution: ${resolution.toUpperCase()}, Formats: ${formats.join(
       ', '
-    )}, Speed: ${speed.toUpperCase()}. Estimated Budget Range: $${minEstimate.toLocaleString()} – $${maxEstimate.toLocaleString()}.`;
+    )}, Speed: ${speed.toUpperCase()}. Estimated Budget Range: $${minEstimate.toLocaleString()} – $${maxEstimate.toLocaleString()} (Est. Render: ${formattedRenderTime}).`;
     onPreFillInquiry(brief);
     onClose();
   };
@@ -149,10 +206,74 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
             </div>
           </div>
 
-          {/* Step 3: Required Formats */}
+          {/* Step 3: Visual Complexity & Rigging */}
+          <div>
+            <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] mb-3 font-semibold flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5 text-[#007AFF]" />
+              3. Visual Complexity & Motion Density
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {[
+                { id: 'standard', label: 'Standard 2D Motion', sub: 'Clean vector UI & typography easing' },
+                { id: 'advanced', label: '3D UI Rigging & Depth', sub: 'Custom camera moves & isometric lighting' },
+                { id: 'cinematic', label: 'Cinematic Raytracing', sub: 'Full Cinema 4D / Octane realistic physics' },
+              ].map((item) => (
+                <button
+                  type="button"
+                  key={item.id}
+                  onClick={() => {
+                    playSubtleClickSound();
+                    setComplexity(item.id as any);
+                  }}
+                  className={`p-3.5 rounded-xl border text-left transition-all ${
+                    complexity === item.id
+                      ? 'bg-[#007AFF]/10 border-[#007AFF] text-[#1D1D1F] shadow-xs font-bold'
+                      : 'bg-[#F5F5F7] border-neutral-200/80 text-[#86868B] hover:border-neutral-300 font-medium'
+                  }`}
+                >
+                  <div className="text-13px text-[#1D1D1F]">{item.label}</div>
+                  <div className="text-[11px] text-[#86868B] mt-1 leading-tight font-normal">{item.sub}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Step 4: Output Resolution */}
+          <div>
+            <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] mb-3 font-semibold flex items-center gap-1.5">
+              <Monitor className="w-3.5 h-3.5 text-[#007AFF]" />
+              4. Master Output Resolution
+            </label>
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { id: '1080p', label: '1080p Full HD', sub: 'Fast social broadcast' },
+                { id: '4k', label: '4K Ultra HD', sub: 'Studio master (ProRes)' },
+                { id: '8k', label: '8K RAW Master', sub: 'Theatrical anamorphic' },
+              ].map((item) => (
+                <button
+                  type="button"
+                  key={item.id}
+                  onClick={() => {
+                    playSubtleClickSound();
+                    setResolution(item.id as any);
+                  }}
+                  className={`p-3 rounded-xl border text-center transition-all ${
+                    resolution === item.id
+                      ? 'bg-[#007AFF]/10 border-[#007AFF] text-[#1D1D1F] font-bold shadow-xs'
+                      : 'bg-[#F5F5F7] border-neutral-200/80 text-[#86868B] hover:border-neutral-300'
+                  }`}
+                >
+                  <div className="text-13px text-[#1D1D1F]">{item.label}</div>
+                  <div className="text-[10px] text-[#86868B] mt-0.5">{item.sub}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Step 5: Required Formats */}
           <div>
             <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] mb-3 font-semibold">
-              3. Multi-Format Cuts
+              5. Multi-Format Cuts
             </label>
             <div className="flex flex-wrap gap-3">
               {[
@@ -176,6 +297,71 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
             </div>
           </div>
 
+          {/* Estimated Rendering Time (Visual Progress Bar) */}
+          <div className="p-6 rounded-2xl bg-[#1D1D1F] text-white border border-neutral-800 space-y-4 shadow-md">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-[#007AFF]/20 text-[#007AFF] border border-[#007AFF]/30">
+                  <Clock className="w-5 h-5 animate-pulse" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h4 className="text-15px font-bold text-white tracking-tight">Estimated Total Rendering Time</h4>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-mono uppercase bg-[#007AFF]/20 text-[#007AFF] border border-[#007AFF]/30 font-semibold">
+                      Live GPU Model
+                    </span>
+                  </div>
+                  <p className="text-12px text-neutral-400 mt-0.5 font-mono">
+                    Based on {resolution.toUpperCase()} resolution & {complexity} complexity across {formats.length} format{formats.length > 1 ? 's' : ''}.
+                  </p>
+                </div>
+              </div>
+              <div className="text-left sm:text-right">
+                <div className="text-22px font-extrabold text-[#007AFF] font-mono tracking-tight">
+                  {formattedRenderTime}
+                </div>
+                <span className="text-11px font-mono text-neutral-400 block">
+                  {totalFrames.toLocaleString()} frames • {avgTimePerFrame}s / frame avg
+                </span>
+              </div>
+            </div>
+
+            {/* Visual Progress Bar */}
+            <div className="space-y-2 pt-1">
+              <div className="flex items-center justify-between text-11px font-mono text-neutral-400">
+                <span>Realtime / Fast (1080p 2D)</span>
+                <span className="font-semibold text-white">{progressPercent}% Compute Intensity</span>
+                <span>Heavy Raytracing (8K 3D)</span>
+              </div>
+              
+              <div className="w-full h-3.5 rounded-full bg-neutral-800 overflow-hidden p-0.5 relative shadow-inner">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progressPercent}%` }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  className={`h-full rounded-full bg-gradient-to-r ${
+                    progressPercent < 35
+                      ? 'from-emerald-500 to-teal-400'
+                      : progressPercent < 70
+                      ? 'from-blue-500 via-[#007AFF] to-indigo-500'
+                      : 'from-[#007AFF] via-purple-500 to-rose-500'
+                  } relative overflow-hidden transition-all duration-500 shadow-sm`}
+                >
+                  <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.2)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_75%,transparent_75%,transparent)] bg-[length:14px_14px] animate-[pulse_2s_infinite]" />
+                </motion.div>
+              </div>
+            </div>
+
+            {/* Hardware Cluster Note */}
+            <div className="flex items-center justify-between pt-2 border-t border-neutral-800/80 text-11px text-neutral-400 font-mono">
+              <span className="flex items-center gap-1.5">
+                <Cpu className="w-3.5 h-3.5 text-[#007AFF]" />
+                Target Rig: {complexity === 'cinematic' || resolution === '8k' ? 'Multi-GPU Cloud Farm (8x RTX 4090)' : complexity === 'advanced' || resolution === '4k' ? 'Studio Workstation (Dual RTX 4090 / M3 Max)' : 'Standard Studio Rig Acceleration'}
+              </span>
+              <span className="text-[#007AFF] font-medium hidden sm:inline">ProRes 422 HQ Master</span>
+            </div>
+          </div>
+
           {/* Live Investment Estimate Display */}
           <div className="p-6 rounded-2xl bg-[#F5F5F7] border border-neutral-200/80 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div>
@@ -185,7 +371,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
               <div className="text-32px font-extrabold text-[#007AFF] font-mono tracking-tight">
                 ${minEstimate.toLocaleString()} – ${maxEstimate.toLocaleString()}
               </div>
-              <p className="text-12px text-[#86868B] mt-1">Includes strategy, script, motion design, audio mix & master 4K deliverables.</p>
+              <p className="text-12px text-[#86868B] mt-1">Includes script, motion design, {resolution.toUpperCase()} render & master deliverables.</p>
             </div>
 
             <button

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CustomCursor } from './components/CustomCursor';
+import { ScrollProgress } from './components/ScrollProgress';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ShowreelModal } from './components/ShowreelModal';
@@ -33,7 +34,7 @@ export default function App() {
   // Pre-filled contact brief
   const [preFilledBrief, setPreFilledBrief] = useState<string>('');
 
-  // Remove dark mode class on <html> for permanent Apple light canvas
+  // Ensure clean light mode
   useEffect(() => {
     document.documentElement.classList.remove('dark');
   }, []);
@@ -50,52 +51,7 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHash);
   }, []);
 
-  // Global Tap Wash Effect Listener
-  useEffect(() => {
-    const handleGlobalClick = (e: MouseEvent) => {
-      const target = (e.target as HTMLElement).closest(
-        'button, a, input, select, textarea, [role="button"], .cursor-pointer'
-      ) as HTMLElement | null;
 
-      if (!target) return;
-
-      // Exclude header and nav links from persistent data-tapped attribute
-      if (!target.closest('header, nav, .nav-glass-link')) {
-        target.setAttribute('data-tapped', 'true');
-      }
-
-      // Ensure proper relative position for radial wash ripple
-      const computedStyle = window.getComputedStyle(target);
-      if (computedStyle.position === 'static') {
-        target.style.position = 'relative';
-      }
-      target.style.overflow = 'hidden';
-
-      // Create expanding wash wave element
-      const rect = target.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height) * 2.5;
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      const wave = document.createElement('span');
-      wave.className = 'tap-wash-wave';
-      wave.style.width = `${size}px`;
-      wave.style.height = `${size}px`;
-      wave.style.left = `${x}px`;
-      wave.style.top = `${y}px`;
-
-      target.appendChild(wave);
-
-      setTimeout(() => {
-        wave.remove();
-      }, 700);
-    };
-
-    document.addEventListener('click', handleGlobalClick, true);
-    return () => {
-      document.removeEventListener('click', handleGlobalClick, true);
-    };
-  }, []);
 
   const handleNavigateToHome = (targetSection?: string) => {
     setCurrentView('home');
@@ -128,7 +84,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7] text-[#1D1D1F] font-sans selection:bg-[#007AFF] selection:text-white">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden relative bg-[#F5F5F7] dark:bg-[#0A0A0C] text-[#1D1D1F] dark:text-[#F5F5F7] font-sans selection:bg-[#007AFF] selection:text-white">
+      {/* Apple-Style Top Reading & Depth Scroll Progress Bar */}
+      <ScrollProgress />
+
       {/* Liquid Glass Water Drop Custom Cursor */}
       <CustomCursor enabled={cursorEnabled} />
 
@@ -148,7 +107,7 @@ export default function App() {
           onBackToHome={() => handleNavigateToHome('#')}
         />
       ) : (
-        <main className="relative">
+        <main className="relative w-full max-w-full overflow-x-hidden">
           {/* 100vh Apple Launch Hero Section */}
           <Hero onOpenShowreel={() => setShowreelOpen(true)} />
 

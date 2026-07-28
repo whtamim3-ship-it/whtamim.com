@@ -1,11 +1,13 @@
 import React from 'react';
 import { PROCESS_STEPS } from '../data/portfolioData';
 import { TextReveal } from './TextReveal';
+import { SectionReveal } from './SectionReveal';
 
 export const ProcessSection: React.FC = () => {
   return (
-    <section id="process" className="py-24 px-6 sm:px-8 max-w-7xl mx-auto border-t border-neutral-200/80 bg-[#F5F5F7] text-[#1D1D1F]">
-      {/* Header */}
+    <SectionReveal id="process" className="py-24 w-full border-t border-neutral-200/80 bg-[#F5F5F7] text-[#1D1D1F]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+        {/* Header */}
       <div className="mb-16">
         <TextReveal as="span" delay={0} yOffset={16} className="text-11px font-mono uppercase tracking-widest text-[#86868B] font-bold block mb-3">
           PRODUCTION PROCESS
@@ -45,7 +47,8 @@ export const ProcessSection: React.FC = () => {
           </TextReveal>
         ))}
       </div>
-    </section>
+      </div>
+    </SectionReveal>
   );
 };
 

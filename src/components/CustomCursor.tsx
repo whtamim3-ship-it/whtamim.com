@@ -11,6 +11,8 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ enabled }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const cursorRef = useRef<HTMLDivElement>(null);
+  const hoveredRef = useRef<boolean>(false);
+  const visibleRef = useRef<boolean>(false);
 
   // Positions and velocity refs for 60fps smooth physics loop
   const mousePos = useRef({ x: -100, y: -100 });
@@ -32,21 +34,30 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ enabled }) => {
 
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
-      if (!isVisible) setIsVisible(true);
+      if (!visibleRef.current) {
+        visibleRef.current = true;
+        setIsVisible(true);
+      }
 
       const target = e.target as HTMLElement | null;
       const interactiveTarget = target?.closest(
         'a, button, [role="button"], input, select, textarea, .cursor-pointer'
       ) as HTMLElement | null;
 
-      setIsHovered(!!interactiveTarget);
+      const nextHovered = !!interactiveTarget;
+      if (nextHovered !== hoveredRef.current) {
+        hoveredRef.current = nextHovered;
+        setIsHovered(nextHovered);
+      }
     };
 
     const handleMouseLeave = () => {
+      visibleRef.current = false;
       setIsVisible(false);
     };
 
     const handleMouseEnter = () => {
+      visibleRef.current = true;
       setIsVisible(true);
     };
 
@@ -63,7 +74,7 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ enabled }) => {
       const dy = targetY - followerPos.current.y;
 
       // Smooth liquid interpolation delay (Apple feel)
-      const ease = 0.2;
+      const ease = 0.22;
       followerPos.current.x += dx * ease;
       followerPos.current.y += dy * ease;
 
@@ -74,10 +85,10 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ enabled }) => {
       const angle = Math.atan2(vy, vx) * (180 / Math.PI);
 
       // Subtle water-drop stretch deformation based on cursor speed
-      const maxStretch = 0.3;
-      const stretch = Math.min(speed * 0.025, maxStretch);
+      const maxStretch = 0.25;
+      const stretch = Math.min(speed * 0.02, maxStretch);
       const scaleX = 1 + stretch;
-      const scaleY = Math.max(1 - stretch * 0.35, 0.72);
+      const scaleY = Math.max(1 - stretch * 0.35, 0.75);
 
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${followerPos.current.x}px, ${followerPos.current.y}px, 0) translate(-50%, -50%) rotate(${angle}deg) scale(${scaleX}, ${scaleY})`;
@@ -96,7 +107,7 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ enabled }) => {
         cancelAnimationFrame(animFrame.current);
       }
     };
-  }, [isVisible]);
+  }, []); // Run once on mount
 
   if (!enabled || isTouchDevice || isReducedMotion) return null;
 
@@ -104,6 +115,7 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ enabled }) => {
     <div
       ref={cursorRef}
       aria-hidden="true"
+      style={{ willChange: 'transform, opacity' }}
       className={`pointer-events-none fixed top-0 left-0 z-50 rounded-full transition-opacity duration-200 ease-out backdrop-blur-[2px] ${
         isVisible ? 'opacity-100' : 'opacity-0'
       } ${
@@ -114,3 +126,4 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ enabled }) => {
     />
   );
 };
+

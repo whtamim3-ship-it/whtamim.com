@@ -1,66 +1,283 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ==========================================================================
+   CENTRALIZED DESIGN TOKEN SYSTEM (Apple / Linear / Raycast Midnight Mode)
+   ========================================================================== */
+
+:root {
+  /* Surface & Canvas Tokens */
+  --background-primary: #F5F5F7;
+  --background-secondary: #FFFFFF;
+  --surface-primary: #FFFFFF;
+  --surface-secondary: #F2F2F7;
+  --surface-tertiary: #E5E5EA;
+
+  /* Typography Tokens */
+  --text-primary: #1D1D1F;
+  --text-secondary: #424245;
+  --text-muted: #6E6E73;
+  --text-disabled: #86868B;
+  --text-inverse: #FFFFFF;
+
+  /* Border Tokens */
+  --border-primary: rgba(0, 0, 0, 0.12);
+  --border-secondary: rgba(0, 0, 0, 0.06);
+
+  /* Icon & Input Tokens */
+  --icon-primary: #1D1D1F;
+  --icon-secondary: #6E6E73;
+  --placeholder: #86868B;
+  --input-background: #FFFFFF;
+  --input-border: #D2D2D7;
+  --input-focus: #007AFF;
+
+  /* Button Tokens */
+  --button-primary-bg: #1D1D1F;
+  --button-primary-text: #FFFFFF;
+  --button-secondary-bg: #E5E5EA;
+  --button-secondary-text: #1D1D1F;
+
+  /* Elevational & Focus Tokens */
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08);
+  --focus-ring: 0 0 0 3px rgba(0, 122, 255, 0.35);
+
+  /* Accent Tokens */
+  --accent: #007AFF;
+  --accent-hover: #0062CC;
+  --modal-backdrop: rgba(245, 245, 247, 0.88);
+}
+
+html.dark {
+  /* Surface & Canvas Tokens - Apple Midnight / Linear Dark */
+  --background-primary: #0A0A0C;
+  --background-secondary: #121215;
+  --surface-primary: #16161A;
+  --surface-secondary: #202026;
+  --surface-tertiary: #2A2A32;
+
+  /* Typography Tokens - WCAG AA Contrast Compliant */
+  --text-primary: #F5F5F7;
+  --text-secondary: #C8C8D0;
+  --text-muted: #9E9EA8;
+  --text-disabled: #63636C;
+  --text-inverse: #0A0A0C;
+
+  /* Border Tokens */
+  --border-primary: rgba(255, 255, 255, 0.14);
+  --border-secondary: rgba(255, 255, 255, 0.08);
+
+  /* Icon & Input Tokens */
+  --icon-primary: #F5F5F7;
+  --icon-secondary: #9E9EA8;
+  --placeholder: #8E8E98;
+  --input-background: #18181E;
+  --input-border: rgba(255, 255, 255, 0.18);
+  --input-focus: #0A84FF;
+
+  /* Button Tokens */
+  --button-primary-bg: #F5F5F7;
+  --button-primary-text: #0A0A0C;
+  --button-secondary-bg: rgba(255, 255, 255, 0.12);
+  --button-secondary-text: #F5F5F7;
+
+  /* Elevational & Focus Tokens */
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.65);
+  --shadow-lg: 0 16px 45px rgba(0, 0, 0, 0.88);
+  --focus-ring: 0 0 0 3px rgba(10, 132, 255, 0.45);
+
+  /* Accent Tokens */
+  --accent: #0A84FF;
+  --accent-hover: #409CFF;
+  --modal-backdrop: rgba(10, 10, 12, 0.92);
+}
+
 @layer base {
+  html, body, #root {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+
   body {
-    background-color: #F5F5F7;
-    color: #1D1D1F;
+    background-color: var(--background-primary);
+    color: var(--text-primary);
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  img, video, canvas, svg, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Focus Visibility for WCAG Accessibility */
+  :focus-visible {
+    outline: none !important;
+    box-shadow: var(--focus-ring) !important;
   }
 }
 
-/* Tap Wash Ripple Animation & Post-Tap Color Change States */
-@keyframes tapWashExpand {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0.85;
-  }
-  50% {
-    opacity: 0.7;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(3.2);
-    opacity: 0;
-  }
+/* ==========================================================================
+   Design Token Class Mappings & Component Overrides
+   ========================================================================== */
+
+/* Backgrounds & Canvas */
+html.dark,
+html.dark #root,
+html.dark main,
+html.dark section:not([data-is-footer]) {
+  background-color: var(--background-primary);
+  color: var(--text-primary);
 }
 
-.tap-wash-wave {
-  position: absolute;
-  border-radius: 9999px;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(0, 122, 255, 0.75) 0%, rgba(0, 122, 255, 0.45) 60%, rgba(0, 122, 255, 0) 100%);
-  animation: tapWashExpand 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  z-index: 40;
+html.dark .bg-\[\#F5F5F7\] {
+  background-color: var(--background-primary) !important;
 }
 
-/* Tactile Active Press & Apple-Grade Hover Micro-Interactions for Buttons */
-@keyframes appleHoverBounce {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-  45% {
-    transform: translateY(-3.5px) scale(1.035);
-  }
-  75% {
-    transform: translateY(-2px) scale(1.02);
-  }
-  100% {
-    transform: translateY(-2.5px) scale(1.03);
-  }
+/* Footer Section */
+footer,
+[data-is-footer="true"],
+html.dark footer,
+html.dark [data-is-footer="true"] {
+  background-color: #0C0C0E !important;
+  color: #A1A1AA !important;
 }
 
+/* Cards & Surface Containers */
+html.dark .bg-white:not([class*="/"]):not(header *):not(nav *):not(footer *):not([data-is-footer] *):not(.keep-white *):not(.aspect-video *):not(video *) {
+  background-color: var(--surface-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Elevated secondary surface elements inside cards */
+html.dark .bg-neutral-50,
+html.dark .bg-neutral-100,
+html.dark .bg-neutral-200\/50,
+html.dark .bg-neutral-200\/60,
+html.dark .bg-neutral-200\/80 {
+  background-color: var(--surface-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Glass & Semi-Transparent Overlays */
+html.dark .bg-white\/90,
+html.dark .bg-white\/80,
+html.dark .bg-white\/70,
+html.dark .bg-white\/60,
+html.dark [class*="bg-white/"]:not(.aspect-video *):not(video *) {
+  background-color: rgba(22, 22, 26, 0.88) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Primary Headings & Bold Text */
+html.dark .text-\[\#1D1D1F\],
+html.dark [class*="text-[#1D1D1F]"] {
+  color: var(--text-primary) !important;
+}
+
+/* Secondary & Muted Text */
+html.dark .text-\[\#86868B\],
+html.dark .text-\[\#6E6E73\],
+html.dark .text-neutral-500,
+html.dark .text-neutral-600,
+html.dark [class*="text-[#86868B]"],
+html.dark [class*="text-[#6E6E73]"] {
+  color: var(--text-muted) !important;
+}
+
+/* Universal Borders */
+html.dark .border-neutral-200,
+html.dark .border-neutral-200\/80,
+html.dark .border-neutral-200\/90,
+html.dark .border-neutral-300,
+html.dark .border-neutral-100,
+html.dark .border-neutral-100\/80 {
+  border-color: var(--border-primary) !important;
+}
+
+/* Universal Shadows */
+html.dark .shadow-xs,
+html.dark .shadow-sm,
+html.dark .shadow-md,
+html.dark .shadow-lg,
+html.dark .shadow-xl,
+html.dark .shadow-2xl {
+  box-shadow: var(--shadow) !important;
+}
+
+/* Primary Action Buttons */
+html.dark .bg-\[\#1D1D1F\]:not(footer *):not([data-is-footer] *):not(header *):not(nav *),
+html.dark .bg-black:not(footer *):not([data-is-footer] *):not(header *):not(nav *):not(.aspect-video *):not(video *) {
+  background-color: var(--button-primary-bg) !important;
+  color: var(--button-primary-text) !important;
+}
+
+html.dark .bg-\[\#1D1D1F\]:hover:not(footer *):not([data-is-footer] *):not(header *):not(nav *),
+html.dark .bg-black:hover:not(footer *):not([data-is-footer] *):not(header *):not(nav *):not(.aspect-video *):not(video *) {
+  background-color: var(--accent) !important;
+  color: #FFFFFF !important;
+}
+
+/* Form Inputs, Selects & Textareas */
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: var(--input-background) !important;
+  border-color: var(--input-border) !important;
+  color: var(--text-primary) !important;
+}
+
+html.dark option {
+  background-color: #1A1A20 !important;
+  color: #F5F5F7 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: var(--placeholder) !important;
+}
+
+/* Form Inputs Focus State */
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--input-focus) !important;
+  box-shadow: var(--focus-ring) !important;
+}
+
+/* Modals & Backdrop Blur */
+html.dark .fixed.inset-0.bg-\[\#F5F5F7\]\/90,
+html.dark .fixed.inset-0.bg-\[\#F5F5F7\]\/95,
+html.dark .fixed.inset-0.bg-\[\#F5F5F7\] {
+  background-color: var(--modal-backdrop) !important;
+}
+
+/* Interactive Element Transition */
 button,
 a,
 input,
 select,
 textarea,
 [role="button"] {
-  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1), filter 0.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1), filter 0.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
   will-change: transform, box-shadow, filter, opacity;
 }
 
-/* Premium Apple Glass Capsule Navigation Links */
+/* Premium Navigation Glass Links */
 .nav-glass-link {
   position: relative;
   display: inline-flex;
@@ -81,8 +298,10 @@ textarea,
 
 .nav-glass-link:hover {
   color: #1D1D1F !important;
-  animation: none !important;
-  transform: none !important;
+}
+
+html.dark .nav-glass-link:hover {
+  color: #F5F5F7 !important;
 }
 
 .nav-glass-capsule {
@@ -101,6 +320,12 @@ textarea,
   z-index: 0;
 }
 
+html.dark .nav-glass-capsule {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
 .nav-glass-link:hover .nav-glass-capsule {
   opacity: 1;
   transform: scale(1.02);
@@ -111,12 +336,38 @@ textarea,
   font-weight: 600 !important;
 }
 
+html.dark .nav-glass-link.is-active {
+  color: #F5F5F7 !important;
+}
+
 .nav-glass-link.is-active .nav-glass-capsule {
   opacity: 1 !important;
   transform: scale(1) !important;
   background: rgba(255, 255, 255, 0.75) !important;
   border: 1px solid rgba(29, 29, 31, 0.08) !important;
   box-shadow: 0 4px 18px rgba(29, 29, 31, 0.06) !important;
+}
+
+html.dark .nav-glass-link.is-active .nav-glass-capsule {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Button Micro-Interactions */
+@keyframes appleHoverBounce {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  45% {
+    transform: translateY(-3.5px) scale(1.035);
+  }
+  75% {
+    transform: translateY(-2px) scale(1.02);
+  }
+  100% {
+    transform: translateY(-2.5px) scale(1.03);
+  }
 }
 
 button:hover,
@@ -128,10 +379,8 @@ a.px-8:hover,
 [role="button"]:hover {
   animation: appleHoverBounce 0.26s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   filter: brightness(1.03);
-  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12), 0 2px 6px -1px rgba(0, 0, 0, 0.08);
 }
 
-/* Tactile Physical Pressed State (On Mouse Down / Active) */
 button:active,
 a:active,
 [role="button"]:active {
@@ -140,7 +389,7 @@ a:active,
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
   filter: brightness(0.97) !important;
   opacity: 0.97 !important;
-  transition: transform 0.09s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.09s cubic-bezier(0.22, 1, 0.36, 1), filter 0.09s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.09s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  transition: transform 0.09s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.09s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -161,52 +410,9 @@ a:active,
     transform: none !important;
   }
 
-  .animate-bounce-slow,
-  .tap-wash-wave {
+  .animate-bounce-slow {
     animation: none !important;
   }
-}
-
-/* Color state change AFTER tapping (like a color wash) */
-button[data-tapped="true"],
-a[data-tapped="true"],
-[role="button"][data-tapped="true"],
-span[data-tapped="true"],
-div[data-tapped="true"] {
-  border-color: #007AFF !important;
-  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-/* Dark solid buttons wash into vibrant Apple blue */
-button[data-tapped="true"].bg-\[\#1D1D1F\],
-a[data-tapped="true"].bg-\[\#1D1D1F\],
-button[data-tapped="true"].bg-black,
-a[data-tapped="true"].bg-black,
-[role="button"][data-tapped="true"].bg-\[\#1D1D1F\] {
-  background-color: #007AFF !important;
-  color: #FFFFFF !important;
-  box-shadow: 0 4px 18px rgba(0, 122, 255, 0.38) !important;
-}
-
-/* Light / White / Neutral / Bordered buttons wash into soft blue tint with blue text */
-button[data-tapped="true"]:not(.bg-\[\#1D1D1F\]):not(.bg-black):not(nav *):not(header *),
-a[data-tapped="true"]:not(.bg-\[\#1D1D1F\]):not(.bg-black):not(nav *):not(header *),
-[role="button"][data-tapped="true"]:not(.bg-\[\#1D1D1F\]):not(.bg-black):not(nav *):not(header *),
-span[data-tapped="true"]:not(nav *):not(header *),
-div[data-tapped="true"]:not(nav *):not(header *) {
-  background-color: #E8F2FF !important;
-  color: #007AFF !important;
-  border-color: #007AFF !important;
-  box-shadow: 0 2px 12px rgba(0, 122, 255, 0.2) !important;
-}
-
-/* Inputs and Selects change background and border color after tap/interaction */
-input[data-tapped="true"],
-select[data-tapped="true"],
-textarea[data-tapped="true"] {
-  background-color: #EEF5FF !important;
-  border-color: #007AFF !important;
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.22) !important;
 }
 
 @layer utilities {
@@ -231,15 +437,26 @@ textarea[data-tapped="true"] {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F5F5F7;
+  background: var(--background-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(140, 140, 145, 0.25);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(140, 140, 145, 0.45);
 }
 
+html.dark ::-webkit-scrollbar-track {
+  background: var(--background-primary) !important;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22) !important;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.38) !important;
+}

@@ -4,6 +4,7 @@ import { CaseStudy } from '../types';
 import { playSubtleClickSound } from '../utils/motion';
 import { ArrowUpRight, ArrowLeft } from 'lucide-react';
 import { TextReveal } from './TextReveal';
+import { SectionReveal } from './SectionReveal';
 
 interface WorkPageProps {
   onSelectCaseStudy: (study: CaseStudy) => void;
@@ -19,8 +20,9 @@ export const WorkPage: React.FC<WorkPageProps> = ({
   }, []);
 
   return (
-    <div className="min-h-screen pt-28 pb-24 px-6 sm:px-8 max-w-7xl mx-auto bg-[#F5F5F7] animate-in fade-in duration-300">
-      {/* Back to Home button */}
+    <SectionReveal as="div" className="min-h-screen pt-28 pb-24 w-full bg-[#F5F5F7]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+        {/* Back to Home button */}
       <TextReveal delay={0} yOffset={16} className="mb-8">
         <button
           onClick={() => {
@@ -61,7 +63,8 @@ export const WorkPage: React.FC<WorkPageProps> = ({
           </TextReveal>
         ))}
       </div>
-    </div>
+      </div>
+    </SectionReveal>
   );
 };
 
@@ -135,7 +138,7 @@ const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) 
       </div>
 
       {/* Details */}
-      <div className="p-6 flex flex-col justify-between flex-grow">
+      <div className="p-5 sm:p-6 flex flex-col justify-between flex-grow">
         <div>
           <span className="text-11px font-mono uppercase tracking-wider text-[#86868B] font-semibold block mb-1">
             {project.services[0] || project.industry}
@@ -148,9 +151,9 @@ const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) 
           </p>
         </div>
 
-        <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between text-11px font-mono text-[#86868B]">
-          <span>{project.client}</span>
-          <span className="text-[#1D1D1F] font-medium">{project.budgetTier}</span>
+        <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between gap-2 flex-wrap text-11px font-mono text-[#86868B]">
+          <span className="truncate max-w-[60%]">Client: {project.client}</span>
+          <span className="text-[#007AFF] font-medium shrink-0">{project.industry}</span>
         </div>
       </div>
     </div>
