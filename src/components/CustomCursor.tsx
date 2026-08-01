@@ -116,12 +116,12 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ enabled }) => {
       ref={cursorRef}
       aria-hidden="true"
       style={{ willChange: 'transform, opacity' }}
-      className={`pointer-events-none fixed top-0 left-0 z-50 rounded-full transition-opacity duration-200 ease-out backdrop-blur-[2px] ${
+      className={`pointer-events-none fixed top-0 left-0 z-[200] rounded-full transition-opacity duration-200 ease-out backdrop-blur-[2px] ${
         isVisible ? 'opacity-100' : 'opacity-0'
       } ${
         isHovered
-          ? 'w-6 h-6 bg-[#007AFF]/12 border border-[#007AFF]/30 shadow-xs'
-          : 'w-5 h-5 bg-[#1D1D1F]/[0.09] border border-[#1D1D1F]/15 shadow-2xs'
+          ? 'w-6 h-6 bg-[#007AFF]/15 dark:bg-[#0A84FF]/25 border border-[#007AFF]/40 dark:border-[#0A84FF]/50 shadow-xs'
+          : 'w-5 h-5 bg-[#1D1D1F]/[0.10] dark:bg-white/[0.15] border border-[#1D1D1F]/20 dark:border-white/30 shadow-2xs'
       }`}
     />
   );

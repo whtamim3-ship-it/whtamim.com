@@ -68,6 +68,7 @@ export interface AIStoryboardResponse {
   recommendedDuration: string;
   pacingAndTone: string;
   musicStyle: string;
+  visualStyle?: string;
   scenes: StoryboardScene[];
   motionDesignKeyframes: string[];
   estimatedProductionTimeline: string;

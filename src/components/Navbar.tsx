@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { playSubtleClickSound } from '../utils/motion';
 import { StudioTimeWidget } from './StudioTimeWidget';
 import { BrandLogo } from './BrandLogo';
+import { ThemeToggle } from './ThemeToggle';
 
 interface NavbarProps {
   currentView: 'home' | 'work';
@@ -11,6 +12,8 @@ interface NavbarProps {
   onNavigateToWork: () => void;
   onOpenEstimator: () => void;
   onOpenAIStoryboard: () => void;
+  theme: 'light' | 'dark';
+  onToggleTheme: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -19,6 +22,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateToWork,
   onOpenEstimator,
   onOpenAIStoryboard,
+  theme,
+  onToggleTheme,
 }) => {
   const [scrolled, setScrolled] = useState(false);
   const [studioMenuOpen, setStudioMenuOpen] = useState(false);
@@ -206,6 +211,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Active Status Light Indicator */}
           <StudioTimeWidget variant="pill" />
 
+          {/* Persistent Floating Theme Toggle */}
+          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+
           <button
             onClick={() => {
               playSubtleClickSound();
@@ -224,7 +232,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               playSubtleClickSound();
               onNavigateToHome('#contact');
             }}
-            className="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-[#1D1D1F] dark:bg-white text-white dark:text-[#0A0A0C] text-12px sm:text-13px font-medium hover:bg-[#007AFF] dark:hover:bg-[#0A84FF] dark:hover:text-white transition-all shadow-2xs"
+            className="hidden md:inline-flex px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-[#1D1D1F] dark:bg-white text-white dark:text-[#0A0A0C] text-12px sm:text-13px font-medium hover:bg-[#007AFF] dark:hover:bg-[#0A84FF] dark:hover:text-white transition-all shadow-2xs"
           >
             Start a Project
           </a>

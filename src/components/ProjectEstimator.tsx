@@ -17,7 +17,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
   const [projectType, setProjectType] = useState<'saas' | 'ui' | 'demo' | 'doc'>('saas');
   const [duration, setDuration] = useState<'30s' | '60s' | '90s'>('60s');
   const [complexity, setComplexity] = useState<'standard' | 'advanced' | 'cinematic'>('advanced');
-  const [resolution, setResolution] = useState<'1080p' | '4k' | '8k'>('4k');
+  const [resolution, setResolution] = useState<'720p' | '1080p'>('1080p');
   const [formats, setFormats] = useState<string[]>(['16:9']);
   const [speed, setSpeed] = useState<'standard' | 'rush'>('standard');
 
@@ -62,9 +62,8 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
 
   const getResolutionAddon = () => {
     switch (resolution) {
-      case '1080p': return 0;
-      case '4k': return 400;
-      case '8k': return 1200;
+      case '720p': return 0;
+      case '1080p': return 300;
     }
   };
 
@@ -123,20 +122,20 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-[#F5F5F7]/90 backdrop-blur-2xl animate-in fade-in duration-300 flex items-center justify-center p-4 sm:p-6">
-      <div className="relative w-full max-w-3xl rounded-[24px] bg-white border border-neutral-200/80 shadow-2xl overflow-hidden text-[#1D1D1F] flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 overflow-hidden bg-[#F5F5F7]/90 dark:bg-[#0A0A0C]/90 backdrop-blur-2xl animate-in fade-in duration-300 flex items-center justify-center p-4 sm:p-6">
+      <div className="relative w-full max-w-3xl rounded-[24px] bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-2xl overflow-hidden text-[#1D1D1F] dark:text-[#F5F5F7] flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="p-6 bg-[#F5F5F7] border-b border-neutral-200/80 flex items-center justify-between">
+        <div className="p-6 bg-[#F5F5F7] dark:bg-[#121214] border-b border-neutral-200/80 dark:border-neutral-800 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#007AFF]/10 text-[#007AFF] flex items-center justify-center border border-[#007AFF]/20">
+            <div className="w-9 h-9 rounded-xl bg-[#007AFF]/10 dark:bg-[#0A84FF]/10 text-[#007AFF] dark:text-[#0A84FF] flex items-center justify-center border border-[#007AFF]/20 dark:border-[#0A84FF]/20">
               <Calculator className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-18px font-bold text-[#1D1D1F]">Project Scope & Budget Calculator</h3>
-              <p className="text-12px text-[#86868B]">Configure deliverables to estimate your custom production budget.</p>
+              <h3 className="text-18px font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">Project Scope & Budget Calculator</h3>
+              <p className="text-12px text-[#86868B] dark:text-[#98989D]">Configure deliverables to estimate your custom production budget.</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2.5 rounded-full bg-neutral-200/60 hover:bg-neutral-300 text-[#1D1D1F] transition-colors">
+          <button onClick={onClose} className="p-2.5 rounded-full bg-neutral-200/60 dark:bg-neutral-800 hover:bg-neutral-300 dark:hover:bg-neutral-700 text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -145,7 +144,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
         <div className="p-6 sm:p-8 overflow-y-auto space-y-6">
           {/* Step 1: Project Type */}
           <div>
-            <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] mb-3 font-semibold">
+            <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] dark:text-[#98989D] mb-3 font-semibold">
               1. Primary Deliverable Type
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -164,12 +163,12 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
                   }}
                   className={`p-4 rounded-2xl text-left border transition-all ${
                     projectType === item.id
-                      ? 'bg-[#007AFF]/10 border-[#007AFF] text-[#1D1D1F] shadow-sm'
-                      : 'bg-[#F5F5F7] border-neutral-200/80 text-[#86868B] hover:border-neutral-300'
+                      ? 'bg-[#007AFF]/10 dark:bg-[#0A84FF]/10 border-[#007AFF] dark:border-[#0A84FF] text-[#1D1D1F] dark:text-[#F5F5F7] shadow-sm'
+                      : 'bg-[#F5F5F7] dark:bg-[#1E1E22] border-neutral-200/80 dark:border-neutral-700 text-[#86868B] dark:text-[#98989D] hover:border-neutral-300 dark:hover:border-neutral-600'
                   }`}
                 >
-                  <div className="font-bold text-14px text-[#1D1D1F]">{item.title}</div>
-                  <div className="text-12px text-[#86868B] mt-0.5">{item.sub}</div>
+                  <div className="font-bold text-14px text-[#1D1D1F] dark:text-[#F5F5F7]">{item.title}</div>
+                  <div className="text-12px text-[#86868B] dark:text-[#98989D] mt-0.5">{item.sub}</div>
                 </button>
               ))}
             </div>
@@ -177,7 +176,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
 
           {/* Step 2: Duration */}
           <div>
-            <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] mb-3 font-semibold">
+            <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] dark:text-[#98989D] mb-3 font-semibold">
               2. Target Video Duration
             </label>
             <div className="grid grid-cols-3 gap-3">
@@ -195,12 +194,12 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
                   }}
                   className={`p-3 rounded-xl border text-center transition-all ${
                     duration === item.id
-                      ? 'bg-[#007AFF]/10 border-[#007AFF] text-[#1D1D1F] font-bold'
-                      : 'bg-[#F5F5F7] border-neutral-200/80 text-[#86868B]'
+                      ? 'bg-[#007AFF]/10 dark:bg-[#0A84FF]/10 border-[#007AFF] dark:border-[#0A84FF] text-[#1D1D1F] dark:text-[#F5F5F7] font-bold'
+                      : 'bg-[#F5F5F7] dark:bg-[#1E1E22] border-neutral-200/80 dark:border-neutral-700 text-[#86868B] dark:text-[#98989D]'
                   }`}
                 >
-                  <div className="text-13px text-[#1D1D1F]">{item.label}</div>
-                  <div className="text-[10px] text-[#86868B]">{item.sub}</div>
+                  <div className="text-13px text-[#1D1D1F] dark:text-[#F5F5F7]">{item.label}</div>
+                  <div className="text-[10px] text-[#86868B] dark:text-[#98989D]">{item.sub}</div>
                 </button>
               ))}
             </div>
@@ -208,8 +207,8 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
 
           {/* Step 3: Visual Complexity & Rigging */}
           <div>
-            <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] mb-3 font-semibold flex items-center gap-1.5">
-              <Layers className="w-3.5 h-3.5 text-[#007AFF]" />
+            <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] dark:text-[#98989D] mb-3 font-semibold flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5 text-[#007AFF] dark:text-[#0A84FF]" />
               3. Visual Complexity & Motion Density
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -227,12 +226,12 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
                   }}
                   className={`p-3.5 rounded-xl border text-left transition-all ${
                     complexity === item.id
-                      ? 'bg-[#007AFF]/10 border-[#007AFF] text-[#1D1D1F] shadow-xs font-bold'
-                      : 'bg-[#F5F5F7] border-neutral-200/80 text-[#86868B] hover:border-neutral-300 font-medium'
+                      ? 'bg-[#007AFF]/10 dark:bg-[#0A84FF]/10 border-[#007AFF] dark:border-[#0A84FF] text-[#1D1D1F] dark:text-[#F5F5F7] shadow-xs font-bold'
+                      : 'bg-[#F5F5F7] dark:bg-[#1E1E22] border-neutral-200/80 dark:border-neutral-700 text-[#86868B] dark:text-[#98989D] hover:border-neutral-300 dark:hover:border-neutral-600 font-medium'
                   }`}
                 >
-                  <div className="text-13px text-[#1D1D1F]">{item.label}</div>
-                  <div className="text-[11px] text-[#86868B] mt-1 leading-tight font-normal">{item.sub}</div>
+                  <div className="text-13px text-[#1D1D1F] dark:text-[#F5F5F7]">{item.label}</div>
+                  <div className="text-[11px] text-[#86868B] dark:text-[#98989D] mt-1 leading-tight font-normal">{item.sub}</div>
                 </button>
               ))}
             </div>
@@ -240,15 +239,14 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
 
           {/* Step 4: Output Resolution */}
           <div>
-            <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] mb-3 font-semibold flex items-center gap-1.5">
-              <Monitor className="w-3.5 h-3.5 text-[#007AFF]" />
+            <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] dark:text-[#98989D] mb-3 font-semibold flex items-center gap-1.5">
+              <Monitor className="w-3.5 h-3.5 text-[#007AFF] dark:text-[#0A84FF]" />
               4. Master Output Resolution
             </label>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               {[
-                { id: '1080p', label: '1080p Full HD', sub: 'Fast social broadcast' },
-                { id: '4k', label: '4K Ultra HD', sub: 'Studio master (ProRes)' },
-                { id: '8k', label: '8K RAW Master', sub: 'Theatrical anamorphic' },
+                { id: '720p', label: '720p HD', sub: 'Fast web & mobile' },
+                { id: '1080p', label: '1080p Full HD', sub: 'Master web broadcast' },
               ].map((item) => (
                 <button
                   type="button"
@@ -259,12 +257,12 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
                   }}
                   className={`p-3 rounded-xl border text-center transition-all ${
                     resolution === item.id
-                      ? 'bg-[#007AFF]/10 border-[#007AFF] text-[#1D1D1F] font-bold shadow-xs'
-                      : 'bg-[#F5F5F7] border-neutral-200/80 text-[#86868B] hover:border-neutral-300'
+                      ? 'bg-[#007AFF]/10 dark:bg-[#0A84FF]/10 border-[#007AFF] dark:border-[#0A84FF] text-[#1D1D1F] dark:text-[#F5F5F7] font-bold shadow-xs'
+                      : 'bg-[#F5F5F7] dark:bg-[#1E1E22] border-neutral-200/80 dark:border-neutral-700 text-[#86868B] dark:text-[#98989D] hover:border-neutral-300 dark:hover:border-neutral-600'
                   }`}
                 >
-                  <div className="text-13px text-[#1D1D1F]">{item.label}</div>
-                  <div className="text-[10px] text-[#86868B] mt-0.5">{item.sub}</div>
+                  <div className="text-13px text-[#1D1D1F] dark:text-[#F5F5F7]">{item.label}</div>
+                  <div className="text-[10px] text-[#86868B] dark:text-[#98989D] mt-0.5">{item.sub}</div>
                 </button>
               ))}
             </div>
@@ -272,7 +270,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
 
           {/* Step 5: Required Formats */}
           <div>
-            <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] mb-3 font-semibold">
+            <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] dark:text-[#98989D] mb-3 font-semibold">
               5. Multi-Format Cuts
             </label>
             <div className="flex flex-wrap gap-3">
@@ -287,8 +285,8 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
                   onClick={() => toggleFormat(fmt.id)}
                   className={`px-4 py-2.5 rounded-xl border text-13px font-medium transition-all ${
                     formats.includes(fmt.id)
-                      ? 'bg-[#007AFF]/10 border-[#007AFF] text-[#007AFF]'
-                      : 'bg-[#F5F5F7] border-neutral-200/80 text-[#86868B]'
+                      ? 'bg-[#007AFF]/10 dark:bg-[#0A84FF]/10 border-[#007AFF] dark:border-[#0A84FF] text-[#007AFF] dark:text-[#0A84FF]'
+                      : 'bg-[#F5F5F7] dark:bg-[#1E1E22] border-neutral-200/80 dark:border-neutral-700 text-[#86868B] dark:text-[#98989D]'
                   }`}
                 >
                   {fmt.label}
@@ -298,16 +296,16 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
           </div>
 
           {/* Estimated Rendering Time (Visual Progress Bar) */}
-          <div className="p-6 rounded-2xl bg-[#1D1D1F] text-white border border-neutral-800 space-y-4 shadow-md">
+          <div className="p-6 rounded-2xl bg-[#1D1D1F] dark:bg-[#121214] text-white border border-neutral-800 space-y-4 shadow-md">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-[#007AFF]/20 text-[#007AFF] border border-[#007AFF]/30">
+                <div className="p-2.5 rounded-xl bg-[#007AFF]/20 dark:bg-[#0A84FF]/20 text-[#007AFF] dark:text-[#0A84FF] border border-[#007AFF]/30 dark:border-[#0A84FF]/30">
                   <Clock className="w-5 h-5 animate-pulse" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <h4 className="text-15px font-bold text-white tracking-tight">Estimated Total Rendering Time</h4>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-mono uppercase bg-[#007AFF]/20 text-[#007AFF] border border-[#007AFF]/30 font-semibold">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-mono uppercase bg-[#007AFF]/20 text-[#007AFF] dark:text-[#0A84FF] border border-[#007AFF]/30 dark:border-[#0A84FF]/30 font-semibold">
                       Live GPU Model
                     </span>
                   </div>
@@ -317,7 +315,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
                 </div>
               </div>
               <div className="text-left sm:text-right">
-                <div className="text-22px font-extrabold text-[#007AFF] font-mono tracking-tight">
+                <div className="text-22px font-extrabold text-[#007AFF] dark:text-[#0A84FF] font-mono tracking-tight">
                   {formattedRenderTime}
                 </div>
                 <span className="text-11px font-mono text-neutral-400 block">
@@ -355,28 +353,28 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
             {/* Hardware Cluster Note */}
             <div className="flex items-center justify-between pt-2 border-t border-neutral-800/80 text-11px text-neutral-400 font-mono">
               <span className="flex items-center gap-1.5">
-                <Cpu className="w-3.5 h-3.5 text-[#007AFF]" />
-                Target Rig: {complexity === 'cinematic' || resolution === '8k' ? 'Multi-GPU Cloud Farm (8x RTX 4090)' : complexity === 'advanced' || resolution === '4k' ? 'Studio Workstation (Dual RTX 4090 / M3 Max)' : 'Standard Studio Rig Acceleration'}
+                <Cpu className="w-3.5 h-3.5 text-[#007AFF] dark:text-[#0A84FF]" />
+                Target Rig: {complexity === 'cinematic' ? 'Multi-GPU Cloud Farm (8x RTX 4090)' : complexity === 'advanced' || resolution === '1080p' ? 'Studio Workstation (Dual RTX 4090 / M3 Max)' : 'Standard Studio Rig Acceleration'}
               </span>
-              <span className="text-[#007AFF] font-medium hidden sm:inline">ProRes 422 HQ Master</span>
+              <span className="text-[#007AFF] dark:text-[#0A84FF] font-medium hidden sm:inline">ProRes 422 HQ Master</span>
             </div>
           </div>
 
           {/* Live Investment Estimate Display */}
-          <div className="p-6 rounded-2xl bg-[#F5F5F7] border border-neutral-200/80 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="p-6 rounded-2xl bg-[#F5F5F7] dark:bg-[#1E1E22] border border-neutral-200/80 dark:border-neutral-700 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div>
-              <span className="text-11px font-mono uppercase text-[#86868B] block mb-1 font-semibold">
+              <span className="text-11px font-mono uppercase text-[#86868B] dark:text-[#98989D] block mb-1 font-semibold">
                 Estimated Project Investment
               </span>
-              <div className="text-32px font-extrabold text-[#007AFF] font-mono tracking-tight">
+              <div className="text-32px font-extrabold text-[#007AFF] dark:text-[#0A84FF] font-mono tracking-tight">
                 ${minEstimate.toLocaleString()} – ${maxEstimate.toLocaleString()}
               </div>
-              <p className="text-12px text-[#86868B] mt-1">Includes script, motion design, {resolution.toUpperCase()} render & master deliverables.</p>
+              <p className="text-12px text-[#86868B] dark:text-[#98989D] mt-1">Includes script, motion design, {resolution.toUpperCase()} render & master deliverables.</p>
             </div>
 
             <button
               onClick={handleExportBrief}
-              className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-[#1D1D1F] text-white font-semibold text-14px hover:bg-[#007AFF] transition-all shadow-md shrink-0"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-[#1D1D1F] dark:bg-white text-white dark:text-[#0A0A0C] font-semibold text-14px hover:bg-[#007AFF] dark:hover:bg-[#0A84FF] dark:hover:text-white transition-all shadow-md shrink-0"
             >
               Export Brief to Inquiry →
             </button>
@@ -386,3 +384,5 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
     </div>
   );
 };
+
+export default ProjectEstimator;

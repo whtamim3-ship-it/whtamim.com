@@ -43,7 +43,7 @@ export const StudioTimeWidget: React.FC<StudioTimeWidgetProps> = ({
           className="absolute inset-0 pointer-events-none transition-opacity duration-1000"
           style={{ background: studio.glowGradient }}
         />
-        <div className="relative z-10 flex flex-col xs:flex-row items-start xs:items-center justify-between gap-3 sm:gap-4">
+        <div className="relative z-10 flex flex-col min-[420px]:flex-row items-start min-[420px]:items-center justify-between gap-3 sm:gap-4">
           <div className="flex items-center gap-2.5 min-w-0">
             <div
               className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-14px sm:text-16px shadow-sm border border-white/10 shrink-0"
@@ -62,7 +62,7 @@ export const StudioTimeWidget: React.FC<StudioTimeWidgetProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center xs:flex-col xs:items-end justify-between w-full xs:w-auto gap-1 pt-2 xs:pt-0 border-t xs:border-t-0 border-white/10">
+          <div className="flex items-center min-[420px]:flex-col min-[420px]:items-end justify-between w-full min-[420px]:w-auto gap-1 pt-2 min-[420px]:pt-0 border-t min-[420px]:border-t-0 border-white/10">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-10px sm:text-11px font-mono border border-white/10 bg-white/5 text-neutral-200 shrink-0">
               <span className="w-1.5 h-1.5 rounded-full animate-ping shrink-0" style={{ backgroundColor: studio.presenceDotColor }} />
               <span className="truncate">{studio.headline}</span>
@@ -92,7 +92,7 @@ export const StudioTimeWidget: React.FC<StudioTimeWidgetProps> = ({
 
       <div className="relative z-10 flex flex-col gap-5">
         {/* Header Title: Studio - Dhaka, Bangladesh */}
-        <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-3 border-b border-white/10 pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
           <div className="flex items-center gap-2.5">
             <span className="text-20px">{studio.iconEmoji}</span>
             <div>
@@ -106,7 +106,7 @@ export const StudioTimeWidget: React.FC<StudioTimeWidgetProps> = ({
           </div>
 
           {/* Realtime Digital Clock */}
-          <div className="self-start xs:self-auto flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-black/40 border border-white/10 font-mono text-13px sm:text-14px font-bold text-white shadow-inner">
+          <div className="self-start sm:self-auto flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-black/40 border border-white/10 font-mono text-13px sm:text-14px font-bold text-white shadow-inner">
             <Clock className="w-3.5 h-3.5 text-neutral-400 animate-pulse" />
             <span>{studio.timeString}</span>
           </div>

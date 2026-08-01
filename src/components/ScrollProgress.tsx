@@ -50,7 +50,7 @@ export const ScrollProgress: React.FC = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 right-0 z-[100] h-[3px] pointer-events-none transition-opacity duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[100] h-[3px] pointer-events-none overflow-hidden transition-opacity duration-300 ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
     >
@@ -60,7 +60,7 @@ export const ScrollProgress: React.FC = () => {
       {/* GPU-accelerated filling progress bar */}
       <div
         ref={barRef}
-        className="h-full w-full bg-gradient-to-r from-[#007AFF] via-[#5E5CE6] to-[#007AFF] shadow-[0_1px_8px_rgba(0,122,255,0.5)] relative transition-transform duration-75 ease-out"
+        className="h-full w-full bg-gradient-to-r from-[#007AFF] via-[#5E5CE6] to-[#007AFF] shadow-[0_1px_8px_rgba(0,122,255,0.5)] relative transition-transform duration-75 ease-out overflow-hidden"
         style={{
           transform: 'scaleX(0)',
           transformOrigin: '0% 50%',
@@ -68,7 +68,7 @@ export const ScrollProgress: React.FC = () => {
         }}
       >
         {/* Glowing Apple-style leading edge tip */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[6px] h-[3px] bg-white rounded-full shadow-[0_0_8px_#ffffff,0_0_12px_#007AFF]" />
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[4px] h-[3px] bg-white rounded-full shadow-[0_0_8px_#ffffff,0_0_12px_#007AFF]" />
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: '2026',
     budgetTier: '',
     duration: '45 Seconds',
-    heroVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    heroVideoUrl: 'https://vjs.zencdn.net/v/oceans.mp4',
     posterImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop',
     thumbnailGridAspect: 'col-span-12 md:col-span-7',
     logline: 'A vibrant, cinematic promotional commercial for PRAN Ghee showcasing rich textures, fluid camera motion, and crisp audio mixing.',
@@ -35,13 +35,13 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         format: '16:9',
         title: 'Main Commercial (16:9)',
-        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+        videoUrl: 'https://vjs.zencdn.net/v/oceans.mp4',
         aspectRatioClass: 'aspect-video'
       },
       {
         format: '9:16',
         title: 'Reels Cut (9:16)',
-        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+        videoUrl: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
         aspectRatioClass: 'aspect-[9/16]'
       }
     ],
@@ -70,7 +70,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: '2026',
     budgetTier: '',
     duration: '60 Seconds',
-    heroVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+    heroVideoUrl: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
     posterImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop',
     thumbnailGridAspect: 'col-span-12 md:col-span-5',
     logline: 'Sleek SaaS product animation bringing software interfaces to life through fluid motion graphics and precise pacing.',
@@ -91,7 +91,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         format: '16:9',
         title: 'Master Edit (16:9)',
-        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+        videoUrl: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
         aspectRatioClass: 'aspect-video'
       }
     ],
@@ -113,7 +113,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: '2025',
     budgetTier: '',
     duration: '3 Minutes',
-    heroVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+    heroVideoUrl: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
     posterImage: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=1200&auto=format&fit=crop',
     thumbnailGridAspect: 'col-span-12 md:col-span-12',
     logline: 'A compelling documentary narrative constructed from raw footage, weaving human emotion, pacing, and authentic sound design.',
@@ -134,7 +134,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         format: '16:9',
         title: 'Full Film (16:9)',
-        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+        videoUrl: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
         aspectRatioClass: 'aspect-video'
       }
     ],
@@ -183,51 +183,6 @@ export const SERVICES = [
     description: 'Crisp, engaging interview cuts enhanced with subtle motion graphics, multi-cam sync, and noise-free sound design.',
     deliverables: ['Interview Master Cut', 'Short Content Snippets', 'Subtitles & Motion Graphics'],
     priceRange: 'Custom Scope'
-  }
-];
-
-export const PROCESS_STEPS = [
-  {
-    step: '01',
-    title: 'Discovery & Brief',
-    subtitle: 'Aligning Vision & Objectives',
-    description: 'We review your raw footage, brand goals, tone references, and target audience to outline a clear project brief.',
-    deliverable: 'Creative Brief & Story Outline'
-  },
-  {
-    step: '02',
-    title: 'Shoot Planning & Script',
-    subtitle: 'Pre-Production Precision',
-    description: 'Crafting shot lists, scripts, and production schedules so every angle on shooting day serves the final narrative.',
-    deliverable: 'Shot List & Production Script'
-  },
-  {
-    step: '03',
-    title: 'Shooting Day',
-    subtitle: 'Cinematic Live Capture',
-    description: 'Executing the shoot with high-end camera rigs, professional lighting, and crisp audio capture.',
-    deliverable: '4K Raw Footage & Audio Takes'
-  },
-  {
-    step: '04',
-    title: 'Editing & Color Grade',
-    subtitle: 'Cutting & Film Look',
-    description: 'Selecting the strongest takes, establishing rhythmic pacing, and applying cinematic color grading.',
-    deliverable: 'Picture-Lock Rough Cut'
-  },
-  {
-    step: '05',
-    title: 'Sound Design & Mix',
-    subtitle: 'Audio Precision',
-    description: 'Layering ambient atmosphere, sound effects, voice restoration, and music mixing to enhance emotional impact.',
-    deliverable: 'Broadcast Audio Master & Mix'
-  },
-  {
-    step: '06',
-    title: 'Final Delivery',
-    subtitle: 'Polished Masters',
-    description: 'Delivering full 4K masters and compressed MP4 files optimized for all web and social aspect ratios.',
-    deliverable: 'Complete Master Package'
   }
 ];
 

@@ -32,7 +32,7 @@ export const SectionReveal: React.FC<SectionRevealProps> = ({
       style={style}
       initial={{ opacity: 0, y: 36 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.12, margin: '-40px 0px -40px 0px' }}
+      viewport={{ once: true, amount: 0.01, margin: '0px' }}
       transition={{
         duration: 0.85,
         delay: delay,

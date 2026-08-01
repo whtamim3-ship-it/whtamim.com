@@ -27,6 +27,21 @@
     <meta property="og:description" content="Cinematic SaaS motion design & product launch videos that elevate software brands." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/android-chrome-512x512.png" />
+
+    <!-- Theme Mode Initialization Script to prevent FOUC -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('whtamim_theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body class="bg-[#F5F5F7] dark:bg-[#0A0A0C] text-[#1D1D1F] dark:text-[#F5F5F7] antialiased selection:bg-[#FF1A00]/20 selection:text-[#FF1A00]">
     <div id="root"></div>

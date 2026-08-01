@@ -61,33 +61,33 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
   return (
     <SectionReveal
       id="faq"
-      className="py-24 w-full border-t border-neutral-200/80 bg-[#F5F5F7] text-[#1D1D1F]"
+      className="py-24 w-full border-t border-neutral-200/80 dark:border-neutral-800 bg-[#F5F5F7] dark:bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         {/* Left Section Header */}
         <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-6">
-          <TextReveal as="span" delay={0} yOffset={16} className="text-11px font-mono uppercase tracking-widest text-[#86868B] font-bold block">
+          <TextReveal as="span" delay={0} yOffset={16} className="text-11px font-mono uppercase tracking-widest text-[#86868B] dark:text-[#98989D] font-bold block">
             FREQUENTLY ASKED QUESTIONS
           </TextReveal>
 
-          <TextReveal as="h2" delay={0.08} yOffset={20} className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#1D1D1F] leading-[1.1]">
+          <TextReveal as="h2" delay={0.08} yOffset={20} className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#1D1D1F] dark:text-[#F5F5F7] leading-[1.1]">
             Everything You Need to Know.
           </TextReveal>
 
-          <TextReveal as="p" delay={0.16} yOffset={20} className="text-15px text-[#86868B] leading-relaxed max-w-md">
+          <TextReveal as="p" delay={0.16} yOffset={20} className="text-15px text-[#86868B] dark:text-[#98989D] leading-relaxed max-w-md">
             Clear details on production timelines, onboarding requirements, revision cycles, and multi-format deliverables.
           </TextReveal>
 
           <TextReveal delay={0.24} yOffset={20} className="pt-2">
-            <div className="p-6 rounded-[24px] bg-white border border-neutral-200/80 shadow-xs space-y-4">
+            <div className="p-6 rounded-[24px] bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-xs space-y-4">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-full bg-[#007AFF]/10 text-[#007AFF]">
+                <div className="p-2.5 rounded-full bg-[#007AFF]/10 dark:bg-[#0A84FF]/10 text-[#007AFF] dark:text-[#0A84FF]">
                   <HelpCircle className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-14px font-bold text-[#1D1D1F]">Have a custom requirement?</h3>
-                  <p className="text-12px text-[#86868B]">Get an instant project estimate in under 60 seconds.</p>
+                  <h3 className="text-14px font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">Have a custom requirement?</h3>
+                  <p className="text-12px text-[#86868B] dark:text-[#98989D]">Get an instant project estimate in under 60 seconds.</p>
                 </div>
               </div>
 
@@ -97,7 +97,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
                     playSubtleClickSound();
                     onOpenEstimator();
                   }}
-                  className="w-full py-2.5 px-4 rounded-full bg-[#1D1D1F] hover:bg-[#007AFF] text-white text-13px font-semibold transition-all duration-200 flex items-center justify-center gap-2 group"
+                  className="w-full py-2.5 px-4 rounded-full bg-[#1D1D1F] dark:bg-white hover:bg-[#007AFF] dark:hover:bg-[#0A84FF] text-white dark:text-[#0A0A0C] dark:hover:text-white text-13px font-semibold transition-all duration-200 flex items-center justify-center gap-2 group"
                 >
                   <span>Launch Project Estimator</span>
                   <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -114,10 +114,10 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
             return (
               <TextReveal key={item.id} delay={0.05 * idx} yOffset={20}>
                 <div
-                  className={`rounded-[20px] bg-white border transition-all duration-300 overflow-hidden ${
+                  className={`rounded-[20px] bg-white dark:bg-[#161618] border transition-all duration-300 overflow-hidden ${
                     isOpen
-                      ? 'border-[#007AFF] shadow-md'
-                      : 'border-neutral-200/80 hover:border-neutral-300 shadow-xs'
+                      ? 'border-[#007AFF] dark:border-[#0A84FF] shadow-md'
+                      : 'border-neutral-200/80 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 shadow-xs'
                   }`}
                 >
                   <button
@@ -127,11 +127,11 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
                   >
                     <div className="space-y-1 pr-2">
                       {item.category && (
-                        <span className="text-10px font-mono uppercase tracking-wider text-[#007AFF] font-bold block mb-1">
+                        <span className="text-10px font-mono uppercase tracking-wider text-[#007AFF] dark:text-[#0A84FF] font-bold block mb-1">
                           {item.category}
                         </span>
                       )}
-                      <h3 className="text-16px sm:text-18px font-bold text-[#1D1D1F] leading-snug">
+                      <h3 className="text-16px sm:text-18px font-bold text-[#1D1D1F] dark:text-[#F5F5F7] leading-snug">
                         {item.question}
                       </h3>
                     </div>
@@ -139,8 +139,8 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
                     <div
                       className={`p-2 rounded-full transition-transform duration-300 shrink-0 ${
                         isOpen
-                          ? 'bg-[#007AFF] text-white rotate-180'
-                          : 'bg-[#F5F5F7] text-[#1D1D1F] hover:bg-neutral-200/70'
+                          ? 'bg-[#007AFF] dark:bg-[#0A84FF] text-white rotate-180'
+                          : 'bg-[#F5F5F7] dark:bg-neutral-800 text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-neutral-200/70 dark:hover:bg-neutral-700'
                       }`}
                     >
                       <ChevronDown className="w-4 h-4" />
@@ -160,7 +160,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
                         }}
                         className="overflow-hidden"
                       >
-                        <div className="px-6 pb-6 pt-0 text-14px sm:text-15px text-[#86868B] leading-relaxed border-t border-neutral-100/80 pt-4 mt-1">
+                        <div className="px-6 pb-6 pt-0 text-14px sm:text-15px text-[#86868B] dark:text-[#98989D] leading-relaxed border-t border-neutral-100/80 dark:border-neutral-800 pt-4 mt-1">
                           {item.answer}
                         </div>
                       </motion.div>

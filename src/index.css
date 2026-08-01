@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@variant dark (&:where(.dark, .dark *));
 
 /* ==========================================================================
    CENTRALIZED DESIGN TOKEN SYSTEM (Apple / Linear / Raycast Midnight Mode)
@@ -48,6 +48,10 @@
   --accent: #007AFF;
   --accent-hover: #0062CC;
   --modal-backdrop: rgba(245, 245, 247, 0.88);
+
+  /* Selection Highlight Tokens - Apple System Blue */
+  --selection-bg: #007AFF;
+  --selection-text: #FFFFFF;
 }
 
 html.dark {
@@ -92,11 +96,31 @@ html.dark {
   --accent: #0A84FF;
   --accent-hover: #409CFF;
   --modal-backdrop: rgba(10, 10, 12, 0.92);
+
+  /* Selection Highlight Tokens - Apple System Blue (Dark) */
+  --selection-bg: #0A84FF;
+  --selection-text: #FFFFFF;
 }
 
 @layer base {
+  /* Global Browser Text Selection Highlight (Apple Signature Blue) */
+  ::selection {
+    background-color: var(--selection-bg, #007AFF) !important;
+    color: var(--selection-text, #FFFFFF) !important;
+  }
+
+  ::-moz-selection {
+    background-color: var(--selection-bg, #007AFF) !important;
+    color: var(--selection-text, #FFFFFF) !important;
+  }
+
+  *, ::before, ::after {
+    box-sizing: border-box;
+  }
+
   html, body, #root {
     width: 100%;
+    max-width: 100vw;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -148,17 +172,15 @@ html.dark .bg-\[\#F5F5F7\] {
   background-color: var(--background-primary) !important;
 }
 
-/* Footer Section */
-footer,
-[data-is-footer="true"],
+/* Footer Section - allow footer to preserve dark original canvas */
 html.dark footer,
 html.dark [data-is-footer="true"] {
-  background-color: #0C0C0E !important;
-  color: #A1A1AA !important;
+  background-color: #0E0E10 !important;
+  color: #F5F5F7 !important;
 }
 
 /* Cards & Surface Containers */
-html.dark .bg-white:not([class*="/"]):not(header *):not(nav *):not(footer *):not([data-is-footer] *):not(.keep-white *):not(.aspect-video *):not(video *) {
+html.dark .bg-white:not([class*="/"]):not(header *):not(nav *):not(.keep-white *):not(.aspect-video *):not(video *) {
   background-color: var(--surface-primary) !important;
   color: var(--text-primary) !important;
 }
@@ -186,17 +208,15 @@ html.dark [class*="bg-white/"]:not(.aspect-video *):not(video *) {
 /* Primary Headings & Bold Text */
 html.dark .text-\[\#1D1D1F\],
 html.dark [class*="text-[#1D1D1F]"] {
-  color: var(--text-primary) !important;
+  color: var(--text-primary);
 }
 
 /* Secondary & Muted Text */
 html.dark .text-\[\#86868B\],
 html.dark .text-\[\#6E6E73\],
-html.dark .text-neutral-500,
-html.dark .text-neutral-600,
 html.dark [class*="text-[#86868B]"],
 html.dark [class*="text-[#6E6E73]"] {
-  color: var(--text-muted) !important;
+  color: var(--text-muted);
 }
 
 /* Universal Borders */
@@ -220,14 +240,14 @@ html.dark .shadow-2xl {
 }
 
 /* Primary Action Buttons */
-html.dark .bg-\[\#1D1D1F\]:not(footer *):not([data-is-footer] *):not(header *):not(nav *),
-html.dark .bg-black:not(footer *):not([data-is-footer] *):not(header *):not(nav *):not(.aspect-video *):not(video *) {
+html.dark .bg-\[\#1D1D1F\]:not(header *):not(nav *),
+html.dark .bg-black:not(header *):not(nav *):not(.aspect-video *):not(video *) {
   background-color: var(--button-primary-bg) !important;
   color: var(--button-primary-text) !important;
 }
 
-html.dark .bg-\[\#1D1D1F\]:hover:not(footer *):not([data-is-footer] *):not(header *):not(nav *),
-html.dark .bg-black:hover:not(footer *):not([data-is-footer] *):not(header *):not(nav *):not(.aspect-video *):not(video *) {
+html.dark .bg-\[\#1D1D1F\]:hover:not(header *):not(nav *),
+html.dark .bg-black:hover:not(header *):not(nav *):not(.aspect-video *):not(video *) {
   background-color: var(--accent) !important;
   color: #FFFFFF !important;
 }
@@ -459,4 +479,73 @@ html.dark ::-webkit-scrollbar-thumb {
 
 html.dark ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.38) !important;
+}
+
+/* Apple Native Media Player Timeline Range Slider */
+.apple-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  outline: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  height: 16px;
+}
+
+.apple-range-slider::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 9999px;
+  transition: height 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.apple-range-slider:hover::-webkit-slider-runnable-track,
+.apple-range-slider:active::-webkit-slider-runnable-track {
+  height: 5px;
+}
+
+.apple-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  margin-top: -3.5px;
+  transform: scale(0.9);
+  transition: transform 200ms cubic-bezier(0.25, 0.1, 0.25, 1), margin-top 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.apple-range-slider:hover::-webkit-slider-thumb,
+.apple-range-slider:active::-webkit-slider-thumb {
+  transform: scale(1.25);
+  margin-top: -2.5px;
+}
+
+.apple-range-slider::-moz-range-track {
+  height: 3px;
+  border-radius: 9999px;
+  transition: height 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.apple-range-slider:hover::-moz-range-track,
+.apple-range-slider:active::-moz-range-track {
+  height: 5px;
+}
+
+.apple-range-slider::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  transform: scale(0.9);
+  transition: transform 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.apple-range-slider:hover::-moz-range-thumb,
+.apple-range-slider:active::-moz-range-thumb {
+  transform: scale(1.25);
 }

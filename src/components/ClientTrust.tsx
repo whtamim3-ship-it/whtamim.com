@@ -5,7 +5,7 @@ import { SectionReveal } from './SectionReveal';
 
 export const ClientTrust: React.FC = () => {
   return (
-    <SectionReveal className="w-full py-16 border-y border-neutral-200/80 dark:border-neutral-800 bg-[#F5F5F7] dark:bg-[#121214] text-[#1D1D1F] dark:text-white">
+    <SectionReveal className="w-full py-16 border-y border-neutral-200/80 dark:border-neutral-800 bg-[#F5F5F7] dark:bg-transparent text-[#1D1D1F] dark:text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
         <TextReveal as="p" delay={0} yOffset={16} className="text-11px font-mono uppercase tracking-widest text-[#86868B] dark:text-[#98989D] text-center mb-10 font-medium">
           Where Storytelling Meets Motion Precision
