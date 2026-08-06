@@ -50,7 +50,7 @@ export const TextReveal: React.FC<TextRevealProps> = ({
       },
       {
         threshold: 0.01,
-        rootMargin: '50px 0px 50px 0px',
+        rootMargin: '120px 0px 120px 0px',
       }
     );
 

@@ -23,22 +23,26 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
     <SectionReveal id="work" className="py-24 w-full bg-[#F5F5F7] dark:bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-        <div>
-          <TextReveal as="span" delay={0} yOffset={16} className="text-11px font-mono uppercase tracking-widest text-[#86868B] dark:text-[#98989D] font-bold block mb-3">
-            FEATURED WORK
-          </TextReveal>
-          <TextReveal as="h2" delay={0.08} yOffset={20} className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#1D1D1F] dark:text-[#F5F5F7]">
-            Where Storytelling Meets Motion Precision.
-          </TextReveal>
-        </div>
-        <TextReveal as="p" delay={0.16} yOffset={20} className="text-15px text-[#86868B] dark:text-[#98989D] max-w-md">
-          A selection of promotional ads, kinetic motion graphics, and documentary projects crafted for brands, creators, and studios.
+      <div className="flex items-center justify-between gap-4 mb-8 sm:mb-10">
+        <TextReveal as="span" delay={0} yOffset={16} className="text-11px sm:text-12px font-mono uppercase tracking-widest text-[#86868B] dark:text-[#98989D] font-bold block">
+          FEATURED WORK
+        </TextReveal>
+        <TextReveal delay={0.1} yOffset={16}>
+          <button
+            onClick={() => {
+              playSubtleClickSound();
+              onNavigateToWork();
+            }}
+            className="group inline-flex items-center gap-2 text-13px sm:text-14px font-medium text-[#1D1D1F] dark:text-[#F5F5F7] hover:text-[#007AFF] dark:hover:text-[#0A84FF] transition-colors py-1.5 px-3.5 sm:py-2 sm:px-4 rounded-full hover:bg-white/60 dark:hover:bg-white/10 cursor-pointer"
+          >
+            <span>View All Work</span>
+            <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+          </button>
         </TextReveal>
       </div>
 
       {/* Editorial Grid Layout - 3 Selected Projects */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {featuredProjects.map((project, idx) => {
           const cardSpeeds = [-0.03, -0.05, -0.04];
           return (
@@ -56,20 +60,6 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
           );
         })}
       </div>
-
-      {/* Bottom Right: Simple minimal text link "View All Work →" */}
-      <TextReveal delay={0.2} yOffset={16} className="flex justify-end pt-4">
-        <button
-          onClick={() => {
-            playSubtleClickSound();
-            onNavigateToWork();
-          }}
-          className="group inline-flex items-center gap-2 text-14px font-medium text-[#1D1D1F] dark:text-[#F5F5F7] hover:text-[#007AFF] dark:hover:text-[#0A84FF] transition-colors py-2 px-4 rounded-full hover:bg-white/60 dark:hover:bg-white/10"
-        >
-          <span>View All Work</span>
-          <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
-        </button>
-      </TextReveal>
       </div>
     </SectionReveal>
   );

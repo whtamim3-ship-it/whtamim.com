@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowUpRight, Sparkles, Calculator } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { playSubtleClickSound } from '../utils/motion';
+import { useBodyScrollLock } from '../utils/scrollLock';
 import { StudioTimeWidget } from './StudioTimeWidget';
 import { BrandLogo } from './BrandLogo';
 import { ThemeToggle } from './ThemeToggle';
@@ -44,24 +45,21 @@ export const Navbar: React.FC<NavbarProps> = ({
     { name: 'Contact', href: '#contact' },
   ];
 
-  // Close menu on Escape key press & handle body scroll-lock
+  useBodyScrollLock(studioMenuOpen);
+
+  // Close menu on Escape key press
   useEffect(() => {
+    if (!studioMenuOpen) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setStudioMenuOpen(false);
       }
     };
 
-    if (studioMenuOpen) {
-      window.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-
+    window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
     };
   }, [studioMenuOpen]);
 
@@ -93,28 +91,27 @@ export const Navbar: React.FC<NavbarProps> = ({
         return;
       }
 
-      if (window.scrollY < 200) {
+      if (window.scrollY < 180) {
         setActiveSection((prev) => (prev !== '#' ? '#' : prev));
         return;
       }
 
       const sections = [
-        { id: '#contact', element: document.getElementById('contact') },
-        { id: '#faq', element: document.getElementById('faq') },
-        { id: '#about', element: document.getElementById('about') },
         { id: '#work', element: document.getElementById('work') },
+        { id: '#about', element: document.getElementById('about') },
+        { id: '#faq', element: document.getElementById('faq') },
+        { id: '#contact', element: document.getElementById('contact') },
       ];
 
-      const scrollPosition = window.scrollY + 280;
+      const scrollY = window.scrollY;
       let current = '#';
 
       for (const section of sections) {
         if (section.element) {
-          const top = section.element.offsetTop;
-          const height = section.element.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
+          const rect = section.element.getBoundingClientRect();
+          const absoluteTop = rect.top + scrollY;
+          if (scrollY + 220 >= absoluteTop) {
             current = section.id;
-            break;
           }
         }
       }

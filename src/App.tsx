@@ -81,12 +81,16 @@ export default function App() {
   const handleNavigateToHome = (targetSection?: string) => {
     setCurrentView('home');
     if (targetSection && targetSection !== '#') {
-      setTimeout(() => {
-        const el = document.querySelector(targetSection);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 50);
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          const el = document.querySelector(targetSection);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }, 80);
+      });
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -109,7 +113,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden relative bg-[#F5F5F7] dark:bg-[#0A0A0C] text-[#1D1D1F] dark:text-[#F5F5F7] font-sans selection:bg-[#007AFF] selection:text-white">
+    <div className="min-h-screen w-full min-w-full max-w-full overflow-x-clip relative bg-[#F5F5F7] dark:bg-[#0A0A0C] text-[#1D1D1F] dark:text-[#F5F5F7] font-sans selection:bg-[#007AFF] selection:text-white">
       {/* Midnight Atmosphere System (Dark Mode Only Canvas) */}
       <MidnightAtmosphere theme={theme} />
 
@@ -137,7 +141,7 @@ export default function App() {
           onBackToHome={() => handleNavigateToHome('#')}
         />
       ) : (
-        <main className="relative w-full max-w-full overflow-x-hidden">
+        <main className="relative w-full min-w-full max-w-full overflow-x-clip">
           {/* 100vh Apple Launch Hero Section */}
           <Hero onOpenShowreel={() => setShowreelOpen(true)} />
 

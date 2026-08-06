@@ -61,8 +61,8 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
         return isLowPerformance ? 32 : 42; // Desktop: 35-45
       };
 
-      let width = (canvas.width = window.innerWidth);
-      let height = (canvas.height = window.innerHeight);
+      let width = (canvas.width = document.documentElement.clientWidth || window.innerWidth);
+      let height = (canvas.height = document.documentElement.clientHeight || window.innerHeight);
 
       // Section distribution helper:
       // Hero (0 - 0.25 Y): ~45% density
@@ -130,8 +130,8 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
       // Resize handler
       const handleResize = () => {
         if (!canvas) return;
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
+        width = canvas.width = document.documentElement.clientWidth || window.innerWidth;
+        height = canvas.height = document.documentElement.clientHeight || window.innerHeight;
       };
 
       window.addEventListener('resize', handleResize, { passive: true });

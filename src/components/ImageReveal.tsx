@@ -49,8 +49,8 @@ export const ImageReveal: React.FC<ImageRevealProps> = ({
         }
       },
       {
-        threshold: 0.05,
-        rootMargin: '20px 0px 20px 0px',
+        threshold: 0.01,
+        rootMargin: '120px 0px 120px 0px',
       }
     );
 

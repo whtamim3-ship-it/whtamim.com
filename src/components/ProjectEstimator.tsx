@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Calculator, Check, ArrowRight, X, Sparkles, ShieldAlert, Clock, Cpu, Layers, Monitor, Zap } from 'lucide-react';
 import { motion } from 'motion/react';
 import { playSubtleClickSound } from '../utils/motion';
+import { useBodyScrollLock } from '../utils/scrollLock';
 
 interface ProjectEstimatorProps {
   isOpen: boolean;
@@ -20,6 +21,21 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
   const [resolution, setResolution] = useState<'720p' | '1080p'>('1080p');
   const [formats, setFormats] = useState<string[]>(['16:9']);
   const [speed, setSpeed] = useState<'standard' | 'rush'>('standard');
+
+  useBodyScrollLock(isOpen);
+
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 

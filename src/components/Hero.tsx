@@ -14,7 +14,7 @@ export const Hero: React.FC<HeroProps> = ({
   onOpenShowreel,
 }) => {
   return (
-    <SectionReveal className="relative min-h-screen w-full flex flex-col justify-between pt-16 sm:pt-28 md:pt-32 pb-8 sm:pb-12 bg-[#F5F5F7] dark:bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 overflow-hidden">
+    <section className="relative min-h-screen w-full flex flex-col justify-between pt-16 sm:pt-28 md:pt-32 pb-8 sm:pb-12 bg-[#F5F5F7] dark:bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300">
       {/* =================================================== */}
       {/* DESKTOP & TABLET HERO (>= 768px / md:)              */}
       {/* Completely unchanged layout, spacing, and controls   */}
@@ -23,17 +23,13 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="flex-1 flex flex-col justify-center items-center text-center my-auto">
           {/* Layer 1: Headline */}
           <ParallaxLayer speed={-0.015} maxOffset={6} className="w-full flex flex-col items-center">
-            <TextReveal as="h1" delay={0.08} yOffset={20} className="text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[1.05] text-[#1D1D1F] dark:text-white max-w-5xl mb-6">
+            <TextReveal as="h1" delay={0.08} yOffset={20} className="font-coolvetica text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-[1.1] text-[#1D1D1F] dark:text-white max-w-4xl mb-6">
               Real Footage. Real Stories. Real Results.
             </TextReveal>
           </ParallaxLayer>
 
-          {/* Layer 2: Supporting Paragraph & CTAs */}
+          {/* Layer 2: CTAs */}
           <ParallaxLayer speed={-0.025} maxOffset={10} className="w-full flex flex-col items-center">
-            <TextReveal as="p" delay={0.16} yOffset={20} className="text-18px md:text-20px text-[#86868B] dark:text-[#98989D] font-normal leading-relaxed max-w-2xl mb-10">
-              Video editing and cinematography for brands, weddings, and creators.
-            </TextReveal>
-
             {/* Primary CTAs */}
             <TextReveal delay={0.24} yOffset={20} className="flex flex-wrap items-center justify-center gap-4 mb-12">
               <a
@@ -116,13 +112,8 @@ export const Hero: React.FC<HeroProps> = ({
       <div className="flex md:hidden flex-col justify-between flex-1 w-full px-4 pt-4 pb-2 my-auto">
         <div className="flex-1 flex flex-col justify-center items-center text-center my-auto">
           {/* Mobile Headline (~80-85% width) */}
-          <TextReveal as="h1" delay={0.06} yOffset={14} className="text-[27px] sm:text-[30px] font-extrabold tracking-tighter leading-[1.08] text-[#1D1D1F] dark:text-white w-[86%] max-w-xs mx-auto mb-2 text-center">
+          <TextReveal as="h1" delay={0.06} yOffset={14} className="font-coolvetica text-[20px] sm:text-[22px] font-normal tracking-tight leading-[1.12] text-[#1D1D1F] dark:text-white w-[86%] max-w-xs mx-auto mb-4 text-center">
             Real Footage. Real Stories. Real Results.
-          </TextReveal>
-
-          {/* Short Concise Supporting Description (Max 2 lines) */}
-          <TextReveal as="p" delay={0.12} yOffset={14} className="text-[13px] text-[#86868B] dark:text-[#98989D] font-normal leading-snug w-[85%] max-w-xs mx-auto mb-4 text-center">
-            Video editing and cinematography for brands, weddings, and creators.
           </TextReveal>
 
           {/* Primary CTA = Clickable Video Preview Card (No duplicate buttons) */}
@@ -191,6 +182,6 @@ export const Hero: React.FC<HeroProps> = ({
           </a>
         </TextReveal>
       </div>
-    </SectionReveal>
+    </section>
   );
 };

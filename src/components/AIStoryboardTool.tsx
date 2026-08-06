@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Sparkles, Loader2, Play, CheckCircle2, Copy, Send, ArrowRight, Layers, Clapperboard, X, Palette } from 'lucide-react';
 import { AIStoryboardResponse } from '../types';
 import { playSubtleClickSound } from '../utils/motion';
+import { useBodyScrollLock } from '../utils/scrollLock';
 
 interface AIStoryboardToolProps {
   isOpen: boolean;
@@ -70,6 +71,21 @@ export const AIStoryboardTool: React.FC<AIStoryboardToolProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [storyboard, setStoryboard] = useState<AIStoryboardResponse | null>(null);
   const [copied, setCopied] = useState(false);
+
+  useBodyScrollLock(isOpen);
+
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 

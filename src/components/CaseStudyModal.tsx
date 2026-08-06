@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { CaseStudy } from '../types';
 import { playSubtleClickSound } from '../utils/motion';
+import { useBodyScrollLock } from '../utils/scrollLock';
 import {
   X,
   Play,
@@ -41,6 +42,8 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
   const [activeTab, setActiveTab] = useState<'overview' | 'motion' | 'bts' | 'results'>('overview');
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  useBodyScrollLock(!!caseStudy);
+
   useEffect(() => {
     // Scroll modal container to top when caseStudy changes
     const modalEl = document.getElementById('case-study-modal-scroll');
@@ -64,10 +67,8 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
       }
     };
     window.addEventListener('keydown', handleKeyDown);
-    document.body.style.overflow = 'hidden';
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
     };
   }, [caseStudy, isPlaying, isMuted]);
 

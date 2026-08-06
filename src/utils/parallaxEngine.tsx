@@ -8,7 +8,7 @@ class ParallaxEngine {
   private subscribers = new Set<ParallaxCallback>();
   private animFrameId: number | null = null;
   private isListening = false;
-  private lerpFactor = 0.065; // Easing duration ~300-400ms for smooth inertia
+  private lerpFactor = 0.22; // Snappy 120fps Apple inertia response without input lag
   private responsiveMultiplier = 1.0;
   private prefersReducedMotion = false;
 
@@ -48,6 +48,8 @@ class ParallaxEngine {
     }
   }
 
+  private cleanupFn: (() => void) | null = null;
+
   private start() {
     if (this.isListening || typeof window === 'undefined') return;
 
@@ -55,49 +57,44 @@ class ParallaxEngine {
     this.targetScrollY = window.scrollY;
     this.currentScrollY = window.scrollY;
 
+    const notify = () => {
+      this.subscribers.forEach((cb) => {
+        try {
+          cb(this.currentScrollY, this.targetScrollY, this.responsiveMultiplier);
+        } catch {
+          // Ignore subscriber errors
+        }
+      });
+    };
+
     const handleScroll = () => {
       this.targetScrollY = window.scrollY;
+      this.currentScrollY = window.scrollY;
+      notify();
     };
 
     const handleResize = () => {
       this.updateDeviceCapabilities();
       this.targetScrollY = window.scrollY;
+      this.currentScrollY = window.scrollY;
+      notify();
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleResize, { passive: true });
 
-    const loop = () => {
-      if (!this.isListening) return;
-
-      if (this.prefersReducedMotion) {
-        this.currentScrollY = this.targetScrollY;
-      } else {
-        const diff = this.targetScrollY - this.currentScrollY;
-        if (Math.abs(diff) > 0.05) {
-          this.currentScrollY += diff * this.lerpFactor;
-        } else {
-          this.currentScrollY = this.targetScrollY;
-        }
-      }
-
-      // Notify all active subscribers
-      this.subscribers.forEach((cb) => {
-        try {
-          cb(this.currentScrollY, this.targetScrollY, this.responsiveMultiplier);
-        } catch {
-          // Ignore subscriber errors gracefully
-        }
-      });
-
-      this.animFrameId = requestAnimationFrame(loop);
+    this.cleanupFn = () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
     };
-
-    this.animFrameId = requestAnimationFrame(loop);
   }
 
   private stop() {
     this.isListening = false;
+    if (this.cleanupFn) {
+      this.cleanupFn();
+      this.cleanupFn = null;
+    }
     if (this.animFrameId) {
       cancelAnimationFrame(this.animFrameId);
       this.animFrameId = null;
@@ -158,10 +155,15 @@ export function useParallaxRef<T extends HTMLElement = HTMLDivElement>(
       }
 
       if (relativeToViewport) {
-        // Calculate relative position of element inside current viewport
+        // Calculate static document layout position without transform pollution
         if (initialTopRef.current === null) {
-          const rect = el.getBoundingClientRect();
-          initialTopRef.current = rect.top + scrollY;
+          let top = 0;
+          let curr: HTMLElement | null = el;
+          while (curr && curr !== document.body) {
+            top += curr.offsetTop || 0;
+            curr = curr.offsetParent as HTMLElement | null;
+          }
+          initialTopRef.current = top;
         }
 
         const relativeScroll = scrollY - (initialTopRef.current - window.innerHeight * 0.5);

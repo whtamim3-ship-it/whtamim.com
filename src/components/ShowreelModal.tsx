@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { X, Play, Pause, Volume2, VolumeX, Sparkles, Download, Loader2, CheckCircle2 } from 'lucide-react';
 import JSZip from 'jszip';
 import { playSubtleClickSound } from '../utils/motion';
+import { useBodyScrollLock } from '../utils/scrollLock';
 
 interface ShowreelModalProps {
   isOpen: boolean;
@@ -21,6 +22,8 @@ export const ShowreelModal: React.FC<ShowreelModalProps> = ({ isOpen, onClose, o
   const [downloadSuccess, setDownloadSuccess] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  useBodyScrollLock(isOpen);
+
   // Keyboard controls listener
   React.useEffect(() => {
     if (!isOpen) return;
@@ -37,10 +40,8 @@ export const ShowreelModal: React.FC<ShowreelModalProps> = ({ isOpen, onClose, o
       }
     };
     window.addEventListener('keydown', handleKeyDown);
-    document.body.style.overflow = 'hidden';
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
     };
   }, [isOpen, isPlaying, isMuted]);
 
