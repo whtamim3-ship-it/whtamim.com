@@ -73,28 +73,58 @@
     }
 
     function openVideoLightbox(src) {
-        const video = document.getElementById('lightboxVideo');
         const overlay = document.getElementById('videoLightbox');
         const container = document.getElementById('videoContainer');
         
-        video.src = src;
+        if (src.includes('drive.google.com')) {
+            let embedUrl = src;
+            if (embedUrl.includes('/view')) {
+                embedUrl = embedUrl.replace(/\/view.*$/, '/preview');
+            } else if (!embedUrl.includes('/preview')) {
+                embedUrl = embedUrl + (embedUrl.endsWith('/') ? '' : '/') + 'preview';
+            }
+            container.innerHTML = `<iframe src="${embedUrl}" width="100%" height="100%" allow="autoplay" style="border:none; width:100%; height:100%; display:block; background:#000;"></iframe>`;
+            container.style.aspectRatio = "16/9";
+        } else if (src.includes('youtube.com') || src.includes('youtu.be')) {
+            let ytId = '';
+            if (src.includes('youtu.be/')) {
+                ytId = src.split('youtu.be/')[1]?.split('?')[0];
+            } else if (src.includes('v=')) {
+                ytId = src.split('v=')[1]?.split('&')[0];
+            } else if (src.includes('embed/')) {
+                ytId = src.split('embed/')[1]?.split('?')[0];
+            }
+            container.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1" width="100%" height="100%" allow="autoplay; encrypted-media" style="border:none; width:100%; height:100%; display:block; background:#000;"></iframe>`;
+            container.style.aspectRatio = "16/9";
+        } else {
+            container.innerHTML = `<video autoplay muted playsinline controls id="lightboxVideo"><source src="${src}" type="video/mp4"></video>`;
+            const video = document.getElementById('lightboxVideo');
+            if (video) {
+                video.src = src;
+                video.onloadedmetadata = function() {
+                    const width = video.videoWidth;
+                    const height = video.videoHeight;
+                    if (width && height) {
+                        container.style.aspectRatio = width / height;
+                    }
+                };
+                video.play().catch(() => {});
+            }
+        }
+        
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
-        
-        // Set aspect ratio dynamically
-        video.onloadedmetadata = function() {
-            const width = video.videoWidth;
-            const height = video.videoHeight;
-            const ratio = width / height;
-            container.style.aspectRatio = ratio;
-        };
-        
-        video.play();
     }
 
     function closeVideoLightbox() {
-        document.getElementById('videoLightbox').classList.remove('active');
-        document.getElementById('lightboxVideo').pause();
+        const overlay = document.getElementById('videoLightbox');
+        if (overlay) {
+            overlay.classList.remove('active');
+        }
+        const container = document.getElementById('videoContainer');
+        if (container) {
+            container.innerHTML = '<video autoplay muted playsinline controls id="lightboxVideo"><source src="" type="video/mp4"></video>';
+        }
         document.body.style.overflow = 'auto';
     }
 

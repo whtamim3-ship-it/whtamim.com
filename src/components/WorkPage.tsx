@@ -37,22 +37,40 @@ interface WorkProjectCardProps {
 }
 
 const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) => {
+  const isYt = isYoutubeUrl(project.videoUrl);
+  const ytId = isYt ? getYoutubeIdFromUrl(project.videoUrl) : '';
+  const isCommercial = project.filterCategory === 'Commercials';
+
   return (
     <div
       onClick={onSelect}
       className="video-card cursor-pointer group relative flex flex-col w-full rounded-[12px] overflow-hidden bg-black aspect-video"
     >
-      <video
-        src={project.videoUrl}
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="w-full h-full object-cover"
-      />
+      {isYt ? (
+        <img
+          src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
+          alt={project.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      ) : isCommercial ? (
+        <img
+          src={project.coverImage}
+          alt={project.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      ) : (
+        <video
+          src={project.videoUrl}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        />
+      )}
       {/* External Link Icon Button */}
       <a
-        href={project.videoUrl.replace('/preview', '/view')}
+        href={isYt ? project.videoUrl : project.videoUrl.replace('/preview', '/view')}
         target="_blank"
         rel="noopener noreferrer"
         className="absolute top-[14px] right-[14px] w-8 h-8 bg-black/60 dark:bg-black/80 backdrop-blur-[8px] border border-white/10 rounded-full flex items-center justify-center text-white/80 hover:text-white hover:bg-neutral-900 transition-all duration-200 z-[5] opacity-0 group-hover:opacity-100"
@@ -73,14 +91,6 @@ const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) 
 };
 
 const ALL_WORK_PROJECTS = [
-  {
-    id: 'weather',
-    title: 'discord',
-    category: 'UI animation',
-    filterCategory: 'SaaS & UI',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786054315/ZH_Motion_Dc_yuse2e.mp4',
-    coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop'
-  },
   {
     id: 'notchnook',
     title: 'music',
@@ -136,38 +146,6 @@ const ALL_WORK_PROJECTS = [
     filterCategory: 'SaaS & UI',
     videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057757/Drive_hkng6w.mp4',
     coverImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop'
-  },
-  {
-    id: 'pran-ghee',
-    title: 'PRAN Ghee Commercial',
-    category: 'Brand Commercial',
-    filterCategory: 'Commercials',
-    videoUrl: 'https://drive.google.com/file/d/1GxmwawkAImn8PdFGAsZBqu6wrhVmjtH8/preview',
-    coverImage: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?q=80&w=800&auto=format&fit=crop'
-  },
-  {
-    id: 'strait-of-hormuz',
-    title: 'Strait of Hormuz',
-    category: 'Documentary',
-    filterCategory: 'Documentary',
-    videoUrl: 'https://drive.google.com/file/d/1uM-ZYypGRBRId2lNUFFjYFxBSxMGIP2q/preview',
-    coverImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop'
-  },
-  {
-    id: 'bmw-drifting',
-    title: 'BMW E36 M4 Drifting Edit',
-    category: 'Cinematic VFX',
-    filterCategory: 'Cinematic / VFX',
-    videoUrl: 'https://drive.google.com/file/d/1e4peHebyXa8ff7YkXCZBHKWvKOMNDp_n/preview',
-    coverImage: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=800&auto=format&fit=crop'
-  },
-  {
-    id: 'valorant-edit',
-    title: 'VALORANT x WHTAMIM',
-    category: 'Motion Graphics',
-    filterCategory: 'Cinematic / VFX',
-    videoUrl: 'https://drive.google.com/file/d/19M1_bhdmpDTq5z8bG8DEBWUlv-LRu_Ev/preview',
-    coverImage: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop'
   }
 ];
 
@@ -179,22 +157,10 @@ const CATEGORY_SECTIONS = [
     filterCategory: 'SaaS & UI'
   },
   {
-    id: 'commercials',
-    eyebrow: 'COMMERCIALS',
-    title: 'Commercial videos',
-    filterCategory: 'Commercials'
-  },
-  {
-    id: 'cinematic-vfx',
-    eyebrow: 'CINEMATIC & VFX',
-    title: 'Cinematic & VFX',
-    filterCategory: 'Cinematic / VFX'
-  },
-  {
-    id: 'documentary',
-    eyebrow: 'DOCUMENTARY',
-    title: 'Documentaries',
-    filterCategory: 'Documentary'
+    id: 'talking-head',
+    eyebrow: 'TALKING HEAD',
+    title: 'Talking head videos',
+    filterCategory: 'Talking Head'
   }
 ];
 
@@ -204,6 +170,9 @@ interface WorkPageProps {
 }
 
 export const WorkPage: React.FC<WorkPageProps> = () => {
+  const [activeFilter, setActiveFilter] = useState<string>('All');
+  const filters = ['All', 'SaaS & UI', 'Commercials', 'Cinematic / VFX', 'Documentary', 'Talking Head'];
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
@@ -218,7 +187,7 @@ export const WorkPage: React.FC<WorkPageProps> = () => {
       <div className="max-w-[1400px] mx-auto">
         
         {/* Top Header Section - Extremely Clean & Elegant */}
-        <div className="text-left mb-16 sm:mb-24 page-header">
+        <div className="text-left mb-12 sm:mb-16 page-header">
           <TextReveal as="span" delay={0.02} yOffset={10} className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.2em] text-[#86868B] dark:text-[#86868B] block mb-2 font-mono">
             ALL WORK
           </TextReveal>
@@ -230,8 +199,31 @@ export const WorkPage: React.FC<WorkPageProps> = () => {
           </TextReveal>
         </div>
 
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap items-center gap-2.5 mb-14">
+          {filters.map((filter) => {
+            const isActive = activeFilter === filter;
+            return (
+              <button
+                key={filter}
+                onClick={() => {
+                  playSubtleClickSound();
+                  setActiveFilter(filter);
+                }}
+                className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 shadow-md'
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800'
+                }`}
+              >
+                {filter}
+              </button>
+            );
+          })}
+        </div>
+
         {/* Modular Category Sections */}
-        {CATEGORY_SECTIONS.map((section) => {
+        {CATEGORY_SECTIONS.filter(section => activeFilter === 'All' || section.filterCategory === activeFilter).map((section) => {
           const sectionProjects = ALL_WORK_PROJECTS.filter(p => p.filterCategory === section.filterCategory);
           if (sectionProjects.length === 0) return null;
 
@@ -249,7 +241,7 @@ export const WorkPage: React.FC<WorkPageProps> = () => {
               </div>
 
               {/* Video Grid */}
-              <div className="video-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {sectionProjects.map((project, idx) => (
                   <TextReveal key={project.id} delay={0.05 * idx} yOffset={15}>
                     <WorkProjectCard
