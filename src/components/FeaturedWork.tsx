@@ -31,8 +31,8 @@ interface FeaturedWorkProps {
 export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
   onNavigateToWork,
 }) => {
-  // Showcase ONLY 3 selected projects for the Home Page
-  const featuredProjects = CASE_STUDIES.slice(0, 3);
+  // Showcase 6 selected projects for the Home Page
+  const featuredProjects = CASE_STUDIES.slice(0, 6);
   const [activeModalIndex, setActiveModalIndex] = useState<number | null>(null);
 
   // Keyboard navigation for cinema modal
@@ -54,10 +54,10 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
   }, [activeModalIndex, featuredProjects.length]);
 
   return (
-    <SectionReveal id="work" className="min-h-[100svh] md:min-h-[100dvh] w-full flex flex-col justify-center items-center py-12 sm:py-16 lg:py-20 bg-[#F5F5F7] dark:bg-transparent">
+    <SectionReveal id="work" className="min-h-[100svh] md:min-h-[100dvh] w-full flex flex-col justify-center items-center py-10 sm:py-14 bg-[#F5F5F7] dark:bg-transparent">
       <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-14 my-auto">
         {/* Section Header */}
-        <div className="flex items-center justify-between gap-4 mb-10 sm:mb-12 lg:mb-16">
+        <div className="flex items-center justify-between gap-4 mb-6 sm:mb-8">
           <TextReveal as="span" delay={0} yOffset={16} className="text-11px sm:text-12px font-mono uppercase tracking-widest text-[#86868B] dark:text-[#98989D] font-bold block">
             SELECTED WORK
           </TextReveal>
@@ -67,7 +67,7 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
                 playSubtleClickSound();
                 onNavigateToWork();
               }}
-              className="group inline-flex items-center gap-2 text-13px sm:text-14px font-medium text-[#1D1D1F] dark:text-[#F5F5F7] hover:text-[#007AFF] dark:hover:text-[#0A84FF] transition-colors py-1.5 px-3.5 sm:py-2 sm:px-4 rounded-full hover:bg-white/60 dark:hover:bg-white/10 cursor-pointer"
+              className="group inline-flex items-center gap-2 text-13px sm:text-14px font-medium text-[#1D1D1F] dark:text-[#F5F5F7] hover:text-[#007AFF] dark:hover:text-[#0A84FF] transition-colors py-1 px-3 sm:py-1.5 sm:px-3.5 rounded-full hover:bg-white/60 dark:hover:bg-white/10 cursor-pointer"
             >
               <span>View All Work</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -75,22 +75,30 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
           </TextReveal>
         </div>
 
-        {/* Editorial Grid Layout - 3 Selected Projects */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
+        {/* Asymmetrical Compact Bento Grid (4 Projects in 1 Single Screen View) */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5 lg:gap-6 items-center">
           {featuredProjects.map((project, idx) => {
-            const cardSpeeds = [-0.02, -0.04, -0.03];
+            const spanClasses = [
+              'md:col-span-7',
+              'md:col-span-5',
+              'md:col-span-5',
+              'md:col-span-7'
+            ];
+            const cardSpeeds = [-0.02, -0.01, -0.03, -0.02];
             return (
-              <ParallaxLayer key={project.id} speed={cardSpeeds[idx % cardSpeeds.length]} maxOffset={12}>
-                <TextReveal delay={0.08 * idx} yOffset={24}>
-                  <FeaturedProjectCard
-                    project={project}
-                    onSelect={() => {
-                      playSubtleClickSound();
-                      setActiveModalIndex(idx);
-                    }}
-                  />
-                </TextReveal>
-              </ParallaxLayer>
+              <div key={project.id} className={`${spanClasses[idx % spanClasses.length]}`}>
+                <ParallaxLayer speed={cardSpeeds[idx % cardSpeeds.length]} maxOffset={8}>
+                  <TextReveal delay={0.06 * idx} yOffset={16}>
+                    <FeaturedProjectCard
+                      project={project}
+                      onSelect={() => {
+                        playSubtleClickSound();
+                        setActiveModalIndex(idx);
+                      }}
+                    />
+                  </TextReveal>
+                </ParallaxLayer>
+              </div>
             );
           })}
         </div>
@@ -197,7 +205,7 @@ const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project, onSe
       onClick={onSelect}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="group cursor-pointer relative bg-transparent transition-all duration-300 flex flex-col hover:-translate-y-1.5 motion-blur-hover"
+      className="group cursor-pointer relative bg-transparent transition-all duration-300 flex flex-col hover:-translate-y-1.5"
     >
       <div className="relative aspect-video w-full overflow-hidden rounded-[22px] bg-neutral-950 border border-neutral-200/20 dark:border-white/[0.03] shadow-[0_10px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_35px_rgba(0,0,0,0.2)] transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-[0_18px_40px_rgba(0,0,0,0.06)] dark:group-hover:shadow-[0_18px_45px_rgba(0,0,0,0.35)]">
         <video

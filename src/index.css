@@ -768,15 +768,6 @@ body.video-hover-active #root {
   animation: entranceBlurAnim 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.motion-blur-hover {
-  transition: filter 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
-}
-
-.motion-blur-hover:hover {
-  filter: url(#cinematic-motion-blur);
-  transform: scale(1.015);
-}
-
 .speed-blur-hover:hover {
   filter: url(#speed-blur);
 }

@@ -47,7 +47,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
           return (
             <ParallaxLayer key={service.title} speed={cardSpeeds[idx % cardSpeeds.length]} maxOffset={12}>
               <TextReveal delay={0.05 * idx} yOffset={20}>
-                <div className="group p-5 sm:p-8 rounded-[24px] bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 hover:border-[#007AFF] dark:hover:border-[#0A84FF] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full motion-blur-hover">
+                <div className="group p-5 sm:p-8 rounded-[24px] bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 hover:border-[#007AFF] dark:hover:border-[#0A84FF] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full">
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-12px font-mono text-[#86868B] dark:text-[#98989D]">

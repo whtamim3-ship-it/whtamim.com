@@ -2,59 +2,31 @@ import { CaseStudy } from '../types';
 
 export const CASE_STUDIES: CaseStudy[] = [
   {
-    id: 'pran-ghee-promo',
-    title: 'discord',
-    subtitle: 'High-Impact Brand Commercial for PRAN Group',
-    client: 'PRAN',
-    industry: 'UI animation',
-    services: ['UI animation'],
-    role: 'Video Editor & Colorist',
-    deliverables: ['Master Commercial (16:9)', 'Social Clips (9:16 / 1:1)'],
-    tools: ['Adobe Premiere Pro', 'Adobe After Effects', 'CapCut'],
+    id: 'ikigai-motion',
+    title: 'Ikigai Motion',
+    subtitle: 'Cinematic Motion Design & Visual Storytelling',
+    client: 'Ikigai Studio',
+    industry: 'Motion Design',
+    services: ['Motion Design'],
+    role: 'Lead Motion Designer',
+    deliverables: ['Animation Loop', 'Visual Promo'],
+    tools: ['Adobe After Effects', 'Cinema 4D'],
     year: '2026',
     budgetTier: '',
-    duration: '45 Seconds',
-    heroVideoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786054315/ZH_Motion_Dc_yuse2e.mp4',
+    duration: '30 Seconds',
+    heroVideoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057552/ikigai_lxe9jo.mp4',
     posterImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop',
-    thumbnailGridAspect: 'col-span-12 md:col-span-7',
-    logline: 'A seamless, dynamic SaaS interface motion design communicating complex product actions with playful choreography.',
-    overview: 'Crafted a high-energy promotional advertisement for PRAN Ghee focused on appetizing visual storytelling, color warmth, and rhythmic cutting.',
-    challenge: 'Highlighting product freshness and quality in a short 45-second spot while maintaining high brand consistency.',
-    goal: 'Engage viewers instantly on television and digital ad channels with a warm, premium brand aesthetic.',
-    strategy: 'Utilized close-up shots, rich color grading, and dynamic sound design to evoke quality and trust.',
-    storytellingApproach: 'Paced cuts to acoustic rhythms, building up to the iconic product reveal.',
-    motionDesignBreakdown: [
-      {
-        title: 'Color & Lighting Enhancement',
-        description: 'Applied rich warm color grading to emphasize appetizing golden hues and brand identity.',
-        keyPoints: ['Warm tone balancing', 'Crisp product callouts'],
-      }
-    ],
+    thumbnailGridAspect: 'col-span-12 md:col-span-6',
+    logline: 'A striking blend of typography and cinematic atmosphere.',
+    overview: 'Exploring balance and harmony through fluid 3D motion and typography.',
+    challenge: 'Creating meditative pacing in high-speed digital formats.',
+    goal: 'Evoke calm and focus.',
+    strategy: 'Smooth transitions and organic camera movements.',
+    storytellingApproach: 'Minimalist visual rhythm.',
+    motionDesignBreakdown: [],
     behindTheScenes: [],
-    multiFormatCuts: [
-      {
-        format: '16:9',
-        title: 'Main Commercial (16:9)',
-        videoUrl: 'https://vjs.zencdn.net/v/oceans.mp4',
-        aspectRatioClass: 'aspect-video'
-      },
-      {
-        format: '9:16',
-        title: 'Reels Cut (9:16)',
-        videoUrl: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-        aspectRatioClass: 'aspect-[9/16]'
-      }
-    ],
-    results: [
-      { metric: '10M+', label: 'Broadcast & Online Views' },
-      { metric: '100%', label: 'Brand Alignment' }
-    ],
-    testimonial: {
-      quote: 'whtamim delivered an exceptional commercial with great pacing, color work, and audio design.',
-      author: 'PRAN Marketing Team',
-      title: 'Brand Lead',
-      company: 'PRAN Group'
-    },
+    multiFormatCuts: [],
+    results: [],
     featured: true
   },
   {
@@ -141,6 +113,62 @@ export const CASE_STUDIES: CaseStudy[] = [
     results: [
       { metric: 'High', label: 'Audience Engagement' }
     ],
+    featured: true
+  },
+  {
+    id: 'pran-ghee-promo',
+    title: 'discord',
+    subtitle: 'High-Impact Brand Commercial for PRAN Group',
+    client: 'PRAN',
+    industry: 'UI animation',
+    services: ['UI animation'],
+    role: 'Video Editor & Colorist',
+    deliverables: ['Master Commercial (16:9)', 'Social Clips (9:16 / 1:1)'],
+    tools: ['Adobe Premiere Pro', 'Adobe After Effects', 'CapCut'],
+    year: '2026',
+    budgetTier: '',
+    duration: '45 Seconds',
+    heroVideoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786054315/ZH_Motion_Dc_yuse2e.mp4',
+    posterImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop',
+    thumbnailGridAspect: 'col-span-12 md:col-span-7',
+    logline: 'A seamless, dynamic SaaS interface motion design communicating complex product actions with playful choreography.',
+    overview: 'Crafted a high-energy promotional advertisement for PRAN Ghee focused on appetizing visual storytelling, color warmth, and rhythmic cutting.',
+    challenge: 'Highlighting product freshness and quality in a short 45-second spot while maintaining high brand consistency.',
+    goal: 'Engage viewers instantly on television and digital ad channels with a warm, premium brand aesthetic.',
+    strategy: 'Utilized close-up shots, rich color grading, and dynamic sound design to evoke quality and trust.',
+    storytellingApproach: 'Paced cuts to acoustic rhythms, building up to the iconic product reveal.',
+    motionDesignBreakdown: [
+      {
+        title: 'Color & Lighting Enhancement',
+        description: 'Applied rich warm color grading to emphasize appetizing golden hues and brand identity.',
+        keyPoints: ['Warm tone balancing', 'Crisp product callouts'],
+      }
+    ],
+    behindTheScenes: [],
+    multiFormatCuts: [
+      {
+        format: '16:9',
+        title: 'Main Commercial (16:9)',
+        videoUrl: 'https://vjs.zencdn.net/v/oceans.mp4',
+        aspectRatioClass: 'aspect-video'
+      },
+      {
+        format: '9:16',
+        title: 'Reels Cut (9:16)',
+        videoUrl: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
+        aspectRatioClass: 'aspect-[9/16]'
+      }
+    ],
+    results: [
+      { metric: '10M+', label: 'Broadcast & Online Views' },
+      { metric: '100%', label: 'Brand Alignment' }
+    ],
+    testimonial: {
+      quote: 'whtamim delivered an exceptional commercial with great pacing, color work, and audio design.',
+      author: 'PRAN Marketing Team',
+      title: 'Brand Lead',
+      company: 'PRAN Group'
+    },
     featured: true
   }
 ];
