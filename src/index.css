@@ -755,8 +755,8 @@ body.video-hover-active #root {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.05);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
     display: none;
     align-items: center;
     justify-content: center;
@@ -775,8 +775,9 @@ body.video-hover-active #root {
     border-radius: 12px;
     overflow: hidden;
     background: #000;
-    max-height: 90vh;
-    max-width: 90vw;
+    max-height: 85.5vh;
+    max-width: 85.5vw;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
 }
 
 @keyframes shapemorph {
@@ -800,15 +801,15 @@ body.video-hover-active #root {
 
 @media (max-width: 768px) {
     .video-lightbox-container {
-        max-height: 85vh;
-        max-width: 95vw;
+        max-height: 80.75vh;
+        max-width: 80.75vw;
     }
 }
 
 @media (max-width: 480px) {
     .video-lightbox-container {
-        max-height: 80vh;
-        max-width: 98vw;
+        max-height: 76vh;
+        max-width: 93.1vw;
     }
 }
 
