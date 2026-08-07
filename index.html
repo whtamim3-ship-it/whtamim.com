@@ -63,6 +63,49 @@
   </head>
   <body class="bg-[#F5F5F7] dark:bg-[#0A0A0C] text-[#1D1D1F] dark:text-[#F5F5F7] antialiased selection:bg-[#FF1A00]/20 selection:text-[#FF1A00]">
     <div id="root"></div>
+    <script>
+    if (!document.getElementById('videoLightbox')) {
+        const overlay = document.createElement('div');
+        overlay.id = 'videoLightbox';
+        overlay.className = 'video-lightbox-overlay';
+        overlay.innerHTML = '<div class="video-lightbox-container" id="videoContainer"><video autoplay muted playsinline id="lightboxVideo"><source src="" type="video/mp4"></video></div>';
+        document.body.appendChild(overlay);
+    }
+
+    function openVideoLightbox(src) {
+        const video = document.getElementById('lightboxVideo');
+        const overlay = document.getElementById('videoLightbox');
+        const container = document.getElementById('videoContainer');
+        
+        video.src = src;
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        // Set aspect ratio dynamically
+        video.onloadedmetadata = function() {
+            const width = video.videoWidth;
+            const height = video.videoHeight;
+            const ratio = width / height;
+            container.style.aspectRatio = ratio;
+        };
+        
+        video.play();
+    }
+
+    function closeVideoLightbox() {
+        document.getElementById('videoLightbox').classList.remove('active');
+        document.getElementById('lightboxVideo').pause();
+        document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeVideoLightbox();
+    });
+
+    document.getElementById('videoLightbox').addEventListener('click', (e) => {
+        if (e.target.id === 'videoLightbox') closeVideoLightbox();
+    });
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

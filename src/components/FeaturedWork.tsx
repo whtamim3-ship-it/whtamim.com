@@ -33,25 +33,6 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
 }) => {
   // Showcase exactly 3 selected projects for the clean 3-column grid
   const featuredProjects = CASE_STUDIES.slice(0, 3);
-  const [activeModalIndex, setActiveModalIndex] = useState<number | null>(null);
-
-  // Keyboard navigation for cinema modal
-  useEffect(() => {
-    if (activeModalIndex === null) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setActiveModalIndex(null);
-      } else if (e.key === 'ArrowRight') {
-        setActiveModalIndex((prev) => (prev !== null ? (prev + 1) % featuredProjects.length : null));
-      } else if (e.key === 'ArrowLeft') {
-        setActiveModalIndex((prev) => (prev !== null ? (prev - 1 + featuredProjects.length) % featuredProjects.length : null));
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeModalIndex, featuredProjects.length]);
 
   return (
     <SectionReveal id="work" className="min-h-[100svh] md:min-h-[100dvh] w-full flex flex-col justify-center items-center py-16 sm:py-20 bg-[#F5F5F7] dark:bg-transparent">
@@ -84,10 +65,6 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
                 <TextReveal delay={0.08 * idx} yOffset={20}>
                   <FeaturedProjectCard
                     project={project}
-                    onSelect={() => {
-                      playSubtleClickSound();
-                      setActiveModalIndex(idx);
-                    }}
                   />
                 </TextReveal>
               </ParallaxLayer>
@@ -95,99 +72,29 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
           })}
         </div>
       </div>
-
-      {/* Modern 50% Full-Screen Cinema Pop-up Player Modal */}
-      {activeModalIndex !== null && (
-        <div 
-          className="fixed inset-0 z-[10000] bg-[#0d0d0f]/70 backdrop-blur-[8px] flex flex-col items-center justify-center p-4 sm:p-6 md:p-10 select-none transition-all duration-300"
-          onClick={() => setActiveModalIndex(null)}
-          style={{ backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}
-        >
-          {/* Close button top right */}
-          <button
-            onClick={() => setActiveModalIndex(null)}
-            className="absolute top-6 right-6 p-3 rounded-full bg-white/10 text-white/80 hover:text-white hover:bg-white/20 transition-all cursor-pointer z-50 focus:outline-none"
-            aria-label="Close player"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-
-          {/* Left Arrow Button */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              playSubtleClickSound();
-              setActiveModalIndex((activeModalIndex - 1 + featuredProjects.length) % featuredProjects.length);
-            }}
-            className="absolute left-4 sm:left-6 md:left-10 p-3 rounded-full bg-white/5 text-white/60 hover:text-white hover:bg-white/15 hover:scale-105 active:scale-95 transition-all cursor-pointer z-50 focus:outline-none"
-            aria-label="Previous project"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-
-          {/* Right Arrow Button */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              playSubtleClickSound();
-              setActiveModalIndex((activeModalIndex + 1) % featuredProjects.length);
-            }}
-            className="absolute right-4 sm:right-6 md:right-10 p-3 rounded-full bg-white/5 text-white/60 hover:text-white hover:bg-white/15 hover:scale-105 active:scale-95 transition-all cursor-pointer z-50 focus:outline-none"
-            aria-label="Next project"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </button>
-
-          {/* Centered Modal Content Panel - 50% Screen Area */}
-          <div 
-            className="relative w-[90vw] max-w-[960px] aspect-video bg-black rounded-[16px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col justify-center items-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <video
-              src={featuredProjects[activeModalIndex].heroVideoUrl}
-              autoPlay
-              loop
-              controls
-              playsInline
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          {/* Underneath the video details */}
-          <div className="text-center mt-6 select-none" onClick={(e) => e.stopPropagation()}>
-            <h2 className="text-white text-lg sm:text-xl md:text-2xl font-semibold tracking-tight m-0">
-              {featuredProjects[activeModalIndex].title}
-            </h2>
-            <p className="text-neutral-400 text-[13px] sm:text-sm font-medium tracking-wide mt-1 uppercase">
-              {featuredProjects[activeModalIndex].services[0] || featuredProjects[activeModalIndex].industry}
-            </p>
-          </div>
-        </div>
-      )}
     </SectionReveal>
   );
 };
 
 interface FeaturedProjectCardProps {
   project: CaseStudy;
-  onSelect: () => void;
 }
 
-const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project, onSelect }) => {
+const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project }) => {
   return (
     <div
-      onClick={onSelect}
+      onClick={() => {
+        playSubtleClickSound();
+        if ((window as any).openVideoLightbox) {
+          (window as any).openVideoLightbox(project.heroVideoUrl);
+        }
+      }}
       className="group cursor-pointer relative bg-transparent transition-all duration-300 flex flex-col"
     >
       {/* 16:9 Video Container */}
-      <div className="relative aspect-video w-full overflow-hidden rounded-[20px] bg-neutral-950 border border-neutral-200/20 dark:border-white/[0.05] shadow-[0_10px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_35px_rgba(0,0,0,0.2)] transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)]">
+      <div 
+        className="relative aspect-video w-full overflow-hidden rounded-[20px] bg-neutral-950 border border-neutral-200/20 dark:border-white/[0.05] shadow-[0_10px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_35px_rgba(0,0,0,0.2)] transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)]"
+      >
         <video
           src={project.heroVideoUrl}
           autoPlay
