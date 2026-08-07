@@ -42,6 +42,27 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
   const [activeTab, setActiveTab] = useState<'overview' | 'motion' | 'bts' | 'results'>('overview');
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const isYoutube = !!(caseStudy && (caseStudy.heroVideoUrl.includes('youtube.com') || caseStudy.heroVideoUrl.includes('youtu.be') || caseStudy.heroVideoUrl.includes('youtube-nocookie.com')));
+
+  const getYoutubeEmbedUrl = (url: string) => {
+    if (!url) return '';
+    let id = '';
+    if (url.includes('shorts/')) {
+      id = url.split('shorts/')[1]?.split('?')[0];
+    } else if (url.includes('youtu.be/')) {
+      id = url.split('youtu.be/')[1]?.split('?')[0];
+    } else if (url.includes('v=')) {
+      id = url.split('v=')[1]?.split('&')[0];
+    } else if (url.includes('embed/')) {
+      id = url.split('embed/')[1]?.split('?')[0];
+    }
+    
+    if (id) {
+      return `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&controls=1&modestbranding=1&rel=0&playsinline=1`;
+    }
+    return url;
+  };
+
   useBodyScrollLock(!!caseStudy);
 
   useEffect(() => {
@@ -173,6 +194,13 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                   Retry Video
                 </button>
               </div>
+            ) : isYoutube ? (
+              <iframe
+                src={getYoutubeEmbedUrl(caseStudy.heroVideoUrl)}
+                className="w-full h-full object-cover border-none"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                title={caseStudy.title}
+              />
             ) : (
               <video
                 ref={videoRef}
@@ -193,83 +221,87 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
             )}
 
             {/* Buffering Indicator */}
-            {isBuffering && (
+            {isBuffering && !isYoutube && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-xs pointer-events-none z-10">
                 <span className="text-white text-12px font-mono">Buffering...</span>
               </div>
             )}
 
             {/* Center Interactive Play Overlay Button - Apple Native Media Control */}
-            <button
-              onClick={togglePlay}
-              aria-label={isPlaying ? 'Pause video' : 'Play video'}
-              className="absolute inset-0 w-full h-full flex items-center justify-center bg-transparent cursor-pointer group/btn focus:outline-none z-10"
-            >
-              <div className="w-16 h-16 rounded-full flex items-center justify-center border border-white/20 bg-white/[0.12] backdrop-blur-[24px] backdrop-saturate-[180%] shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),0_8px_32px_rgba(0,0,0,0.25)] text-white/90 opacity-0 scale-[0.96] pointer-events-none group-hover:opacity-40 group-hover:scale-100 group-hover:pointer-events-auto hover:!opacity-70 hover:!bg-white/[0.22] hover:!backdrop-blur-[28px] hover:!scale-[1.03] active:!scale-[0.97] transition-all duration-[220ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:duration-[150ms] active:duration-[100ms] will-change-transform">
-                {isPlaying ? (
-                  <Pause className="w-6 h-6 text-white opacity-90 stroke-[1.75]" />
-                ) : (
-                  <Play className="w-6 h-6 ml-0.5 text-white opacity-90 stroke-[1.75]" />
-                )}
-              </div>
-            </button>
+            {!isYoutube && (
+              <button
+                onClick={togglePlay}
+                aria-label={isPlaying ? 'Pause video' : 'Play video'}
+                className="absolute inset-0 w-full h-full flex items-center justify-center bg-transparent cursor-pointer group/btn focus:outline-none z-10"
+              >
+                <div className="w-16 h-16 rounded-full flex items-center justify-center border border-white/20 bg-white/[0.12] backdrop-blur-[24px] backdrop-saturate-[180%] shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),0_8px_32px_rgba(0,0,0,0.25)] text-white/90 opacity-0 scale-[0.96] pointer-events-none group-hover:opacity-40 group-hover:scale-100 group-hover:pointer-events-auto hover:!opacity-70 hover:!bg-white/[0.22] hover:!backdrop-blur-[28px] hover:!scale-[1.03] active:!scale-[0.97] transition-all duration-[220ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:duration-[150ms] active:duration-[100ms] will-change-transform">
+                  {isPlaying ? (
+                    <Pause className="w-6 h-6 text-white opacity-90 stroke-[1.75]" />
+                  ) : (
+                    <Play className="w-6 h-6 ml-0.5 text-white opacity-90 stroke-[1.75]" />
+                  )}
+                </div>
+              </button>
+            )}
 
             {/* Video Controls Overlay */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-[250ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] p-4 sm:p-6 flex flex-col justify-between z-20 pointer-events-none">
-              <div className="flex justify-end pointer-events-auto">
-                <button
-                  onClick={toggleMute}
-                  aria-label={isMuted ? 'Unmute video' : 'Mute video'}
-                  className="p-2.5 rounded-full border border-white/20 bg-white/[0.12] backdrop-blur-[24px] backdrop-saturate-[180%] text-white hover:bg-white/[0.22] transition-all cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35),0_8px_24px_rgba(0,0,0,0.25)] active:scale-95"
-                >
-                  {isMuted ? <VolumeX className="w-4 h-4 text-white/90" /> : <Volume2 className="w-4 h-4 text-white/90" />}
-                </button>
-              </div>
-
-              {/* Bottom Clean Horizontal Controls Overlay */}
-              <div className="w-full pt-6 pb-1 px-2 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col gap-3 pointer-events-auto rounded-b-[24px]">
-                {/* Single Horizontal Timeline Seek Bar */}
-                <div className="flex items-center gap-3">
-                  <span className="text-11px font-mono text-white/90 font-medium tracking-tight min-w-[36px] select-none">
-                    {formatTime(currentTime)}
-                  </span>
-                  <input
-                    type="range"
-                    min={0}
-                    max={duration || 100}
-                    step={0.1}
-                    value={currentTime}
-                    onChange={handleSeek}
-                    className="apple-range-slider flex-1 cursor-pointer"
-                    style={{
-                      background: `linear-gradient(to right, rgba(255, 255, 255, 0.95) ${
-                        duration > 0 ? (currentTime / duration) * 100 : 0
-                      }%, rgba(255, 255, 255, 0.22) ${
-                        duration > 0 ? (currentTime / duration) * 100 : 0
-                      }%)`,
-                    }}
-                  />
-                  <span className="text-11px font-mono text-white/70 font-medium tracking-tight min-w-[36px] select-none text-right">
-                    {formatTime(duration)}
-                  </span>
-                </div>
-
-                {/* Sub Controls Row */}
-                <div className="flex items-center justify-between">
+            {!isYoutube && (
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-[250ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] p-4 sm:p-6 flex flex-col justify-between z-20 pointer-events-none">
+                <div className="flex justify-end pointer-events-auto">
                   <button
-                    onClick={togglePlay}
-                    className="flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/20 bg-white/10 hover:bg-white/20 text-white font-medium text-12px transition-all cursor-pointer backdrop-blur-md active:scale-95"
+                    onClick={toggleMute}
+                    aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+                    className="p-2.5 rounded-full border border-white/20 bg-white/[0.12] backdrop-blur-[24px] backdrop-saturate-[180%] text-white hover:bg-white/[0.22] transition-all cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35),0_8px_24px_rgba(0,0,0,0.25)] active:scale-95"
                   >
-                    {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 ml-0.5" />}
-                    <span>{isPlaying ? 'Pause' : 'Play'}</span>
+                    {isMuted ? <VolumeX className="w-4 h-4 text-white/90" /> : <Volume2 className="w-4 h-4 text-white/90" />}
                   </button>
+                </div>
 
-                  <span className="text-11px font-mono text-white/80 select-none">
-                    {caseStudy.year} • Master 1080p
-                  </span>
+                {/* Bottom Clean Horizontal Controls Overlay */}
+                <div className="w-full pt-6 pb-1 px-2 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col gap-3 pointer-events-auto rounded-b-[24px]">
+                  {/* Single Horizontal Timeline Seek Bar */}
+                  <div className="flex items-center gap-3">
+                    <span className="text-11px font-mono text-white/90 font-medium tracking-tight min-w-[36px] select-none">
+                      {formatTime(currentTime)}
+                    </span>
+                    <input
+                      type="range"
+                      min={0}
+                      max={duration || 100}
+                      step={0.1}
+                      value={currentTime}
+                      onChange={handleSeek}
+                      className="apple-range-slider flex-1 cursor-pointer"
+                      style={{
+                        background: `linear-gradient(to right, rgba(255, 255, 255, 0.95) ${
+                          duration > 0 ? (currentTime / duration) * 100 : 0
+                        }%, rgba(255, 255, 255, 0.22) ${
+                          duration > 0 ? (currentTime / duration) * 100 : 0
+                        }%)`,
+                      }}
+                    />
+                    <span className="text-11px font-mono text-white/70 font-medium tracking-tight min-w-[36px] select-none text-right">
+                      {formatTime(duration)}
+                    </span>
+                  </div>
+
+                  {/* Sub Controls Row */}
+                  <div className="flex items-center justify-between">
+                    <button
+                      onClick={togglePlay}
+                      className="flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/20 bg-white/10 hover:bg-white/20 text-white font-medium text-12px transition-all cursor-pointer backdrop-blur-md active:scale-95"
+                    >
+                      {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 ml-0.5" />}
+                      <span>{isPlaying ? 'Pause' : 'Play'}</span>
+                    </button>
+
+                    <span className="text-11px font-mono text-white/80 select-none">
+                      {caseStudy.year} • Master 1080p
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Two-Column Project Metadata & Overview */}

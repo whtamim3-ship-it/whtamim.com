@@ -61,12 +61,12 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
   return (
     <SectionReveal
       id="faq"
-      className="py-24 w-full border-t border-neutral-200/80 dark:border-neutral-800 bg-[#F5F5F7] dark:bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7]"
+      className="min-h-[100svh] md:min-h-[100dvh] w-full flex flex-col justify-center items-center py-12 sm:py-16 lg:py-20 border-t border-neutral-200/80 dark:border-neutral-800 bg-[#F5F5F7] dark:bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7]"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-14 my-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-20 items-start">
         {/* Left Section Header */}
-        <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-6">
+        <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-6 sm:space-y-8">
           <TextReveal as="span" delay={0} yOffset={16} className="text-11px font-mono uppercase tracking-widest text-[#86868B] dark:text-[#98989D] font-bold block">
             FREQUENTLY ASKED QUESTIONS
           </TextReveal>
@@ -80,14 +80,14 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
           </TextReveal>
 
           <TextReveal delay={0.24} yOffset={20} className="pt-2">
-            <div className="p-6 rounded-[24px] bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-xs space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-full bg-[#007AFF]/10 dark:bg-[#0A84FF]/10 text-[#007AFF] dark:text-[#0A84FF]">
+            <div className="p-6 sm:p-7 rounded-[24px] bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-xs space-y-5">
+              <div className="flex items-center gap-3.5">
+                <div className="p-3 rounded-full bg-[#007AFF]/10 dark:bg-[#0A84FF]/10 text-[#007AFF] dark:text-[#0A84FF] shrink-0">
                   <HelpCircle className="w-5 h-5" />
                 </div>
                 <div>
                   <h3 className="text-14px font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">Have a custom requirement?</h3>
-                  <p className="text-12px text-[#86868B] dark:text-[#98989D]">Get an instant project estimate in under 60 seconds.</p>
+                  <p className="text-12px text-[#86868B] dark:text-[#98989D] mt-0.5">Get an instant project estimate in under 60 seconds.</p>
                 </div>
               </div>
 
@@ -97,7 +97,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
                     playSubtleClickSound();
                     onOpenEstimator();
                   }}
-                  className="w-full py-2.5 px-4 rounded-full bg-[#1D1D1F] dark:bg-white hover:bg-[#007AFF] dark:hover:bg-[#0A84FF] text-white dark:text-[#0A0A0C] dark:hover:text-white text-13px font-semibold transition-all duration-200 flex items-center justify-center gap-2 group"
+                  className="w-full py-3 px-5 rounded-full bg-[#1D1D1F] dark:bg-white hover:bg-[#007AFF] dark:hover:bg-[#0A84FF] text-white dark:text-[#0A0A0C] dark:hover:text-white text-13px font-semibold transition-all duration-200 flex items-center justify-center gap-2 group"
                 >
                   <span>Launch Project Estimator</span>
                   <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -108,7 +108,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
         </div>
 
         {/* Right Accordion List */}
-        <div className="lg:col-span-7 space-y-4">
+        <div className="lg:col-span-7 space-y-4 sm:space-y-5">
           {FAQ_ITEMS.map((item, idx) => {
             const isOpen = openId === item.id;
             return (

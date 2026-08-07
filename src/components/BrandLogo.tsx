@@ -37,7 +37,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           fetchPriority="high"
           loading="eager"
           decoding="sync"
-          className="h-[28px] sm:h-[32px] md:h-[36px] w-auto max-w-full object-contain -translate-y-[1px] transition-all duration-200 ease-out group-hover:opacity-85 group-hover:brightness-110 active:opacity-75"
+          className="h-[24px] sm:h-[28px] md:h-[30px] w-auto max-w-full object-contain -translate-y-[1px] transition-all duration-200 ease-out group-hover:opacity-85 group-hover:brightness-110 active:opacity-75"
           style={{
             imageRendering: 'auto',
             WebkitBackfaceVisibility: 'hidden',

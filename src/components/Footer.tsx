@@ -166,6 +166,7 @@ export const Footer: React.FC<FooterProps> = ({
                   <span className="font-medium">AI Storyboard</span>
                 </button>
               )}
+
               {onOpenEstimator && (
                 <button
                   onClick={() => {

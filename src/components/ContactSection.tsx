@@ -130,16 +130,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief }
   };
 
   return (
-    <SectionReveal id="contact" className="py-24 w-full border-t border-neutral-200/80 dark:border-neutral-800 bg-[#F5F5F7] dark:bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <SectionReveal id="contact" className="min-h-[100svh] md:min-h-[100dvh] w-full flex flex-col justify-center items-center py-12 sm:py-16 lg:py-20 border-t border-neutral-200/80 dark:border-neutral-800 bg-[#F5F5F7] dark:bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7]">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 my-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
         {/* Left Info & Direct Links */}
         <div className="lg:col-span-5 space-y-6">
           <div>
             <TextReveal as="span" delay={0} yOffset={16} className="text-11px font-mono uppercase tracking-widest text-[#86868B] dark:text-[#98989D] font-bold block mb-3">
               CONTACT & INQUIRIES
             </TextReveal>
-            <TextReveal as="h2" delay={0.08} yOffset={20} className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#1D1D1F] dark:text-[#F5F5F7] leading-tight">
+            <TextReveal as="h2" delay={0.08} yOffset={20} className="text-2xl sm:text-3xl lg:text-[36px] xl:text-[40px] font-extrabold tracking-tight text-[#1D1D1F] dark:text-[#F5F5F7] leading-tight whitespace-nowrap">
               Let's Elevate Your Product.
             </TextReveal>
           </div>

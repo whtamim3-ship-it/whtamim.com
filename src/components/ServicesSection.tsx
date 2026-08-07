@@ -15,8 +15,8 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
   onOpenEstimator,
 }) => {
   return (
-    <SectionReveal id="services" className="py-24 w-full border-t border-neutral-200/80 dark:border-neutral-800 bg-[#F5F5F7] dark:bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+    <SectionReveal id="services" className="min-h-[100svh] md:min-h-[100dvh] w-full flex flex-col justify-center items-center py-12 sm:py-16 lg:py-20 border-t border-neutral-200/80 dark:border-neutral-800 bg-[#F5F5F7] dark:bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7]">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 my-auto">
         {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
         <div>

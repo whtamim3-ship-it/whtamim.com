@@ -30,11 +30,11 @@ export const SectionReveal: React.FC<SectionRevealProps> = ({
       id={id}
       className={className}
       style={style}
-      initial={{ opacity: 0, y: 36 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 36, filter: 'blur(12px)' }}
+      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.01, margin: '100px 0px 100px 0px' }}
       transition={{
-        duration: 0.85,
+        duration: 0.9,
         delay: delay,
         ease: [0.16, 1, 0.3, 1], // Apple's signature custom exponential ease out
       }}

@@ -155,11 +155,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled || currentView === 'work'
-          ? 'py-3.5 sm:py-4 bg-[#F5F5F7]/85 dark:bg-[#0A0A0C]/85 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800/80 shadow-xs'
-          : 'py-5 sm:py-6 bg-transparent'
+          ? 'py-1.5 sm:py-2 bg-[#F5F5F7]/85 dark:bg-[#0A0A0C]/85 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800/80 shadow-xs'
+          : 'py-2.5 sm:py-3 bg-transparent'
       }`}
     >
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between relative">
+      <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-14 flex items-center justify-between relative">
         {/* Brand Logo */}
         <BrandLogo onClick={(e) => handleLinkClick(e, '#')} />
 
@@ -271,7 +271,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.99 }}
               transition={{ type: 'spring', stiffness: 400, damping: 32 }}
-              className="fixed inset-x-0 top-[60px] sm:top-[70px] md:top-[76px] z-50 max-h-[calc(100vh-80px)] overflow-y-auto bg-[#F5F5F7]/95 dark:bg-[#0A0A0C]/95 backdrop-blur-2xl border-b border-neutral-200/80 dark:border-neutral-800/80 p-4 sm:p-6 lg:p-8 shadow-2xl transition-colors duration-300"
+              className="fixed inset-x-0 top-[48px] sm:top-[54px] md:top-[58px] z-50 max-h-[calc(100vh-60px)] overflow-y-auto bg-[#F5F5F7]/95 dark:bg-[#0A0A0C]/95 backdrop-blur-2xl border-b border-neutral-200/80 dark:border-neutral-800/80 p-4 sm:p-6 lg:p-8 shadow-2xl transition-colors duration-300"
             >
               <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 items-start">
                 {/* Navigation Column */}

@@ -5,7 +5,6 @@ import { MidnightAtmosphere } from './components/MidnightAtmosphere';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ShowreelModal } from './components/ShowreelModal';
-import { ClientTrust } from './components/ClientTrust';
 import { FeaturedWork } from './components/FeaturedWork';
 import { WorkPage } from './components/WorkPage';
 import { ServicesSection } from './components/ServicesSection';
@@ -144,9 +143,6 @@ export default function App() {
         <main className="relative w-full min-w-full max-w-full overflow-x-clip">
           {/* 100vh Apple Launch Hero Section */}
           <Hero onOpenShowreel={() => setShowreelOpen(true)} />
-
-          {/* Client Roster & Trust Logos Bar */}
-          <ClientTrust />
 
           {/* Featured Work - Only 3 Selected Projects */}
           <FeaturedWork
