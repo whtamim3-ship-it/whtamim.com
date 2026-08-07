@@ -197,7 +197,7 @@ const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project, onSe
       onClick={onSelect}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="group cursor-pointer relative bg-transparent transition-all duration-300 flex flex-col hover:-translate-y-1.5"
+      className="group cursor-pointer relative bg-transparent transition-all duration-300 flex flex-col hover:-translate-y-1.5 motion-blur-hover"
     >
       <div className="relative aspect-video w-full overflow-hidden rounded-[22px] bg-neutral-950 border border-neutral-200/20 dark:border-white/[0.03] shadow-[0_10px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_35px_rgba(0,0,0,0.2)] transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-[0_18px_40px_rgba(0,0,0,0.06)] dark:group-hover:shadow-[0_18px_45px_rgba(0,0,0,0.35)]">
         <video

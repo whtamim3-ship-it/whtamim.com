@@ -42,7 +42,7 @@ const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) 
 
   return (
     <div
-      className="group relative flex flex-col w-full transition-transform duration-300 hover:-translate-y-1.5"
+      className="group relative flex flex-col w-full transition-transform duration-300 hover:-translate-y-1.5 motion-blur-hover"
     >
       {/* External Link Icon Button (Subtle & neat, only fully visible on hover) */}
       <a

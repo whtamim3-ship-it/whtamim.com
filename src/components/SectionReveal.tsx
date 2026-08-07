@@ -28,7 +28,7 @@ export const SectionReveal: React.FC<SectionRevealProps> = ({
   return (
     <Component
       id={id}
-      className={className}
+      className={`${className} motion-blur-entrance`}
       style={style}
       initial={{ opacity: 0, y: 36, filter: 'blur(12px)' }}
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowUp, Sparkles, Calculator, Shield, Maximize2, Minimize2 } from 'lucide-react';
+import { ArrowUp, Sparkles, Calculator, Shield } from 'lucide-react';
 import { SectionReveal } from './SectionReveal';
 import { BrandLogo } from './BrandLogo';
 import { StudioTimeWidget } from './StudioTimeWidget';
@@ -61,27 +61,6 @@ export const Footer: React.FC<FooterProps> = ({
   onOpenEstimator,
   onOpenAIStoryboard,
 }) => {
-  const [isFullscreen, setIsFullscreen] = useState(false);
-
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-  }, []);
-
-  const toggleFullscreen = () => {
-    playSubtleClickSound();
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(() => {});
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen().catch(() => {});
-      }
-    }
-  };
-
   const scrollToTop = () => {
     playSubtleClickSound();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -136,24 +115,6 @@ export const Footer: React.FC<FooterProps> = ({
           <TailwindFadeIn delayMs={200} className="flex flex-col items-start md:items-end gap-3 font-mono text-12px">
             {/* Studio Tools & Fullscreen Footer Shortcuts */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-              <button
-                onClick={toggleFullscreen}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-neutral-900/90 border border-neutral-800 text-neutral-300 hover:text-white hover:border-neutral-700 transition-colors cursor-pointer"
-                title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen Mode"}
-              >
-                {isFullscreen ? (
-                  <>
-                    <Minimize2 className="w-3.5 h-3.5 text-white" />
-                    <span className="font-medium">Exit Fullscreen</span>
-                  </>
-                ) : (
-                  <>
-                    <Maximize2 className="w-3.5 h-3.5 text-white" />
-                    <span className="font-medium">Fullscreen</span>
-                  </>
-                )}
-              </button>
-
               {onOpenAIStoryboard && (
                 <button
                   onClick={() => {

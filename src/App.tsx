@@ -12,6 +12,7 @@ import { AboutSection } from './components/AboutSection';
 import { FaqSection } from './components/FaqSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
+import { ScrollVelocityBlurController } from './components/ScrollVelocityBlurController';
 import { CaseStudy } from './types';
 import { CASE_STUDIES } from './data/portfolioData';
 
@@ -113,6 +114,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen w-full min-w-full max-w-full overflow-x-clip relative bg-[#F5F5F7] dark:bg-[#0A0A0C] text-[#1D1D1F] dark:text-[#F5F5F7] font-sans selection:bg-[#007AFF] selection:text-white">
+      {/* Scroll Velocity Dynamic Motion Blur Controller */}
+      <ScrollVelocityBlurController />
+
       {/* Midnight Atmosphere System (Dark Mode Only Canvas) */}
       <MidnightAtmosphere theme={theme} />
 
