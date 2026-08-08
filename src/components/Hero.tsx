@@ -22,7 +22,7 @@ export const Hero: React.FC<HeroProps> = () => {
             Motion that makes products feel <span className="highlight-blue font-coolvetica italic font-bold inline-block">premium</span>, not advertised.
           </TextReveal>
           <TextReveal as="p" delay={0.14} yOffset={14} className="sub-tagline tagline font-sans italic text-sm sm:text-base text-neutral-600 dark:text-[#cccccc] max-w-2xl mb-6 text-center" style={{ fontFamily: "'Poppins', sans-serif" }}>
-            I'm Tamim, a Video Editor &amp; Motion Designer creating premium commercials, SaaS product films, and cinematic brand stories designed to leave a lasting impression.
+            I'm <strong className="font-bold not-italic text-neutral-900 dark:text-white">Tamim</strong>, a Video Editor &amp; Motion Designer creating premium commercials, SaaS product films, and cinematic brand stories designed to leave a lasting impression.
           </TextReveal>
           
           {/* Available Status Pill (Blue Dot) */}
@@ -75,7 +75,7 @@ export const Hero: React.FC<HeroProps> = () => {
 
         {/* Mobile Tagline */}
         <TextReveal as="p" delay={0.10} yOffset={10} className="sub-tagline tagline font-sans italic text-[13px] sm:text-[14px] text-neutral-600 dark:text-[#cccccc] w-[90%] max-w-xs mx-auto mb-[22px] text-center" style={{ fontFamily: "'Poppins', sans-serif" }}>
-          I'm Tamim, a Video Editor &amp; Motion Designer creating premium commercials, SaaS product films, and cinematic brand stories designed to leave a lasting impression.
+          I'm <strong className="font-bold not-italic text-neutral-900 dark:text-white">Tamim</strong>, a Video Editor &amp; Motion Designer creating premium commercials, SaaS product films, and cinematic brand stories designed to leave a lasting impression.
         </TextReveal>
 
         {/* Mobile Available Status (Blue Dot) */}

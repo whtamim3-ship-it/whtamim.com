@@ -838,3 +838,5 @@ export const DatabaseDashboard: React.FC<DatabaseDashboardProps> = ({ isOpen, on
     </div>
   );
 };
+
+export default DatabaseDashboard;
