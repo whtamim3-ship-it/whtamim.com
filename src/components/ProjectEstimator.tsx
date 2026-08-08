@@ -57,6 +57,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
       case 'ui': return 800;
       case 'demo': return 1000;
       case 'doc': return 1500;
+      default: return 1200;
     }
   };
 
@@ -65,6 +66,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
       case '30s': return 0.8;
       case '60s': return 1.0;
       case '90s': return 1.35;
+      default: return 1.0;
     }
   };
 
@@ -73,6 +75,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
       case 'standard': return 0.9;
       case 'advanced': return 1.1;
       case 'cinematic': return 1.35;
+      default: return 1.1;
     }
   };
 
@@ -80,6 +83,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
     switch (resolution) {
       case '720p': return 0;
       case '1080p': return 300;
+      default: return 300;
     }
   };
 
@@ -99,14 +103,17 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
       case 'standard': return 30; // 30 mins for clean 2D UI
       case 'advanced': return 150; // 2.5 hours for 3D UI & depth cameras
       case 'cinematic': return 420; // 7 hours for raytraced C4D/Octane
+      default: return 150;
     }
   };
 
   const getResRenderMultiplier = () => {
     switch (resolution) {
+      case '720p': return 0.5;
       case '1080p': return 0.7;
       case '4k': return 2.2;
       case '8k': return 5.5;
+      default: return 0.7;
     }
   };
 

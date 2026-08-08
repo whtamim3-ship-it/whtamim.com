@@ -20,6 +20,7 @@ import { CASE_STUDIES } from './data/portfolioData';
 const CaseStudyModal = lazy(() => import('./components/CaseStudyModal'));
 const AIStoryboardTool = lazy(() => import('./components/AIStoryboardTool'));
 const ProjectEstimator = lazy(() => import('./components/ProjectEstimator'));
+const DatabaseDashboard = lazy(() => import('./components/DatabaseDashboard'));
 
 export default function App() {
   const [cursorEnabled] = useState<boolean>(true);
@@ -31,6 +32,7 @@ export default function App() {
   const [showreelOpen, setShowreelOpen] = useState<boolean>(false);
   const [estimatorOpen, setEstimatorOpen] = useState<boolean>(false);
   const [aiStoryboardOpen, setAiStoryboardOpen] = useState<boolean>(false);
+  const [dbDashboardOpen, setDbDashboardOpen] = useState<boolean>(false);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
 
   // Pre-filled contact brief
@@ -133,6 +135,7 @@ export default function App() {
         onNavigateToWork={handleNavigateToWork}
         onOpenEstimator={() => setEstimatorOpen(true)}
         onOpenAIStoryboard={() => setAiStoryboardOpen(true)}
+        onOpenDatabaseDashboard={() => setDbDashboardOpen(true)}
         theme={theme}
         onToggleTheme={toggleTheme}
       />
@@ -212,6 +215,12 @@ export default function App() {
           isOpen={estimatorOpen}
           onClose={() => setEstimatorOpen(false)}
           onPreFillInquiry={handlePreFillInquiry}
+        />
+
+        {/* Studio Database & CMS Dashboard */}
+        <DatabaseDashboard
+          isOpen={dbDashboardOpen}
+          onClose={() => setDbDashboardOpen(false)}
         />
       </Suspense>
     </div>

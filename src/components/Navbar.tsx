@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowUpRight, Sparkles, Calculator } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Sparkles, Calculator, Database } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { playSubtleClickSound } from '../utils/motion';
 import { useBodyScrollLock } from '../utils/scrollLock';
@@ -13,6 +13,7 @@ interface NavbarProps {
   onNavigateToWork: () => void;
   onOpenEstimator: () => void;
   onOpenAIStoryboard: () => void;
+  onOpenDatabaseDashboard: () => void;
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
 }
@@ -23,6 +24,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateToWork,
   onOpenEstimator,
   onOpenAIStoryboard,
+  onOpenDatabaseDashboard,
   theme,
   onToggleTheme,
 }) => {
@@ -360,6 +362,26 @@ export const Navbar: React.FC<NavbarProps> = ({
                       </div>
                       <div className="text-11px sm:text-12px text-[#86868B] dark:text-[#98989D] mt-0.5 leading-snug">
                         Calculate scope & budget estimate
+                      </div>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        playSubtleClickSound();
+                        setStudioMenuOpen(false);
+                        onOpenDatabaseDashboard();
+                      }}
+                      className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/90 dark:border-neutral-800 hover:border-[#007AFF] text-left transition-all group shadow-2xs cursor-pointer sm:col-span-2"
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <Database className="w-4 h-4 text-[#007AFF]" />
+                        <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-medium">Live DB</span>
+                      </div>
+                      <div className="text-13px sm:text-14px font-bold text-[#1D1D1F] dark:text-white">
+                        Database Dashboard & CMS
+                      </div>
+                      <div className="text-11px sm:text-12px text-[#86868B] dark:text-[#98989D] mt-0.5 leading-snug">
+                        Inspect leads, portfolio CMS & run SQL queries
                       </div>
                     </button>
                   </div>

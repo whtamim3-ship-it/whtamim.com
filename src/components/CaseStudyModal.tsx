@@ -27,6 +27,19 @@ interface CaseStudyModalProps {
   onOpenEstimator: () => void;
 }
 
+const safeText = (val: any): string => {
+  if (val === null || val === undefined) return '';
+  if (typeof val === 'string' || typeof val === 'number') return String(val);
+  if (typeof val === 'object') {
+    return val.title || val.name || val.text || val.label || val.value || JSON.stringify(val);
+  }
+  try {
+    return String(val);
+  } catch {
+    return '';
+  }
+};
+
 export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
   caseStudy,
   onClose,
@@ -313,10 +326,10 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                   Deliverables
                 </span>
                 <ul className="text-13px font-medium text-[#1D1D1F] dark:text-[#F5F5F7] space-y-1">
-                  {caseStudy.deliverables.map((item) => (
-                    <li key={item} className="flex items-center gap-2">
+                  {caseStudy.deliverables.map((item, idx) => (
+                    <li key={idx} className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#007AFF] dark:bg-[#0A84FF]" />
-                      {item}
+                      {safeText(item)}
                     </li>
                   ))}
                 </ul>
@@ -327,9 +340,9 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                   Tools & Software
                 </span>
                 <div className="flex flex-wrap gap-1.5">
-                  {caseStudy.tools.map((tool) => (
-                    <span key={tool} className="text-11px font-mono px-2 py-0.5 rounded bg-[#F5F5F7] dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                      {tool}
+                  {caseStudy.tools.map((tool, idx) => (
+                    <span key={idx} className="text-11px font-mono px-2 py-0.5 rounded bg-[#F5F5F7] dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-[#1D1D1F] dark:text-[#F5F5F7]">
+                      {safeText(tool)}
                     </span>
                   ))}
                 </div>
@@ -396,7 +409,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                       {item.keyPoints.map((point, pIdx) => (
                         <li key={pIdx} className="flex items-center gap-2">
                           <CheckCircle2 className="w-4 h-4 text-[#007AFF] dark:text-[#0A84FF] shrink-0" />
-                          <span>{point}</span>
+                          <span>{safeText(point)}</span>
                         </li>
                       ))}
                     </ul>
