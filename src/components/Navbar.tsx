@@ -184,7 +184,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             whileTap={{ scale: 0.95 }}
             aria-label="Toggle navigation menu"
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? <X size={20} className="w-5 h-5" /> : <Menu size={20} className="w-5 h-5" />}
           </motion.button>
         </div>
       </div>
