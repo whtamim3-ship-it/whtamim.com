@@ -42,7 +42,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
         </div>
 
         {/* 4 Bento Grid Service Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[28px]">
+        <div className="services-grid grid grid-cols-1 md:grid-cols-2 gap-[28px]">
           {SERVICES.map((service, idx) => {
             const cardSpeeds = [-0.02, -0.03, -0.035, -0.025];
             return (

@@ -2,6 +2,8 @@ import React from 'react';
 import { playSubtleClickSound } from '../utils/motion';
 import { TextReveal } from './TextReveal';
 import { ParallaxLayer } from '../utils/parallaxEngine';
+import { HeroParticlesCanvas } from './HeroParticlesCanvas';
+import { WeatherStatus } from './WeatherStatus';
 
 interface HeroProps {
   onOpenShowreel?: () => void;
@@ -10,10 +12,13 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = () => {
   return (
     <section className="relative min-h-[70dvh] w-full flex justify-center items-center py-12 bg-[#F5F5F7] dark:bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 overflow-hidden">
+      {/* Background Subtle Particle Canvas for Cinematic Feel */}
+      <HeroParticlesCanvas />
+
       {/* =================================================== */}
       {/* DESKTOP & TABLET HERO (>= 768px / md:)              */}
       {/* =================================================== */}
-      <div className="hidden md:flex flex-col items-center justify-center text-center gap-5 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-14">
+      <div className="relative z-10 hidden md:flex flex-col items-center justify-center text-center gap-5 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-14">
         {/* Layer 1: Headline & Tagline */}
         <ParallaxLayer speed={-0.015} maxOffset={6} className="w-full flex flex-col items-center">
 
@@ -25,12 +30,13 @@ export const Hero: React.FC<HeroProps> = () => {
             I'm <strong className="font-bold not-italic text-neutral-900 dark:text-white">Tamim</strong>, a Video Editor &amp; Motion Designer creating premium commercials, SaaS product films, and cinematic brand stories designed to leave a lasting impression.
           </TextReveal>
           
-          {/* Available Status Pill (Blue Dot) */}
-          <TextReveal delay={0.18} yOffset={12}>
-            <div className="inline-flex w-fit items-center gap-2 px-4 py-1.5 rounded-full bg-[#0066FF]/8 dark:bg-[#0066FF]/12 border border-[#0066FF]/30 text-[#4da6ff] text-13px font-light tracking-tight mb-[25px]" style={{ fontFamily: "'Poppins', sans-serif" }}>
+          {/* Status Row: Available Status Pill & Live Weather Status */}
+          <TextReveal delay={0.18} yOffset={12} className="flex flex-wrap items-center justify-center gap-2.5 mb-[25px]">
+            <div className="inline-flex w-fit items-center gap-2 px-4 py-1.5 rounded-full bg-[#0066FF]/8 dark:bg-[#0066FF]/12 border border-[#0066FF]/30 text-[#4da6ff] text-13px font-light tracking-tight" style={{ fontFamily: "'Poppins', sans-serif" }}>
               <span className="w-[7px] h-[7px] rounded-full bg-[#0066ff] shadow-[0_0_8px_#0066ff] animate-pulse" />
               <span>Available for new projects</span>
             </div>
+            <WeatherStatus />
           </TextReveal>
           
           {/* CTA Buttons */}
@@ -65,7 +71,7 @@ export const Hero: React.FC<HeroProps> = () => {
       {/* BRAND-NEW NATIVE MOBILE HERO (< 768px / md:hidden)   */}
       {/* Minimal, compact, single-screen experience          */}
       {/* =================================================== */}
-      <div className="flex md:hidden flex-col items-center justify-center w-full px-5 -mt-2 text-center">
+      <div className="relative z-10 flex md:hidden flex-col items-center justify-center w-full px-5 -mt-2 text-center">
 
 
         {/* Mobile Headline (~80-85% width) */}
@@ -78,12 +84,13 @@ export const Hero: React.FC<HeroProps> = () => {
           I'm <strong className="font-bold not-italic text-neutral-900 dark:text-white">Tamim</strong>, a Video Editor &amp; Motion Designer creating premium commercials, SaaS product films, and cinematic brand stories designed to leave a lasting impression.
         </TextReveal>
 
-        {/* Mobile Available Status (Blue Dot) */}
-        <TextReveal delay={0.12} yOffset={10}>
-          <div className="inline-flex w-fit items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#0066FF]/8 dark:bg-[#0066FF]/12 border border-[#0066FF]/30 text-[#4da6ff] text-[12px] font-light tracking-tight mb-[25px]" style={{ fontFamily: "'Poppins', sans-serif" }}>
+        {/* Mobile Status Row */}
+        <TextReveal delay={0.12} yOffset={10} className="flex flex-col items-center gap-2 mb-[22px]">
+          <div className="inline-flex w-fit items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#0066FF]/8 dark:bg-[#0066FF]/12 border border-[#0066FF]/30 text-[#4da6ff] text-[12px] font-light tracking-tight" style={{ fontFamily: "'Poppins', sans-serif" }}>
             <span className="w-[7px] h-[7px] rounded-full bg-[#0066ff] shadow-[0_0_8px_#0066ff] animate-pulse" />
             <span>Available for new projects</span>
           </div>
+          <WeatherStatus />
         </TextReveal>
 
         {/* Mobile CTA Buttons */}

@@ -66,7 +66,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenEstimator }) =
       </div>
 
       {/* Main Content Grid: Left Portrait + Right Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-14 items-start">
+      <div className="about-section-grid grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-14 items-start">
         {/* Left Profile Column with 12% Portrait Parallax Depth */}
         <div className="lg:col-span-4 xl:col-span-4">
           <ParallaxLayer speed={-0.12} maxOffset={18}>

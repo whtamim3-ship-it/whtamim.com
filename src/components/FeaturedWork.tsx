@@ -57,7 +57,7 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
         </div>
 
         {/* Clean 3-column Equal Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[28px] items-start">
+        <div className="selected-work-grid portfolio-grid grid grid-cols-1 md:grid-cols-3 gap-[28px] items-start">
           {featuredProjects.map((project, idx) => {
             const cardSpeeds = [-0.02, -0.03, -0.02];
             return (
