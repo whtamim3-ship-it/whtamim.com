@@ -35,10 +35,10 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
   const featuredProjects = CASE_STUDIES.slice(0, 3);
 
   return (
-    <SectionReveal id="work" className="min-h-[100svh] md:min-h-[100dvh] w-full flex flex-col justify-center items-center py-16 sm:py-20 bg-[#F5F5F7] dark:bg-transparent">
+    <SectionReveal id="work" className="min-h-[100svh] md:min-h-[100dvh] w-full flex flex-col justify-center items-center py-12 sm:py-16 bg-[#F5F5F7] dark:bg-transparent">
       <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-14 my-auto">
         {/* Section Header */}
-        <div className="flex items-center justify-between gap-4 mb-10 sm:mb-12">
+        <div className="flex items-center justify-between gap-4 mb-8 sm:mb-10">
           <TextReveal as="span" delay={0} yOffset={16} className="text-11px sm:text-12px font-mono uppercase tracking-widest text-[#86868B] dark:text-[#98989D] font-bold block">
             SELECTED WORK
           </TextReveal>
@@ -48,7 +48,7 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
                 playSubtleClickSound();
                 onNavigateToWork();
               }}
-              className="group inline-flex items-center gap-2 text-13px sm:text-14px font-medium text-[#1D1D1F] dark:text-[#F5F5F7] hover:text-[#007AFF] dark:hover:text-[#0A84FF] transition-colors py-1.5 px-3.5 sm:py-2 sm:px-4 rounded-full hover:bg-white/60 dark:hover:bg-white/10 cursor-pointer"
+              className="group inline-flex items-center gap-2 text-13px sm:text-14px font-medium text-[#1D1D1F] dark:text-[#F5F5F7] hover:text-[#0066FF] dark:hover:text-[#0A84FF] transition-colors py-1.5 px-3.5 sm:py-2 sm:px-4 rounded-full hover:bg-white/60 dark:hover:bg-white/10 cursor-pointer"
             >
               <span>View All Work</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -57,7 +57,7 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
         </div>
 
         {/* Clean 3-column Equal Grid */}
-        <div className="selected-work-grid portfolio-grid grid grid-cols-1 md:grid-cols-3 gap-[28px] items-start">
+        <div className="selected-work-grid portfolio-grid grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 items-start">
           {featuredProjects.map((project, idx) => {
             const cardSpeeds = [-0.02, -0.03, -0.02];
             return (
@@ -93,7 +93,7 @@ const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project }) =>
     >
       {/* 16:9 Video Container */}
       <div 
-        className="relative aspect-video w-full overflow-hidden rounded-[20px] bg-neutral-950 border border-neutral-200/20 dark:border-white/[0.05] shadow-[0_10px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_35px_rgba(0,0,0,0.2)] transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)]"
+        className="relative aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-neutral-950 border border-neutral-200/20 dark:border-white/[0.05] shadow-[0_8px_20px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_35px_rgba(0,0,0,0.2)] transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)]"
       >
         <video
           src={project.heroVideoUrl}
@@ -105,17 +105,14 @@ const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project }) =>
         />
       </div>
 
-      {/* Details on separate lines below each video box */}
-      <div className="mt-4 flex flex-col items-start text-left">
-        <h3 className="text-17px sm:text-18px font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors">
+      {/* Details: Title & Category Badge Only */}
+      <div className="mt-2.5 flex flex-col items-start text-left">
+        <h3 className="text-[16px] font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight group-hover:text-[#0066FF] dark:group-hover:text-[#0A84FF] transition-colors leading-snug">
           {project.title}
         </h3>
-        <span className="text-11px font-mono uppercase tracking-widest text-[#86868B] dark:text-[#98989D] mt-1 font-semibold">
+        <span className="text-[11px] font-medium uppercase tracking-wider text-[#0066FF] dark:text-[#0A84FF] mt-0.5">
           {project.services[0] || project.industry}
         </span>
-        <p className="text-14px text-[#6E6E73] dark:text-[#8E8E93] mt-1.5 line-clamp-2 leading-relaxed">
-          {project.logline || project.subtitle}
-        </p>
       </div>
     </div>
   );

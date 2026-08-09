@@ -24,9 +24,32 @@ export function calculateTilt(
   return { rotateX, rotateY, glossX, glossY };
 }
 
-// Web Audio API click handler (disabled)
+// Web Audio API sound handlers
 export function playSubtleClickSound(_enabled: boolean = true) {
-  // Audio disabled
+  if (!_enabled || typeof window === 'undefined') return;
+  try {
+    const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    if (ctx.state === 'suspended') ctx.resume();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.04);
+
+    gain.gain.setValueAtTime(0.04, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.04);
+  } catch (e) {
+    // ignore audio errors
+  }
 }
 
 // Check prefers-reduced-motion

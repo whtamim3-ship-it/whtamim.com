@@ -22,11 +22,11 @@ export const Hero: React.FC<HeroProps> = () => {
         <ParallaxLayer speed={-0.015} maxOffset={6} className="w-full flex flex-col items-center">
 
 
-          <TextReveal as="h1" delay={0.08} yOffset={18} className="main-heading font-coolvetica text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-[1.15] text-[#1D1D1F] dark:text-white max-w-4xl mb-5">
-            Motion that makes products feel <span className="highlight-blue font-coolvetica italic font-bold inline-block">premium</span>, not advertised.
+          <TextReveal as="h1" delay={0.08} yOffset={18} className="main-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.04] text-[#1D1D1F] dark:text-white max-w-4xl mb-3.5">
+            Motion that makes products feel <span className="highlight-blue font-bold inline-block">premium</span>, not advertised.
           </TextReveal>
-          <TextReveal as="p" delay={0.14} yOffset={14} className="sub-tagline tagline font-sans italic text-sm sm:text-base leading-relaxed text-neutral-600 dark:text-[#cccccc] max-w-2xl mb-8 text-center" style={{ fontFamily: "'Poppins', sans-serif" }}>
-            I'm <strong className="font-bold not-italic text-neutral-900 dark:text-white">Tamim</strong>, a Video Editor &amp; Motion Designer creating premium commercials, SaaS product films, and cinematic brand stories designed to leave a lasting impression.
+          <TextReveal as="p" delay={0.14} yOffset={14} className="sub-tagline tagline text-sm sm:text-base leading-relaxed text-neutral-600 dark:text-[#cccccc] max-w-2xl mb-8 text-center">
+            I'm <strong className="font-bold text-neutral-900 dark:text-white">Tamim</strong>, a Video Editor &amp; Motion Designer creating premium commercials, SaaS product films, and cinematic brand stories designed to leave a lasting impression.
           </TextReveal>
           
 
@@ -67,7 +67,7 @@ export const Hero: React.FC<HeroProps> = () => {
 
 
         {/* Mobile Headline (~80-85% width) */}
-        <TextReveal as="h1" delay={0.06} yOffset={12} className="main-heading font-coolvetica text-[22px] sm:text-[24px] font-normal tracking-tight leading-[1.2] text-[#1D1D1F] dark:text-white w-[92%] max-w-xs mx-auto mb-3.5 text-center">
+        <TextReveal as="h1" delay={0.06} yOffset={12} className="main-heading font-coolvetica text-[22px] sm:text-[24px] font-normal tracking-tight leading-[1.06] text-[#1D1D1F] dark:text-white w-[92%] max-w-xs mx-auto mb-2.5 text-center">
           Motion that makes products feel <span className="highlight-blue font-coolvetica italic font-bold inline-block">premium</span>, not advertised.
         </TextReveal>
 

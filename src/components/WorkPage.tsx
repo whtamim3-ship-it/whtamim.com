@@ -44,48 +44,60 @@ const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) 
   return (
     <div
       onClick={onSelect}
-      className="video-card cursor-pointer group relative flex flex-col w-full rounded-[12px] overflow-hidden bg-black aspect-video"
+      className="group cursor-pointer relative flex flex-col w-full"
     >
-      {isYt ? (
-        <img
-          src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
-          alt={project.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-      ) : isCommercial ? (
-        <img
-          src={project.coverImage}
-          alt={project.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-      ) : (
-        <video
-          src={project.videoUrl}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-        />
-      )}
-      {/* External Link Icon Button */}
-      <a
-        href={isYt ? project.videoUrl : project.videoUrl.replace('/preview', '/view')}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute top-[14px] right-[14px] w-8 h-8 bg-black/60 dark:bg-black/80 backdrop-blur-[8px] border border-white/10 rounded-full flex items-center justify-center text-white/80 hover:text-white hover:bg-neutral-900 transition-all duration-200 z-[5] opacity-0 group-hover:opacity-100"
-        title="Open Video in New Tab"
-        onClick={(e) => {
-          e.stopPropagation();
-          playSubtleClickSound();
-        }}
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-          <polyline points="15 3 21 3 21 9" />
-          <line x1="10" y1="14" x2="21" y2="3" />
-        </svg>
-      </a>
+      <div className="video-card relative w-full rounded-[16px] overflow-hidden bg-black aspect-video border border-neutral-200/20 dark:border-white/[0.05] shadow-[0_8px_20px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_35px_rgba(0,0,0,0.2)] transition-all duration-500 ease-out group-hover:scale-[1.02]">
+        {isYt ? (
+          <img
+            src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
+            alt={project.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : isCommercial ? (
+          <img
+            src={project.coverImage}
+            alt={project.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <video
+            src={project.videoUrl}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          />
+        )}
+        {/* External Link Icon Button */}
+        <a
+          href={isYt ? project.videoUrl : project.videoUrl.replace('/preview', '/view')}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute top-[12px] right-[12px] w-7 h-7 bg-black/60 dark:bg-black/80 backdrop-blur-[8px] border border-white/10 rounded-full flex items-center justify-center text-white/80 hover:text-white hover:bg-neutral-900 transition-all duration-200 z-[5] opacity-0 group-hover:opacity-100"
+          title="Open Video in New Tab"
+          onClick={(e) => {
+            e.stopPropagation();
+            playSubtleClickSound();
+          }}
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            <polyline points="15 3 21 3 21 9" />
+            <line x1="10" y1="14" x2="21" y2="3" />
+          </svg>
+        </a>
+      </div>
+
+      {/* Details: Title & Category Badge Only */}
+      <div className="mt-2.5 flex flex-col items-start text-left">
+        <h3 className="text-[16px] font-semibold text-neutral-900 dark:text-white tracking-tight group-hover:text-[#0066FF] dark:group-hover:text-[#0A84FF] transition-colors leading-snug">
+          {project.title}
+        </h3>
+        <span className="text-[11px] font-medium uppercase tracking-wider text-[#0066FF] dark:text-[#0A84FF] mt-0.5">
+          {project.category}
+        </span>
+      </div>
     </div>
   );
 };
