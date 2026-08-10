@@ -25,7 +25,7 @@ export const PremiumNavIcon: React.FC<PremiumNavIconProps> = ({
     'Contact': Mail,
   };
 
-  const IconComponent = iconMap[name];
+  const IconComponent = iconMap[name] || Home;
 
   return (
     <div className="nav-icon-wrapper">
@@ -39,3 +39,4 @@ export const PremiumNavIcon: React.FC<PremiumNavIconProps> = ({
     </div>
   );
 };
+

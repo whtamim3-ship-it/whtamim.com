@@ -78,8 +78,6 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHash);
   }, []);
 
-
-
   const handleNavigateToHome = (targetSection?: string) => {
     setCurrentView('home');
     if (targetSection && targetSection !== '#') {
