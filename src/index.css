@@ -1463,23 +1463,80 @@ header img,
     width: auto !important;
 }
 
-/* Mobile Responsive Navigation Height */
-@media (max-width: 768px) {
-    header, 
-    .navbar, 
-    .navbar-wrapper,
-    nav {
-        height: 60px !important;
-        padding: 0 16px !important;
-    }
-    
-    header img, 
-    .navbar .logo,
-    .navbar-brand img,
-    .navbar-brand svg {
-        max-height: 30px !important;
-    }
+/* High Contrast Readability Styles for Option Cards Across Light & Dark Modes */
+.option-card {
+  background: #f4f4f5 !important;
+  color: #18181b !important;
+  border: 1px solid #e4e4e7 !important;
+  transition: all 0.15s ease-in-out;
 }
+
+.dark .option-card,
+.dark-modal-context .option-card {
+  background: #18181b !important;
+  color: #f4f4f5 !important;
+  border: 1px solid #27272a !important;
+}
+
+.option-card.selected,
+.option-card[data-selected="true"],
+.option-card[aria-selected="true"] {
+  background: rgba(0, 102, 255, 0.12) !important;
+  color: #3b82f6 !important;
+  border: 1.5px solid #0066ff !important;
+}
+
+.dark .option-card.selected,
+.dark-modal-context .option-card.selected,
+.dark .option-card[data-selected="true"],
+.dark .option-card[aria-selected="true"] {
+  background: rgba(0, 102, 255, 0.12) !important;
+  color: #3b82f6 !important;
+  border: 1.5px solid #0066ff !important;
+}
+
+/* Icons inside option cards adapt dynamically */
+.option-card svg,
+.option-card .option-icon {
+  color: inherit !important;
+}
+
+/* Ensure title and subtext in option cards adapt dynamically */
+.option-card.selected .option-title,
+.option-card.selected .option-sub,
+.option-card[data-selected="true"] .option-title,
+.option-card[data-selected="true"] .option-sub {
+  color: #3b82f6 !important;
+}
+
+.option-card:not(.selected):not([data-selected="true"]) .option-title {
+  color: #18181b !important;
+}
+
+.dark .option-card:not(.selected):not([data-selected="true"]) .option-title,
+.dark-modal-context .option-card:not(.selected):not([data-selected="true"]) .option-title {
+  color: #f4f4f5 !important;
+}
+
+.option-card:not(.selected):not([data-selected="true"]) .option-sub {
+  color: #71717a !important;
+}
+
+.dark .option-card:not(.selected):not([data-selected="true"]) .option-sub,
+.dark-modal-context .option-card:not(.selected):not([data-selected="true"]) .option-sub {
+  color: #a1a1aa !important;
+}
+
+/* Section titles ("1. PRIMARY DELIVERABLE TYPE", etc.) */
+.option-section-title {
+  color: #71717a;
+}
+
+.dark .option-section-title,
+.dark-modal-context .option-section-title {
+  color: #a1a1aa !important;
+}
+
 
 
 

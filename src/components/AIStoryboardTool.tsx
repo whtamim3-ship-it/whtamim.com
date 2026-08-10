@@ -236,11 +236,11 @@ Transition: ${s.transitionType}`
             {/* Visual Style Selector Grid */}
             <div className="md:col-span-2 space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-12px font-mono text-[#86868B] dark:text-[#98989D] uppercase tracking-wider font-medium flex items-center gap-1.5">
-                  <Palette className="w-3.5 h-3.5 text-[#007AFF] dark:text-[#0A84FF]" />
+                <label className="text-12px font-mono text-[#71717a] dark:text-[#a1a1aa] uppercase tracking-wider font-medium flex items-center gap-1.5 option-section-title">
+                  <Palette className="w-3.5 h-3.5 text-[#0066FF]" />
                   Visual Style Selector *
                 </label>
-                <span className="text-11px font-mono text-[#007AFF] dark:text-[#0A84FF] font-semibold">
+                <span className="text-11px font-mono text-[#0066FF] font-semibold">
                   Selected: {visualStyle}
                 </span>
               </div>
@@ -256,10 +256,8 @@ Transition: ${s.transitionType}`
                         playSubtleClickSound();
                         setVisualStyle(style.id);
                       }}
-                      className={`relative p-3.5 rounded-xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[96px] ${
-                        isSelected
-                          ? 'bg-[#007AFF]/[0.08] dark:bg-[#0A84FF]/[0.15] border-[#007AFF] dark:border-[#0A84FF] shadow-sm ring-1 ring-[#007AFF] dark:ring-[#0A84FF]'
-                          : 'bg-white dark:bg-[#1E1E22] border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
+                      className={`option-card relative p-3.5 rounded-xl text-left transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[96px] ${
+                        isSelected ? 'selected' : ''
                       }`}
                     >
                       <div>
@@ -268,24 +266,18 @@ Transition: ${s.transitionType}`
                           <span
                             className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded font-bold ${
                               isSelected
-                                ? 'bg-[#007AFF] dark:bg-[#0A84FF] text-white'
-                                : 'bg-neutral-100 dark:bg-neutral-800 text-[#86868B] dark:text-[#98989D]'
+                                ? 'bg-[#0066FF] text-white'
+                                : 'bg-neutral-200/80 dark:bg-neutral-800 text-[#71717a] dark:text-[#a1a1aa]'
                             }`}
                           >
                             {style.badge}
                           </span>
                         </div>
-                        <h4
-                          className={`text-13px font-bold ${
-                            isSelected
-                              ? 'text-[#007AFF] dark:text-[#0A84FF]'
-                              : 'text-[#1D1D1F] dark:text-[#F5F5F7]'
-                          }`}
-                        >
+                        <h4 className="text-13px font-bold option-title">
                           {style.label}
                         </h4>
                       </div>
-                      <p className="text-11px text-[#86868B] dark:text-[#98989D] line-clamp-2 leading-tight mt-1">
+                      <p className="text-11px line-clamp-2 leading-tight mt-1 option-sub">
                         {style.description}
                       </p>
                     </button>

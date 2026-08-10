@@ -191,7 +191,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
           
           {/* Step 1: Project Type */}
           <div>
-            <label className="block text-[10px] sm:text-[11px] uppercase tracking-[0.05em] sm:tracking-[0.08em] text-[#6b7280] dark:text-[#8E8E93] mb-1.5 font-semibold">
+            <label className="block text-[10px] sm:text-[11px] uppercase tracking-[0.05em] sm:tracking-[0.08em] text-[#71717a] dark:text-[#a1a1aa] mb-1.5 font-semibold option-section-title">
               1. Primary Deliverable Type
             </label>
             <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
@@ -211,39 +211,20 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
                       playSubtleClickSound();
                       setProjectType(item.id as any);
                     }}
-                    style={
-                      isSelected
-                        ? {
-                            border: '1.5px solid #0066ff',
-                            background: '#f0f7ff',
-                            borderRadius: '8px',
-                            color: '#0066ff',
-                            cursor: 'pointer',
-                          }
-                        : {
-                            border: '1px solid #e5e7eb',
-                            background: '#ffffff',
-                            borderRadius: '8px',
-                            color: '#374151',
-                            cursor: 'pointer',
-                          }
-                    }
-                    className={`h-[42px] sm:h-auto py-0 px-2.5 sm:p-3 rounded-lg sm:rounded-xl border text-left transition-all duration-150 flex items-center gap-2.5 ${
-                      isSelected
-                        ? 'dark:bg-[#0066ff]/15 dark:text-[#0066ff] dark:border-[#0066ff]'
-                        : 'dark:bg-[#121214] dark:text-[#F5F5F7] dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
+                    className={`option-card h-[42px] sm:h-auto py-0 px-2.5 sm:p-3 rounded-lg sm:rounded-xl text-left transition-all duration-150 flex items-center gap-2.5 cursor-pointer ${
+                      isSelected ? 'selected' : ''
                     }`}
                   >
                     <div className={`p-1 sm:p-1.5 rounded-md sm:rounded-lg shrink-0 transition-colors ${
                       isSelected
-                        ? 'bg-[#0066FF] text-white'
-                        : 'bg-[#F5F5F7] dark:bg-[#2A2A2E] text-[#0066FF] border border-neutral-200/60 dark:border-neutral-700'
+                        ? 'bg-[#0066FF]/20 text-[#3b82f6]'
+                        : 'bg-neutral-200/80 dark:bg-neutral-800 text-neutral-700 dark:text-[#f4f4f5]'
                     }`}>
-                      <IconComponent className="w-4 h-4 shrink-0" />
+                      <IconComponent className="w-4 h-4 shrink-0 transition-colors" style={{ color: 'inherit' }} />
                     </div>
                     <div className="min-w-0">
-                      <div className={`font-medium sm:font-semibold text-[13px] tracking-[-0.015em] truncate ${isSelected ? 'text-[#0066FF] dark:text-[#0066ff]' : 'text-[#111827] dark:text-[#F5F5F7]'}`}>{item.title}</div>
-                      <div className="text-[11px] text-[#86868B] dark:text-[#98989D] truncate hidden sm:block mt-0.5">{item.sub}</div>
+                      <div className={`font-medium sm:font-semibold text-[13px] tracking-[-0.015em] truncate option-title ${isSelected ? 'text-[#3b82f6]' : 'text-[#18181b] dark:text-[#f4f4f5]'}`}>{item.title}</div>
+                      <div className="option-sub text-[11px] truncate hidden sm:block mt-0.5">{item.sub}</div>
                     </div>
                   </button>
                 );
@@ -254,7 +235,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
           {/* Step 2: Target Video Duration */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-[11px] uppercase tracking-[0.08em] text-[#8E8E93] font-semibold flex items-center gap-1.5">
+              <label className="block text-[11px] uppercase tracking-[0.08em] text-[#71717a] dark:text-[#a1a1aa] font-semibold flex items-center gap-1.5 option-section-title">
                 <Sliders className="w-3.5 h-3.5 text-[#0066FF]" />
                 2. Target Video Duration
               </label>
@@ -274,30 +255,9 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
                       playSubtleClickSound();
                       setDurationIndex(idx);
                     }}
-                    style={
-                      isActive
-                        ? {
-                            height: '40px',
-                            width: '100%',
-                            borderRadius: '8px',
-                            border: '2px solid #0066ff',
-                            background: '#e0edff',
-                            fontWeight: 700,
-                            fontSize: '14px',
-                            color: '#0066ff',
-                            cursor: 'pointer',
-                          }
-                        : {
-                            height: '40px',
-                            width: '100%',
-                            borderRadius: '8px',
-                            border: '1px solid #d1d5db',
-                            fontWeight: 700,
-                            fontSize: '14px',
-                            cursor: 'pointer',
-                          }
-                    }
-                    className={isActive ? '' : 'bg-white text-[#1D1D1F] dark:bg-[#121214] dark:text-[#F5F5F7] dark:border-neutral-700'}
+                    className={`option-card h-[40px] w-full rounded-lg font-bold text-[14px] cursor-pointer transition-all duration-150 ${
+                      isActive ? 'selected' : ''
+                    }`}
                   >
                     {step.label}
                   </button>
@@ -308,7 +268,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
 
           {/* Step 3: Visual Complexity */}
           <div>
-            <label className="block text-[11px] uppercase tracking-[0.08em] text-[#8E8E93] mb-2 font-semibold flex items-center gap-1.5">
+            <label className="block text-[11px] uppercase tracking-[0.08em] text-[#71717a] dark:text-[#a1a1aa] mb-2 font-semibold flex items-center gap-1.5 option-section-title">
               <Layers className="w-3.5 h-3.5 text-[#0066FF]" />
               3. Visual Complexity &amp; Motion Density
             </label>
@@ -327,34 +287,13 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
                       playSubtleClickSound();
                       setComplexity(item.id as any);
                     }}
-                    style={
-                      isSelected
-                        ? {
-                            border: '1.5px solid #0066ff',
-                            background: 'rgba(0, 102, 255, 0.08)',
-                            borderRadius: '8px',
-                            color: '#0066ff',
-                            cursor: 'pointer',
-                          }
-                        : {
-                            border: '1px solid #e5e7eb',
-                            background: '#f9fafb',
-                            borderRadius: '8px',
-                            color: '#1f2937',
-                            cursor: 'pointer',
-                          }
-                    }
-                    className={`h-[38px] sm:h-auto py-0 sm:py-2.5 px-2 sm:px-3 text-center transition-all duration-150 flex flex-col items-center justify-center text-[13px] font-semibold ${
+                    className={`option-card h-[38px] sm:h-auto py-0 sm:py-2.5 px-2 sm:px-3 text-center transition-all duration-150 flex flex-col items-center justify-center text-[13px] font-semibold cursor-pointer ${
                       item.isFullWidthMobile ? 'col-span-2 sm:col-span-1' : 'col-span-1'
-                    } ${
-                      isSelected
-                        ? 'dark:bg-[#0066ff]/15 dark:text-[#0066ff] dark:border-[#0066ff]'
-                        : 'dark:bg-[#121214] dark:text-[#F5F5F7] dark:border-neutral-800'
-                    }`}
+                    } ${isSelected ? 'selected' : ''}`}
                   >
-                    <span className="sm:hidden">{item.mobileLabel}</span>
-                    <span className="hidden sm:inline tracking-[-0.015em] font-medium">{item.label}</span>
-                    <div className="hidden sm:block text-[11px] opacity-75 font-normal truncate mt-0.5">{item.sub}</div>
+                    <span className="sm:hidden option-title">{item.mobileLabel}</span>
+                    <span className="hidden sm:inline tracking-[-0.015em] font-medium option-title">{item.label}</span>
+                    <div className="hidden sm:block text-[11px] font-normal truncate mt-0.5 option-sub">{item.sub}</div>
                   </button>
                 );
               })}
@@ -365,7 +304,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* Resolution */}
             <div>
-              <label className="block text-[11px] uppercase tracking-[0.08em] text-[#8E8E93] mb-1.5 font-semibold flex items-center gap-1.5">
+              <label className="block text-[11px] uppercase tracking-[0.08em] text-[#71717a] dark:text-[#a1a1aa] mb-1.5 font-semibold flex items-center gap-1.5 option-section-title">
                 <Monitor className="w-3.5 h-3.5 text-[#0066FF]" />
                 4. Master Resolution
               </label>
@@ -383,31 +322,12 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
                         playSubtleClickSound();
                         setResolution(item.id as any);
                       }}
-                      style={
-                        isSelected
-                          ? {
-                              border: '1.5px solid #0066ff',
-                              background: '#e0edff',
-                              borderRadius: '8px',
-                              color: '#0066ff',
-                              cursor: 'pointer',
-                            }
-                          : {
-                              border: '1px solid #e5e7eb',
-                              background: '#f9fafb',
-                              borderRadius: '8px',
-                              color: '#374151',
-                              cursor: 'pointer',
-                            }
-                      }
-                      className={`h-[38px] sm:h-auto py-0 sm:py-2 px-2 text-center transition-all duration-150 flex flex-col items-center justify-center font-bold text-[13px] ${
-                        isSelected
-                          ? 'dark:bg-[#0066ff]/15 dark:text-[#0066ff] dark:border-[#0066ff]'
-                          : 'dark:bg-[#121214] dark:text-[#F5F5F7] dark:border-neutral-800'
+                      className={`option-card h-[38px] sm:h-auto py-0 sm:py-2 px-2 text-center transition-all duration-150 flex flex-col items-center justify-center font-bold text-[13px] cursor-pointer ${
+                        isSelected ? 'selected' : ''
                       }`}
                     >
-                      <div className="text-[13px] font-bold leading-none tracking-[-0.015em]">{item.label}</div>
-                      <div className="hidden sm:block text-[10px] opacity-75 font-normal mt-0.5">{item.sub}</div>
+                      <div className="text-[13px] font-bold leading-none tracking-[-0.015em] option-title">{item.label}</div>
+                      <div className="hidden sm:block text-[10px] font-normal mt-0.5 option-sub">{item.sub}</div>
                     </button>
                   );
                 })}
@@ -416,7 +336,7 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
 
             {/* Formats */}
             <div>
-              <label className="block text-[11px] uppercase tracking-[0.08em] text-[#8E8E93] mb-1.5 font-semibold">
+              <label className="block text-[11px] uppercase tracking-[0.08em] text-[#71717a] dark:text-[#a1a1aa] mb-1.5 font-semibold option-section-title">
                 5. Deliverable Cuts
               </label>
               <div className="flex gap-1.5">
@@ -431,11 +351,8 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
                       type="button"
                       key={fmt.id}
                       onClick={() => toggleFormat(fmt.id)}
-                      style={getCardStyle(isSelected)}
-                      className={`flex-1 px-1 sm:px-2 h-[36px] sm:min-h-[44px] rounded-xl border text-[12px] text-center font-normal transition-all duration-150 cursor-pointer flex items-center justify-center ${
-                        isSelected
-                          ? 'text-[#0066FF] font-medium'
-                          : 'bg-[#F5F5F7] dark:bg-[#1E1E22] border-neutral-200/80 dark:border-neutral-700 text-[#86868B] dark:text-[#98989D]'
+                      className={`option-card flex-1 px-1 sm:px-2 h-[36px] sm:min-h-[44px] rounded-xl text-[12px] text-center font-medium transition-all duration-150 cursor-pointer flex items-center justify-center ${
+                        isSelected ? 'selected' : ''
                       }`}
                     >
                       {fmt.label}

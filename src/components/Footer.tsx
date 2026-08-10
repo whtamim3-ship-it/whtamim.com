@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowUp, Sparkles, Calculator, Shield, Mail, X, Lock, ShieldCheck } from 'lucide-react';
+import { Sparkles, Calculator, Shield, Mail, X, Lock, ShieldCheck } from 'lucide-react';
 import { SectionReveal } from './SectionReveal';
 import { BrandLogo } from './BrandLogo';
 import { playSubtleClickSound } from '../utils/motion';
@@ -190,7 +190,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <div className="w-full pb-3 border-b border-neutral-800/60">
                   <span>© {currentYear} whtamim. All rights reserved.</span>
                 </div>
-                <div className="w-full pb-3 border-b border-neutral-800/60">
+                <div>
                   <a
                     href="#privacy"
                     onClick={openPrivacyModal}
@@ -200,23 +200,15 @@ export const Footer: React.FC<FooterProps> = ({
                     <span>Privacy Policy</span>
                   </a>
                 </div>
-                <div>
-                  <button
-                    onClick={scrollToTop}
-                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white transition-colors cursor-pointer"
-                  >
-                    <span className="font-medium text-[12px]">Back to Top ↑</span>
-                  </button>
-                </div>
               </div>
 
-              {/* Desktop View (>= md) - Left, Center, Right Alignment */}
+              {/* Desktop View (>= md) - Left & Right Alignment */}
               <div className="hidden md:flex items-center justify-between text-[12px] font-mono text-neutral-400">
-                <div className="text-left min-w-[220px]">
+                <div className="text-left">
                   <span>© {currentYear} whtamim. All rights reserved.</span>
                 </div>
 
-                <div className="text-center">
+                <div className="text-right">
                   <a
                     href="#privacy"
                     onClick={openPrivacyModal}
@@ -225,16 +217,6 @@ export const Footer: React.FC<FooterProps> = ({
                     <Shield className="w-3.5 h-3.5 text-neutral-400" />
                     <span>Privacy Policy</span>
                   </a>
-                </div>
-
-                <div className="text-right min-w-[220px]">
-                  <button
-                    onClick={scrollToTop}
-                    className="inline-flex items-center justify-end gap-1.5 hover:text-white transition-colors px-4 py-2 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 cursor-pointer group"
-                  >
-                    <span className="font-medium text-[12px]">Back to Top</span>
-                    <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </button>
                 </div>
               </div>
             </div>
