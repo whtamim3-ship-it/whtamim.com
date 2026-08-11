@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { CaseStudy } from '../types';
 import { playSubtleClickSound } from '../utils/motion';
 import { useBodyScrollLock } from '../utils/scrollLock';
+import { BlurUpImage } from './BlurUpImage';
 import {
   X,
   Play,
@@ -440,7 +441,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {caseStudy.behindTheScenes.map((bts, bIdx) => (
                   <div key={bIdx} className="rounded-[20px] overflow-hidden bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-xs">
-                    <img src={bts.imageUrl} alt={bts.title} className="w-full h-56 object-cover" />
+                    <BlurUpImage src={bts.imageUrl} alt={bts.title} className="w-full h-56" />
                     <div className="p-5">
                       <h3 className="text-16px font-bold text-[#1D1D1F] dark:text-[#F5F5F7] mb-1">{bts.title}</h3>
                       <p className="text-13px text-[#86868B] dark:text-[#98989D]">{bts.description}</p>
@@ -500,10 +501,10 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                   </p>
                   <div className="flex items-center gap-3">
                     {caseStudy.testimonial.avatarUrl && (
-                      <img
+                      <BlurUpImage
                         src={caseStudy.testimonial.avatarUrl}
                         alt={caseStudy.testimonial.author}
-                        className="w-10 h-10 rounded-full object-cover"
+                        className="w-10 h-10 rounded-full"
                       />
                     )}
                     <div>

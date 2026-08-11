@@ -35,6 +35,9 @@ export default function App() {
   const [dbDashboardOpen, setDbDashboardOpen] = useState<boolean>(false);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
 
+  // Ambient Audio Loop State
+  const [isAmbientPlaying, setIsAmbientPlaying] = useState<boolean>(false);
+
   // Pre-filled contact brief
   const [preFilledBrief, setPreFilledBrief] = useState<string>('');
 
@@ -77,6 +80,45 @@ export default function App() {
     window.addEventListener('hashchange', handleHash);
     return () => window.removeEventListener('hashchange', handleHash);
   }, []);
+
+  // Global Escape (Esc) key keyboard listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' || e.code === 'Escape') {
+        const isModalOpen =
+          showreelOpen ||
+          estimatorOpen ||
+          aiStoryboardOpen ||
+          dbDashboardOpen ||
+          selectedCaseStudy !== null ||
+          Boolean(document.querySelector('[role="dialog"]')) ||
+          document.body.style.overflow === 'hidden';
+
+        if (isModalOpen) {
+          if (showreelOpen) setShowreelOpen(false);
+          if (estimatorOpen) setEstimatorOpen(false);
+          if (aiStoryboardOpen) setAiStoryboardOpen(false);
+          if (dbDashboardOpen) setDbDashboardOpen(false);
+          if (selectedCaseStudy) setSelectedCaseStudy(null);
+        } else {
+          if (currentView === 'work') {
+            setCurrentView('home');
+          }
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [
+    showreelOpen,
+    estimatorOpen,
+    aiStoryboardOpen,
+    dbDashboardOpen,
+    selectedCaseStudy,
+    currentView,
+  ]);
 
   const handleNavigateToHome = (targetSection?: string) => {
     setCurrentView('home');
@@ -136,6 +178,8 @@ export default function App() {
         onOpenDatabaseDashboard={() => setDbDashboardOpen(true)}
         theme={theme}
         onToggleTheme={toggleTheme}
+        isAmbientPlaying={isAmbientPlaying}
+        onToggleAmbient={setIsAmbientPlaying}
       />
 
       {/* View Switcher: Work Page Archive vs Main Home Flow */}

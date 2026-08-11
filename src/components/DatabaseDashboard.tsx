@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BlurUpImage } from './BlurUpImage';
 import {
   Database,
   Table as TableIcon,
@@ -268,6 +269,21 @@ export const DatabaseDashboard: React.FC<DatabaseDashboardProps> = ({ isOpen, on
     setModalMode(null);
     setCurrentRecord(null);
   };
+
+  useBodyScrollLock(isOpen);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/60 backdrop-blur-md">
@@ -585,8 +601,8 @@ export const DatabaseDashboard: React.FC<DatabaseDashboardProps> = ({ isOpen, on
                 {portfolio.map((proj) => (
                   <div key={proj.id} className="p-4 rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200 dark:border-neutral-800 space-y-3">
                     <div className="aspect-video rounded-xl overflow-hidden bg-neutral-900 relative">
-                      <img src={proj.coverImage} alt={proj.title} className="w-full h-full object-cover" />
-                      <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-10px font-mono bg-black/60 text-white backdrop-blur-xs">
+                      <BlurUpImage src={proj.coverImage} alt={proj.title} className="w-full h-full" />
+                      <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-10px font-mono bg-black/60 text-white backdrop-blur-xs z-30">
                         {proj.filterCategory}
                       </span>
                     </div>

@@ -4,6 +4,7 @@ import { SectionReveal } from './SectionReveal';
 import { playSubtleClickSound } from '../utils/motion';
 import { CaseStudy } from '../types';
 import { CustomYoutubePlayer } from './CustomYoutubePlayer';
+import { BlurUpImage } from './BlurUpImage';
 
 const isYoutubeUrl = (url: string) => {
   return url && (url.includes('youtube.com') || url.includes('youtu.be'));
@@ -48,16 +49,18 @@ const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) 
     >
       <div className="video-card relative w-full rounded-[16px] overflow-hidden bg-black aspect-video border border-neutral-200/20 dark:border-white/[0.05] shadow-[0_8px_20px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_35px_rgba(0,0,0,0.2)] transition-all duration-500 ease-out group-hover:scale-[1.02]">
         {isYt ? (
-          <img
+          <BlurUpImage
             src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
             alt={project.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full"
+            imgClassName="group-hover:scale-105 transition-transform duration-500"
           />
         ) : isCommercial ? (
-          <img
+          <BlurUpImage
             src={project.coverImage}
             alt={project.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full"
+            imgClassName="group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
           <video

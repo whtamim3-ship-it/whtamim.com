@@ -5,6 +5,7 @@ import { playSubtleClickSound } from '../utils/motion';
 import { useBodyScrollLock } from '../utils/scrollLock';
 import { BrandLogo } from './BrandLogo';
 import { ThemeToggle } from './ThemeToggle';
+import { AmbientAudioToggle } from './AmbientAudioToggle';
 import { PremiumNavIcon } from './PremiumNavIcon';
 
 interface NavbarProps {
@@ -16,6 +17,8 @@ interface NavbarProps {
   onOpenDatabaseDashboard: () => void;
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
+  isAmbientPlaying: boolean;
+  onToggleAmbient: (newState: boolean) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -27,6 +30,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenDatabaseDashboard,
   theme,
   onToggleTheme,
+  isAmbientPlaying,
+  onToggleAmbient,
 }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -162,9 +167,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           ))}
         </div>
 
-        {/* Right: Theme Toggle + CTA Button on Desktop */}
+        {/* Right: Ambient Audio + Theme Toggle + CTA Button on Desktop */}
         <div className="navbar-right">
           <div className="desktop-actions">
+            <AmbientAudioToggle isPlaying={isAmbientPlaying} onToggle={onToggleAmbient} />
             <ThemeToggle theme={theme} onToggle={onToggleTheme} />
             <motion.a
               href="#contact"
@@ -218,6 +224,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             <div className="mobile-actions-row">
+              <AmbientAudioToggle isPlaying={isAmbientPlaying} onToggle={onToggleAmbient} />
               <ThemeToggle theme={theme} onToggle={onToggleTheme} />
               <motion.a
                 href="#contact"
