@@ -1,6 +1,4 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
-import { playSubtleClickSound } from '../utils/motion';
 import { TextReveal } from './TextReveal';
 import { ImageReveal } from './ImageReveal';
 import { SectionReveal } from './SectionReveal';
@@ -195,24 +193,6 @@ export const AboutSection: React.FC<AboutSectionProps> = () => {
               ))}
             </div>
           </div>
-
-          {/* Action Row / Primary CTA */}
-          <TextReveal delay={0.35} yOffset={16} className="pt-6 sm:pt-8">
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
-              <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  playSubtleClickSound();
-                  document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="px-6 py-3.5 rounded-full bg-[#1D1D1F] dark:bg-white text-white dark:text-[#0A0A0C] text-13px sm:text-14px font-semibold tracking-wide hover:bg-[#007AFF] dark:hover:bg-[#0A84FF] dark:hover:text-white transition-all flex items-center justify-center gap-2 shadow-2xs group"
-              >
-                <span>Start a Project</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
-            </div>
-          </TextReveal>
         </div>
       </div>
       </div>
