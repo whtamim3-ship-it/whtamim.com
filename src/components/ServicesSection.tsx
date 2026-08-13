@@ -7,13 +7,11 @@ import { SERVICES } from '../data/portfolioData';
 import { ParallaxLayer } from '../utils/parallaxEngine';
 
 interface ServicesSectionProps {
-  onOpenEstimator: () => void;
+  onOpenEstimator?: () => void;
   onOpenAIStoryboard?: () => void;
 }
 
-export const ServicesSection: React.FC<ServicesSectionProps> = ({
-  onOpenEstimator,
-}) => {
+export const ServicesSection: React.FC<ServicesSectionProps> = () => {
   return (
     <SectionReveal id="services" className="min-h-[100svh] md:min-h-[100dvh] w-full flex flex-col justify-center items-center py-20 sm:py-24 bg-[#F8F9FA] dark:bg-[#0A0A0C] text-[#111827] dark:text-[#F5F5F7]">
       <div className="w-full max-w-[1240px] mx-auto px-6 sm:px-10 lg:px-12 my-auto">
@@ -28,16 +26,18 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             </TextReveal>
           </div>
           <TextReveal delay={0.16} yOffset={16}>
-            <button
-              onClick={() => {
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
                 playSubtleClickSound();
-                onOpenEstimator();
+                document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
               }}
               className="font-sans bg-[#0F172A] hover:bg-[#0066ff] dark:bg-white dark:text-[#0F172A] dark:hover:bg-[#3B82F6] dark:hover:text-white text-white text-[14px] font-medium px-7 py-3.5 rounded-full border border-white/10 cursor-pointer transition-all duration-300 shadow-[0_4px_15px_rgba(15,23,42,0.15)] hover:shadow-[0_8px_25px_rgba(0,102,255,0.3)] hover:-translate-y-0.5 inline-flex items-center gap-2.5"
             >
-              <span>Calculate Scope</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </button>
+              <span>Start a Project</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
           </TextReveal>
         </div>
 

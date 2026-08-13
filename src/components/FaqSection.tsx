@@ -87,22 +87,22 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
                 </div>
                 <div>
                   <h3 className="text-14px font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">Have a custom requirement?</h3>
-                  <p className="text-12px text-[#86868B] dark:text-[#98989D] mt-0.5">Get an instant project estimate in under 60 seconds.</p>
+                  <p className="text-12px text-[#86868B] dark:text-[#98989D] mt-0.5">Reach out directly for tailored scope discussions.</p>
                 </div>
               </div>
 
-              {onOpenEstimator && (
-                <button
-                  onClick={() => {
-                    playSubtleClickSound();
-                    onOpenEstimator();
-                  }}
-                  className="w-full py-3 px-5 rounded-full bg-[#1D1D1F] dark:bg-white hover:bg-[#007AFF] dark:hover:bg-[#0A84FF] text-white dark:text-[#0A0A0C] dark:hover:text-white text-13px font-semibold transition-all duration-200 flex items-center justify-center gap-2 group"
-                >
-                  <span>Launch Project Estimator</span>
-                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </button>
-              )}
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  playSubtleClickSound();
+                  document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="w-full py-3 px-5 rounded-full bg-[#1D1D1F] dark:bg-white hover:bg-[#007AFF] dark:hover:bg-[#0A84FF] text-white dark:text-[#0A0A0C] dark:hover:text-white text-13px font-semibold transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer"
+              >
+                <span>Get in Touch</span>
+                <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
             </div>
           </TextReveal>
         </div>

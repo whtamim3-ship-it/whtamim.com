@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Sparkles, Calculator, Shield, Mail, X, Lock, ShieldCheck } from 'lucide-react';
+import { Sparkles, Shield, Mail, X, Lock, ShieldCheck } from 'lucide-react';
 import { SectionReveal } from './SectionReveal';
 import { BrandLogo } from './BrandLogo';
 import { playSubtleClickSound } from '../utils/motion';
@@ -153,19 +153,6 @@ export const Footer: React.FC<FooterProps> = ({
                 >
                   <Sparkles className="w-4 h-3.5 text-amber-400" />
                   <span>AI Storyboard</span>
-                </button>
-              )}
-
-              {onOpenEstimator && (
-                <button
-                  onClick={() => {
-                    playSubtleClickSound();
-                    onOpenEstimator();
-                  }}
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-200 hover:text-white hover:border-neutral-700 transition-all text-[12px] sm:text-[13px] font-medium cursor-pointer w-full sm:w-auto"
-                >
-                  <Calculator className="w-4 h-3.5 text-blue-400" />
-                  <span>Project Estimator</span>
                 </button>
               )}
 

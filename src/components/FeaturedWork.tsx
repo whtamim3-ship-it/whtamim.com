@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { CASE_STUDIES } from '../data/portfolioData';
 import { CaseStudy } from '../types';
 import { playSubtleClickSound } from '../utils/motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Calculator } from 'lucide-react';
 import { TextReveal } from './TextReveal';
 import { SectionReveal } from './SectionReveal';
 import { ParallaxLayer } from '../utils/parallaxEngine';
@@ -26,6 +26,7 @@ const getYoutubeId = (url: string) => {
 interface FeaturedWorkProps {
   onSelectCaseStudy: (study: CaseStudy) => void;
   onNavigateToWork: () => void;
+  onOpenEstimator?: () => void;
 }
 
 export const FeaturedWork: React.FC<FeaturedWorkProps> = ({

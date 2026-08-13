@@ -201,24 +201,25 @@ export default function App() {
 
           {/* Services & Capabilities Section */}
           <ServicesSection
-            onOpenEstimator={() => setEstimatorOpen(true)}
             onOpenAIStoryboard={() => setAiStoryboardOpen(true)}
           />
 
           {/* About whtamim & Creative Philosophy */}
-          <AboutSection onOpenEstimator={() => setEstimatorOpen(true)} />
+          <AboutSection />
 
           {/* Frequently Asked Questions (FAQ) Accordion */}
-          <FaqSection onOpenEstimator={() => setEstimatorOpen(true)} />
+          <FaqSection />
 
           {/* Contact & Direct Inquiry Section */}
-          <ContactSection preFilledBrief={preFilledBrief} />
+          <ContactSection
+            preFilledBrief={preFilledBrief}
+            onOpenEstimator={() => setEstimatorOpen(true)}
+          />
         </main>
       )}
 
       {/* Footer */}
       <Footer
-        onOpenEstimator={() => setEstimatorOpen(true)}
         onOpenAIStoryboard={() => setAiStoryboardOpen(true)}
       />
 

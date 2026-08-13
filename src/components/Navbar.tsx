@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowUpRight, Sparkles, Calculator, Database } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Sparkles, Database } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { playSubtleClickSound } from '../utils/motion';
 import { useBodyScrollLock } from '../utils/scrollLock';
@@ -12,7 +12,7 @@ interface NavbarProps {
   currentView: 'home' | 'work';
   onNavigateToHome: (targetSection?: string) => void;
   onNavigateToWork: () => void;
-  onOpenEstimator: () => void;
+  onOpenEstimator?: () => void;
   onOpenAIStoryboard: () => void;
   onOpenDatabaseDashboard: () => void;
   theme: 'light' | 'dark';
@@ -25,7 +25,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentView,
   onNavigateToHome,
   onNavigateToWork,
-  onOpenEstimator,
   onOpenAIStoryboard,
   onOpenDatabaseDashboard,
   theme,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Send, CheckCircle2, Linkedin, ArrowUpRight, Loader2, AlertCircle, X } from 'lucide-react';
+import { Mail, Send, CheckCircle2, Linkedin, ArrowUpRight, Loader2, AlertCircle, X, Calculator } from 'lucide-react';
 import { playSubtleClickSound } from '../utils/motion';
 import { TextReveal } from './TextReveal';
 import { SectionReveal } from './SectionReveal';
@@ -7,9 +7,10 @@ import { StudioTimeWidget } from './StudioTimeWidget';
 
 interface ContactSectionProps {
   preFilledBrief?: string;
+  onOpenEstimator?: () => void;
 }
 
-export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief }) => {
+export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, onOpenEstimator }) => {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -165,23 +166,34 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief }
             </TextReveal>
 
             <TextReveal delay={0.24} yOffset={20} className="space-y-4 pt-4">
-              <a
-                href="mailto:whtamim3@gmail.com"
-                className="p-4 rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 flex items-center justify-between hover:border-[#007AFF] dark:hover:border-[#0A84FF] shadow-xs transition-colors group"
+              <div
+                className="p-4 rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 flex items-center justify-between shadow-xs transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-[#F5F5F7] dark:bg-neutral-800 text-[#007AFF] dark:text-[#0A84FF]">
+                  <div className="p-2.5 rounded-xl bg-[#F5F5F7] dark:bg-neutral-800 text-[#007AFF] dark:text-[#0A84FF] shrink-0">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-11px font-mono uppercase text-[#86868B] dark:text-[#98989D] block">Email</span>
-                    <span className="text-15px font-bold text-[#1D1D1F] dark:text-[#F5F5F7] font-mono">
-                      whtamim3@gmail.com
-                    </span>
+                    <span className="text-11px font-mono uppercase text-[#86868B] dark:text-[#98989D] block mb-1">Email</span>
+                    <div className="flex flex-col gap-[4px]">
+                      <a
+                        href="mailto:whtamim3@gmail.com"
+                        className="text-[13px]! font-medium text-inherit hover:text-[#007AFF] dark:hover:text-[#0A84FF] transition-colors block leading-tight"
+                        style={{ fontFamily: 'var(--font-display, inherit)', fontSize: '13px', fontWeight: 500 }}
+                      >
+                        whtamim3@gmail.com
+                      </a>
+                      <a
+                        href="mailto:wasimhasnattamim@gmail.com"
+                        className="text-[13px]! font-medium text-inherit hover:text-[#007AFF] dark:hover:text-[#0A84FF] transition-colors block leading-tight"
+                        style={{ fontFamily: 'var(--font-display, inherit)', fontSize: '13px', fontWeight: 500 }}
+                      >
+                        wasimhasnattamim@gmail.com
+                      </a>
+                    </div>
                   </div>
                 </div>
-                <ArrowUpRight className="w-4 h-4 text-[#86868B] dark:text-[#98989D] group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors" />
-              </a>
+              </div>
 
               <a
                 href="https://www.linkedin.com/in/wasimhasnat/"
@@ -207,13 +219,36 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief }
             <TextReveal delay={0.32} yOffset={20}>
               <div className="space-y-4">
                 <StudioTimeWidget variant="compact" />
-                <div className="p-5 rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-xs">
-                  <span className="text-11px font-mono text-[#007AFF] dark:text-[#0A84FF] font-bold block mb-1">
-                    ● PRODUCTION TURNAROUND
-                  </span>
-                  <p className="text-13px text-[#86868B] dark:text-[#98989D]">
-                    Average production timeline is 1–2 weeks depending on scope. Currently available for new projects.
-                  </p>
+                
+                {/* Project Scope & Budget Calculator Card */}
+                <div
+                  onClick={() => {
+                    playSubtleClickSound();
+                    onOpenEstimator?.();
+                  }}
+                  className="p-4 rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 flex items-center justify-between hover:border-[#007AFF] dark:hover:border-[#0A84FF] shadow-xs transition-all cursor-pointer group"
+                  style={{ padding: '16px', borderRadius: '16px' }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-xl bg-[#eff6ff] dark:bg-[#007AFF]/20 text-[#2563eb] dark:text-[#0A84FF] shrink-0">
+                      <Calculator className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <span
+                        className="text-[11px] font-semibold uppercase text-[#86868B] dark:text-[#98989D] block tracking-wider mb-0.5"
+                        style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.05em' }}
+                      >
+                        PROJECT ESTIMATOR
+                      </span>
+                      <span
+                        className="text-[14px] font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors block"
+                        style={{ fontSize: '14px', fontWeight: 600 }}
+                      >
+                        Calculate Scope &amp; Budget
+                      </span>
+                    </div>
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-[#86868B] dark:text-[#98989D] group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors shrink-0" />
                 </div>
               </div>
             </TextReveal>
@@ -392,23 +427,34 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief }
           {/* 3. Mobile Left Contact Badges & Timezone Widget (< lg screen) */}
           <div className="w-full lg:hidden space-y-4 pt-2">
             <div className="space-y-3">
-              <a
-                href="mailto:whtamim3@gmail.com"
-                className="p-3.5 rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 flex items-center justify-between hover:border-[#007AFF] dark:hover:border-[#0A84FF] shadow-xs transition-colors group"
+              <div
+                className="p-3.5 rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 flex items-center justify-between shadow-xs transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-[#F5F5F7] dark:bg-neutral-800 text-[#007AFF] dark:text-[#0A84FF]">
+                  <div className="p-2.5 rounded-xl bg-[#F5F5F7] dark:bg-neutral-800 text-[#007AFF] dark:text-[#0A84FF] shrink-0">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-11px font-mono uppercase text-[#86868B] dark:text-[#98989D] block">Email</span>
-                    <span className="text-14px font-bold text-[#1D1D1F] dark:text-[#F5F5F7] font-mono">
-                      whtamim3@gmail.com
-                    </span>
+                    <span className="text-11px font-mono uppercase text-[#86868B] dark:text-[#98989D] block mb-1">Email</span>
+                    <div className="flex flex-col gap-[4px]">
+                      <a
+                        href="mailto:whtamim3@gmail.com"
+                        className="text-[13px]! font-medium text-inherit hover:text-[#007AFF] dark:hover:text-[#0A84FF] transition-colors block leading-tight"
+                        style={{ fontFamily: 'var(--font-display, inherit)', fontSize: '13px', fontWeight: 500 }}
+                      >
+                        whtamim3@gmail.com
+                      </a>
+                      <a
+                        href="mailto:wasimhasnattamim@gmail.com"
+                        className="text-[13px]! font-medium text-inherit hover:text-[#007AFF] dark:hover:text-[#0A84FF] transition-colors block leading-tight"
+                        style={{ fontFamily: 'var(--font-display, inherit)', fontSize: '13px', fontWeight: 500 }}
+                      >
+                        wasimhasnattamim@gmail.com
+                      </a>
+                    </div>
                   </div>
                 </div>
-                <ArrowUpRight className="w-4 h-4 text-[#86868B] dark:text-[#98989D] group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors" />
-              </a>
+              </div>
 
               <a
                 href="https://www.linkedin.com/in/wasimhasnat/"
@@ -433,13 +479,35 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief }
 
             <StudioTimeWidget variant="compact" />
 
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-xs">
-              <span className="text-11px font-mono text-[#007AFF] dark:text-[#0A84FF] font-bold block mb-1">
-                ● PRODUCTION TURNAROUND
-              </span>
-              <p className="text-12px text-[#86868B] dark:text-[#98989D]">
-                Average production timeline is 1–2 weeks depending on scope. Currently available for new projects.
-              </p>
+            {/* Project Scope & Budget Calculator Card (Mobile) */}
+            <div
+              onClick={() => {
+                playSubtleClickSound();
+                onOpenEstimator?.();
+              }}
+              className="p-4 rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 flex items-center justify-between hover:border-[#007AFF] dark:hover:border-[#0A84FF] shadow-xs transition-all cursor-pointer group"
+              style={{ padding: '16px', borderRadius: '16px' }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-[#eff6ff] dark:bg-[#007AFF]/20 text-[#2563eb] dark:text-[#0A84FF] shrink-0">
+                  <Calculator className="w-5 h-5" />
+                </div>
+                <div>
+                  <span
+                    className="text-[11px] font-semibold uppercase text-[#86868B] dark:text-[#98989D] block tracking-wider mb-0.5"
+                    style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.05em' }}
+                  >
+                    PROJECT ESTIMATOR
+                  </span>
+                  <span
+                    className="text-[14px] font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors block"
+                    style={{ fontSize: '14px', fontWeight: 600 }}
+                  >
+                    Calculate Scope &amp; Budget
+                  </span>
+                </div>
+              </div>
+              <ArrowUpRight className="w-4 h-4 text-[#86868B] dark:text-[#98989D] group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors shrink-0" />
             </div>
           </div>
 
