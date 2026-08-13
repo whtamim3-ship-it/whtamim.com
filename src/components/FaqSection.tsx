@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, HelpCircle, ArrowUpRight } from 'lucide-react';
+import { ChevronDown, Calculator, ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { playSubtleClickSound } from '../utils/motion';
 import { TextReveal } from './TextReveal';
@@ -80,29 +80,42 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
           </TextReveal>
 
           <TextReveal delay={0.24} yOffset={20} className="pt-2">
-            <div className="p-6 sm:p-7 rounded-[24px] bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-xs space-y-5">
-              <div className="flex items-center gap-3.5">
-                <div className="p-3 rounded-full bg-[#007AFF]/10 dark:bg-[#0A84FF]/10 text-[#007AFF] dark:text-[#0A84FF] shrink-0">
-                  <HelpCircle className="w-5 h-5" />
+            <div
+              onClick={() => {
+                playSubtleClickSound();
+                onOpenEstimator?.();
+              }}
+              className="p-6 sm:p-7 rounded-[24px] bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-xs space-y-5 hover:border-[#007AFF] dark:hover:border-[#0A84FF] transition-all cursor-pointer group"
+            >
+              <div className="flex items-start gap-3.5">
+                <div className="p-3 rounded-full bg-[#eff6ff] dark:bg-[#007AFF]/20 text-[#2563eb] dark:text-[#0A84FF] shrink-0">
+                  <Calculator className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-14px font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">Have a custom requirement?</h3>
-                  <p className="text-12px text-[#86868B] dark:text-[#98989D] mt-0.5">Reach out directly for tailored scope discussions.</p>
+                  <span className="text-10px font-mono uppercase tracking-wider text-[#007AFF] dark:text-[#0A84FF] font-bold block mb-1">
+                    PROJECT ESTIMATOR
+                  </span>
+                  <h3 className="text-16px sm:text-18px font-bold text-[#1D1D1F] dark:text-[#F5F5F7] group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors">
+                    Calculate Scope &amp; Budget
+                  </h3>
+                  <p className="text-12px text-[#86868B] dark:text-[#98989D] mt-1 leading-relaxed">
+                    Configure resolution, cuts, and visual complexity for an instant scope estimate.
+                  </p>
                 </div>
               </div>
 
-              <a
-                href="#contact"
+              <button
+                type="button"
                 onClick={(e) => {
-                  e.preventDefault();
+                  e.stopPropagation();
                   playSubtleClickSound();
-                  document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+                  onOpenEstimator?.();
                 }}
                 className="w-full py-3 px-5 rounded-full bg-[#1D1D1F] dark:bg-white hover:bg-[#007AFF] dark:hover:bg-[#0A84FF] text-white dark:text-[#0A0A0C] dark:hover:text-white text-13px font-semibold transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer"
               >
-                <span>Get in Touch</span>
+                <span>Open Calculator</span>
                 <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
+              </button>
             </div>
           </TextReveal>
         </div>

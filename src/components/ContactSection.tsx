@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Send, CheckCircle2, Linkedin, ArrowUpRight, Loader2, AlertCircle, X, Calculator } from 'lucide-react';
+import { Mail, Send, CheckCircle2, Linkedin, ArrowUpRight, Loader2, AlertCircle, X } from 'lucide-react';
 import { playSubtleClickSound } from '../utils/motion';
 import { TextReveal } from './TextReveal';
 import { SectionReveal } from './SectionReveal';
@@ -217,40 +217,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
             </TextReveal>
 
             <TextReveal delay={0.32} yOffset={20}>
-              <div className="space-y-4">
-                <StudioTimeWidget variant="compact" />
-                
-                {/* Project Scope & Budget Calculator Card */}
-                <div
-                  onClick={() => {
-                    playSubtleClickSound();
-                    onOpenEstimator?.();
-                  }}
-                  className="p-4 rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 flex items-center justify-between hover:border-[#007AFF] dark:hover:border-[#0A84FF] shadow-xs transition-all cursor-pointer group"
-                  style={{ padding: '16px', borderRadius: '16px' }}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-[#eff6ff] dark:bg-[#007AFF]/20 text-[#2563eb] dark:text-[#0A84FF] shrink-0">
-                      <Calculator className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <span
-                        className="text-[11px] font-semibold uppercase text-[#86868B] dark:text-[#98989D] block tracking-wider mb-0.5"
-                        style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.05em' }}
-                      >
-                        PROJECT ESTIMATOR
-                      </span>
-                      <span
-                        className="text-[14px] font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors block"
-                        style={{ fontSize: '14px', fontWeight: 600 }}
-                      >
-                        Calculate Scope &amp; Budget
-                      </span>
-                    </div>
-                  </div>
-                  <ArrowUpRight className="w-4 h-4 text-[#86868B] dark:text-[#98989D] group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors shrink-0" />
-                </div>
-              </div>
+              <StudioTimeWidget variant="compact" />
             </TextReveal>
           </div>
 
@@ -478,37 +445,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
             </div>
 
             <StudioTimeWidget variant="compact" />
-
-            {/* Project Scope & Budget Calculator Card (Mobile) */}
-            <div
-              onClick={() => {
-                playSubtleClickSound();
-                onOpenEstimator?.();
-              }}
-              className="p-4 rounded-2xl bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 flex items-center justify-between hover:border-[#007AFF] dark:hover:border-[#0A84FF] shadow-xs transition-all cursor-pointer group"
-              style={{ padding: '16px', borderRadius: '16px' }}
-            >
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-[#eff6ff] dark:bg-[#007AFF]/20 text-[#2563eb] dark:text-[#0A84FF] shrink-0">
-                  <Calculator className="w-5 h-5" />
-                </div>
-                <div>
-                  <span
-                    className="text-[11px] font-semibold uppercase text-[#86868B] dark:text-[#98989D] block tracking-wider mb-0.5"
-                    style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.05em' }}
-                  >
-                    PROJECT ESTIMATOR
-                  </span>
-                  <span
-                    className="text-[14px] font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors block"
-                    style={{ fontSize: '14px', fontWeight: 600 }}
-                  >
-                    Calculate Scope &amp; Budget
-                  </span>
-                </div>
-              </div>
-              <ArrowUpRight className="w-4 h-4 text-[#86868B] dark:text-[#98989D] group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors shrink-0" />
-            </div>
           </div>
 
         </div>

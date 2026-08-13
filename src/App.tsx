@@ -21,6 +21,7 @@ const CaseStudyModal = lazy(() => import('./components/CaseStudyModal'));
 const AIStoryboardTool = lazy(() => import('./components/AIStoryboardTool'));
 const ProjectEstimator = lazy(() => import('./components/ProjectEstimator'));
 const DatabaseDashboard = lazy(() => import('./components/DatabaseDashboard'));
+const BlogModal = lazy(() => import('./components/BlogModal').then(m => ({ default: m.BlogModal })));
 
 export default function App() {
   const [cursorEnabled] = useState<boolean>(true);
@@ -33,6 +34,7 @@ export default function App() {
   const [estimatorOpen, setEstimatorOpen] = useState<boolean>(false);
   const [aiStoryboardOpen, setAiStoryboardOpen] = useState<boolean>(false);
   const [dbDashboardOpen, setDbDashboardOpen] = useState<boolean>(false);
+  const [blogOpen, setBlogOpen] = useState<boolean>(false);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
 
   // Ambient Audio Loop State
@@ -69,16 +71,23 @@ export default function App() {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
-  // Handle Hash routing on initial load or manual hash changes
+  // Handle Hash/URL routing on initial load or manual navigation
   useEffect(() => {
-    const handleHash = () => {
+    const handleRouting = () => {
       if (window.location.hash === '#work-all' || window.location.hash === '#work-archive') {
         setCurrentView('work');
       }
+      if (window.location.pathname === '/blog' || window.location.hash === '#blog') {
+        setBlogOpen(true);
+      }
     };
-    handleHash();
-    window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
+    handleRouting();
+    window.addEventListener('hashchange', handleRouting);
+    window.addEventListener('popstate', handleRouting);
+    return () => {
+      window.removeEventListener('hashchange', handleRouting);
+      window.removeEventListener('popstate', handleRouting);
+    };
   }, []);
 
   // Global Escape (Esc) key keyboard listener
@@ -90,6 +99,7 @@ export default function App() {
           estimatorOpen ||
           aiStoryboardOpen ||
           dbDashboardOpen ||
+          blogOpen ||
           selectedCaseStudy !== null ||
           Boolean(document.querySelector('[role="dialog"]')) ||
           document.body.style.overflow === 'hidden';
@@ -99,6 +109,7 @@ export default function App() {
           if (estimatorOpen) setEstimatorOpen(false);
           if (aiStoryboardOpen) setAiStoryboardOpen(false);
           if (dbDashboardOpen) setDbDashboardOpen(false);
+          if (blogOpen) setBlogOpen(false);
           if (selectedCaseStudy) setSelectedCaseStudy(null);
         } else {
           if (currentView === 'work') {
@@ -116,6 +127,7 @@ export default function App() {
     estimatorOpen,
     aiStoryboardOpen,
     dbDashboardOpen,
+    blogOpen,
     selectedCaseStudy,
     currentView,
   ]);
@@ -176,6 +188,7 @@ export default function App() {
         onOpenEstimator={() => setEstimatorOpen(true)}
         onOpenAIStoryboard={() => setAiStoryboardOpen(true)}
         onOpenDatabaseDashboard={() => setDbDashboardOpen(true)}
+        onOpenBlog={() => setBlogOpen(true)}
         theme={theme}
         onToggleTheme={toggleTheme}
         isAmbientPlaying={isAmbientPlaying}
@@ -208,7 +221,7 @@ export default function App() {
           <AboutSection />
 
           {/* Frequently Asked Questions (FAQ) Accordion */}
-          <FaqSection />
+          <FaqSection onOpenEstimator={() => setEstimatorOpen(true)} />
 
           {/* Contact & Direct Inquiry Section */}
           <ContactSection
@@ -264,6 +277,13 @@ export default function App() {
         <DatabaseDashboard
           isOpen={dbDashboardOpen}
           onClose={() => setDbDashboardOpen(false)}
+        />
+
+        {/* Blog & Editorial Modal */}
+        <BlogModal
+          isOpen={blogOpen}
+          onClose={() => setBlogOpen(false)}
+          onPreFillInquiry={handlePreFillInquiry}
         />
       </Suspense>
     </div>

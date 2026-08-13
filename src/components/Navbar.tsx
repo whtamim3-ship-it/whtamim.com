@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowUpRight, Sparkles, Database } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Sparkles, Database, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { playSubtleClickSound } from '../utils/motion';
 import { useBodyScrollLock } from '../utils/scrollLock';
 import { BrandLogo } from './BrandLogo';
 import { ThemeToggle } from './ThemeToggle';
-import { AmbientAudioToggle } from './AmbientAudioToggle';
 import { PremiumNavIcon } from './PremiumNavIcon';
 
 interface NavbarProps {
@@ -15,10 +14,11 @@ interface NavbarProps {
   onOpenEstimator?: () => void;
   onOpenAIStoryboard: () => void;
   onOpenDatabaseDashboard: () => void;
+  onOpenBlog?: () => void;
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
-  isAmbientPlaying: boolean;
-  onToggleAmbient: (newState: boolean) => void;
+  isAmbientPlaying?: boolean;
+  onToggleAmbient?: (newState: boolean) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -27,10 +27,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateToWork,
   onOpenAIStoryboard,
   onOpenDatabaseDashboard,
+  onOpenBlog,
   theme,
   onToggleTheme,
-  isAmbientPlaying,
-  onToggleAmbient,
 }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -136,6 +135,18 @@ export const Navbar: React.FC<NavbarProps> = ({
     }, 1500);
   };
 
+  const handleBlogClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    playSubtleClickSound();
+    setMobileMenuOpen(false);
+    if (onOpenBlog) {
+      onOpenBlog();
+    } else {
+      window.history.pushState(null, '', '/blog');
+      window.dispatchEvent(new Event('popstate'));
+    }
+  };
+
   return (
     <nav
       className={`navbar-wrapper ${scrolled ? 'scrolled' : ''} ${theme}`}
@@ -166,10 +177,22 @@ export const Navbar: React.FC<NavbarProps> = ({
           ))}
         </div>
 
-        {/* Right: Ambient Audio + Theme Toggle + CTA Button on Desktop */}
+        {/* Right: Blog Button + Theme Toggle + CTA Button on Desktop */}
         <div className="navbar-right">
           <div className="desktop-actions">
-            <AmbientAudioToggle isPlaying={isAmbientPlaying} onToggle={onToggleAmbient} />
+            <button
+              onClick={handleBlogClick}
+              type="button"
+              aria-label="Open Blog & Insights"
+              title="Blog & Insights"
+              className="relative group inline-flex items-center justify-center rounded-full border border-neutral-200/90 dark:border-neutral-800/90 bg-white/80 dark:bg-[#161618]/80 backdrop-blur-md text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#007AFF]/60 dark:hover:border-[#0A84FF]/60 hover:shadow-xs transition-all duration-200 cursor-pointer select-none"
+              style={{ width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <BookOpen className="w-4 h-4 text-[#1D1D1F] dark:text-[#F5F5F7] group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors" />
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-[10px] font-mono tracking-wide opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-xs z-50">
+                Blog
+              </span>
+            </button>
             <ThemeToggle theme={theme} onToggle={onToggleTheme} />
             <motion.a
               href="#contact"
@@ -223,7 +246,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             <div className="mobile-actions-row">
-              <AmbientAudioToggle isPlaying={isAmbientPlaying} onToggle={onToggleAmbient} />
+              <button
+                onClick={handleBlogClick}
+                type="button"
+                aria-label="Open Blog & Insights"
+                title="Blog & Insights"
+                className="relative group inline-flex items-center justify-center rounded-full border border-neutral-200/90 dark:border-neutral-800/90 bg-white/80 dark:bg-[#161618]/80 backdrop-blur-md text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#007AFF]/60 dark:hover:border-[#0A84FF]/60 hover:shadow-xs transition-all duration-200 cursor-pointer select-none"
+                style={{ width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                <BookOpen className="w-4 h-4 text-[#1D1D1F] dark:text-[#F5F5F7] group-hover:text-[#007AFF] dark:group-hover:text-[#0A84FF] transition-colors" />
+              </button>
               <ThemeToggle theme={theme} onToggle={onToggleTheme} />
               <motion.a
                 href="#contact"
@@ -240,3 +272,4 @@ export const Navbar: React.FC<NavbarProps> = ({
     </nav>
   );
 };
+

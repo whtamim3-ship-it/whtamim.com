@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { playSubtleClickSound } from '../utils/motion';
 import { TextReveal } from './TextReveal';
 import { ParallaxLayer } from '../utils/parallaxEngine';
@@ -7,6 +8,32 @@ import { HeroParticlesCanvas } from './HeroParticlesCanvas';
 interface HeroProps {
   onOpenShowreel?: () => void;
 }
+
+const headlineContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+      delayChildren: 0.08,
+    },
+  },
+};
+
+const wordRevealVariants = {
+  hidden: {
+    opacity: 0,
+    y: 18,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.55,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
 
 export const Hero: React.FC<HeroProps> = () => {
   return (
@@ -21,18 +48,58 @@ export const Hero: React.FC<HeroProps> = () => {
         {/* Layer 1: Headline & Tagline */}
         <ParallaxLayer speed={-0.015} maxOffset={6} className="w-full flex flex-col items-center">
 
+          {/* Staggered Word Reveal Headline */}
+          <motion.h1
+            initial="hidden"
+            animate="visible"
+            variants={headlineContainerVariants}
+            className="main-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.04] text-[#1D1D1F] dark:text-white max-w-4xl mb-3.5 relative"
+          >
+            <motion.span variants={wordRevealVariants} className="relative inline-block mr-[0.26em]">
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '-28px',
+                  left: '-10px',
+                  transform: 'rotate(-12deg)',
+                  zIndex: 10,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  background: 'rgba(34, 197, 94, 0.12)',
+                  border: '1px solid rgba(34, 197, 94, 0.3)',
+                  padding: '3px 8px',
+                  borderRadius: '12px',
+                  color: '#22c55e',
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  letterSpacing: '0.05em',
+                  backdropFilter: 'blur(4px)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
+                <span>OPEN</span>
+              </span>
+              Motion
+            </motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">that</motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">makes</motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">products</motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">feel</motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block highlight-blue font-bold mr-[0.26em]">premium,</motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">not</motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block">advertised.</motion.span>
+          </motion.h1>
 
-          <TextReveal as="h1" delay={0.08} yOffset={18} className="main-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.04] text-[#1D1D1F] dark:text-white max-w-4xl mb-3.5">
-            Motion that makes products feel <span className="highlight-blue font-bold inline-block">premium</span>, not advertised.
-          </TextReveal>
-          <TextReveal as="p" delay={0.14} yOffset={14} className="sub-tagline tagline text-sm sm:text-base leading-relaxed text-neutral-600 dark:text-[#cccccc] max-w-2xl mb-8 text-center">
+          <TextReveal as="p" delay={0.32} yOffset={14} className="sub-tagline tagline text-sm sm:text-base leading-relaxed text-neutral-600 dark:text-[#cccccc] max-w-2xl mb-8 text-center">
             I'm <strong className="font-bold text-neutral-900 dark:text-white">Tamim</strong>, a Video Editor &amp; Motion Designer creating premium commercials, SaaS product films, and cinematic brand stories designed to leave a lasting impression.
           </TextReveal>
           
 
           
           {/* CTA Buttons */}
-          <TextReveal delay={0.22} yOffset={14} className="flex flex-wrap items-center justify-center gap-3.5">
+          <TextReveal delay={0.4} yOffset={14} className="flex flex-wrap items-center justify-center gap-3.5">
             <a
               href="#contact"
               onClick={(e) => {
@@ -65,11 +132,49 @@ export const Hero: React.FC<HeroProps> = () => {
       {/* =================================================== */}
       <div className="relative z-10 flex md:hidden flex-col items-center justify-center w-full px-5 -mt-2 text-center">
 
-
-        {/* Mobile Headline (~80-85% width) */}
-        <TextReveal as="h1" delay={0.06} yOffset={12} className="main-heading font-coolvetica text-[22px] sm:text-[24px] font-normal tracking-tight leading-[1.06] text-[#1D1D1F] dark:text-white w-[92%] max-w-xs mx-auto mb-2.5 text-center">
-          Motion that makes products feel <span className="highlight-blue font-coolvetica italic font-bold inline-block">premium</span>, not advertised.
-        </TextReveal>
+        {/* Mobile Staggered Word Reveal Headline */}
+        <motion.h1
+          initial="hidden"
+          animate="visible"
+          variants={headlineContainerVariants}
+          className="main-heading font-coolvetica text-[22px] sm:text-[24px] font-normal tracking-tight leading-[1.06] text-[#1D1D1F] dark:text-white w-[92%] max-w-xs mx-auto mb-2.5 text-center relative"
+        >
+          <motion.span variants={wordRevealVariants} className="relative inline-block mr-[0.26em]">
+            <span
+              style={{
+                position: 'absolute',
+                top: '-28px',
+                left: '-10px',
+                transform: 'rotate(-12deg)',
+                zIndex: 10,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                background: 'rgba(34, 197, 94, 0.12)',
+                border: '1px solid rgba(34, 197, 94, 0.3)',
+                padding: '3px 8px',
+                borderRadius: '12px',
+                color: '#22c55e',
+                fontSize: '10px',
+                fontWeight: 700,
+                letterSpacing: '0.05em',
+                backdropFilter: 'blur(4px)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
+              <span>OPEN</span>
+            </span>
+            Motion
+          </motion.span>
+          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">that</motion.span>
+          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">makes</motion.span>
+          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">products</motion.span>
+          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">feel</motion.span>
+          <motion.span variants={wordRevealVariants} className="inline-block highlight-blue font-coolvetica italic font-bold mr-[0.26em]">premium,</motion.span>
+          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">not</motion.span>
+          <motion.span variants={wordRevealVariants} className="inline-block">advertised.</motion.span>
+        </motion.h1>
 
         {/* Mobile Tagline */}
         <TextReveal as="p" delay={0.10} yOffset={10} className="sub-tagline tagline font-sans italic text-[13px] sm:text-[14px] leading-relaxed text-neutral-600 dark:text-[#cccccc] w-[92%] max-w-sm mx-auto mb-6 text-center" style={{ fontFamily: "'Poppins', sans-serif" }}>
