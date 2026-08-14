@@ -30,7 +30,7 @@ const wordRevealVariants = {
     y: 0,
     transition: {
       duration: 0.55,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as const,
     },
   },
 };
@@ -56,29 +56,8 @@ export const Hero: React.FC<HeroProps> = () => {
             className="main-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.04] text-[#1D1D1F] dark:text-white max-w-4xl mb-3.5 relative"
           >
             <motion.span variants={wordRevealVariants} className="relative inline-block mr-[0.26em]">
-              <span
-                style={{
-                  position: 'absolute',
-                  top: '-28px',
-                  left: '-10px',
-                  transform: 'rotate(-12deg)',
-                  zIndex: 10,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '5px',
-                  background: 'rgba(34, 197, 94, 0.12)',
-                  border: '1px solid rgba(34, 197, 94, 0.3)',
-                  padding: '3px 8px',
-                  borderRadius: '12px',
-                  color: '#22c55e',
-                  fontSize: '10px',
-                  fontWeight: 700,
-                  letterSpacing: '0.05em',
-                  backdropFilter: 'blur(4px)',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
+              <span className="hero-pinned-badge" title="Open for projects">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse shrink-0" />
                 <span>OPEN</span>
               </span>
               Motion
@@ -140,29 +119,8 @@ export const Hero: React.FC<HeroProps> = () => {
           className="main-heading font-coolvetica text-[22px] sm:text-[24px] font-normal tracking-tight leading-[1.06] text-[#1D1D1F] dark:text-white w-[92%] max-w-xs mx-auto mb-2.5 text-center relative"
         >
           <motion.span variants={wordRevealVariants} className="relative inline-block mr-[0.26em]">
-            <span
-              style={{
-                position: 'absolute',
-                top: '-28px',
-                left: '-10px',
-                transform: 'rotate(-12deg)',
-                zIndex: 10,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                background: 'rgba(34, 197, 94, 0.12)',
-                border: '1px solid rgba(34, 197, 94, 0.3)',
-                padding: '3px 8px',
-                borderRadius: '12px',
-                color: '#22c55e',
-                fontSize: '10px',
-                fontWeight: 700,
-                letterSpacing: '0.05em',
-                backdropFilter: 'blur(4px)',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
+            <span className="hero-pinned-badge" title="Open for projects">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse shrink-0" />
               <span>OPEN</span>
             </span>
             Motion

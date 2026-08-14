@@ -102,26 +102,57 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
     setErrorMessage(null);
 
     try {
-      const res = await fetch('/api/inquire', {
+      // Submit to Web3Forms API
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
         body: JSON.stringify({
+          access_key: 'bd98d320-290c-4361-a137-95905c5dbf4c',
+          subject: 'New Contact Inquiry from whtamim.work',
+          from_name: `${name} (Client Inquiry)`,
           name,
           email,
-          company,
-          projectType,
-          budget,
-          message,
+          company: company || 'N/A',
+          projectType: projectType || 'Video Editing / Motion',
+          budget: budget || 'N/A',
+          message: `Name: ${name}\nEmail: ${email}\nCompany: ${company || 'N/A'}\nBudget: ${budget || 'N/A'}\n\nProject Brief:\n${message}`,
         }),
       });
 
       const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Failed to submit inquiry.');
+      if (!res.ok || (data.success !== true && data.status !== 'success')) {
+        // Fallback to local server endpoint if needed
+        const fallbackRes = await fetch('/api/inquire', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            email,
+            company,
+            projectType,
+            budget,
+            message,
+            access_key: 'bd98d320-290c-4361-a137-95905c5dbf4c',
+          }),
+        });
+        if (!fallbackRes.ok) {
+          throw new Error(data.message || 'Failed to submit inquiry.');
+        }
       }
 
+      // Clear form inputs after successful submission
+      setName('');
+      setEmail('');
+      setCompany('');
+      setMessage('');
+      setErrors({});
+      setTouched({});
+
       setSubmitted(true);
-      setToastMessage('Project inquiry sent successfully! whtamim will be in touch within 24 hours.');
+      setToastMessage('Message Sent Successfully! whtamim will review your project requirements and respond within 24 hours.');
       setShowToast(true);
     } catch (err: any) {
       setErrorMessage(err.message || 'Error submitting inquiry. Please try emailing directly.');
@@ -231,7 +262,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <h3 className="text-24px font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">
-                    Inquiry Received!
+                    Message Sent Successfully!
                   </h3>
                   <p className="text-14px text-[#86868B] dark:text-[#98989D] max-w-md mx-auto">
                     Thank you for reaching out. whtamim will review your project requirements and respond within 24 hours.
@@ -244,7 +275,18 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-[14px] sm:space-y-6" noValidate>
+                <form
+                  onSubmit={handleSubmit}
+                  action="https://api.web3forms.com/submit"
+                  method="POST"
+                  className="space-y-[14px] sm:space-y-6"
+                  noValidate
+                >
+                  {/* Web3Forms Hidden Configuration Fields */}
+                  <input type="hidden" name="access_key" value="bd98d320-290c-4361-a137-95905c5dbf4c" />
+                  <input type="hidden" name="subject" value="New Contact Inquiry from whtamim.work" />
+                  <input type="hidden" name="from_name" value="whtamim Portfolio Client" />
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-[14px] sm:gap-6">
                     <div>
                       <label className="block text-12px font-mono uppercase tracking-wider text-[#86868B] dark:text-[#98989D] mb-1.5 font-medium flex items-center justify-between">
@@ -258,6 +300,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
                       </label>
                       <input
                         type="text"
+                        name="name"
                         required
                         value={name}
                         onChange={(e) => {
@@ -286,6 +329,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
                       </label>
                       <input
                         type="email"
+                        name="email"
                         required
                         value={email}
                         onChange={(e) => {
@@ -310,6 +354,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
                       </label>
                       <input
                         type="text"
+                        name="company"
                         value={company}
                         onChange={(e) => setCompany(e.target.value)}
                         placeholder="ZARA"
@@ -322,6 +367,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
                         Estimated Budget Tier
                       </label>
                       <select
+                        name="budget"
                         value={budget}
                         onChange={(e) => setBudget(e.target.value)}
                         className="w-full h-[48px] min-h-[48px] px-4 py-3 rounded-xl bg-[#F5F5F7] dark:bg-[#1E1E22] border border-neutral-200 dark:border-neutral-700 text-[#1D1D1F] dark:text-[#F5F5F7] text-[16px] sm:text-14px focus:outline-none focus:border-[#007AFF] dark:focus:border-[#0A84FF] transition-colors"
@@ -346,6 +392,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
                     </label>
                     <textarea
                       rows={4}
+                      name="message"
+                      required
                       value={message}
                       onChange={(e) => {
                         setMessage(e.target.value);

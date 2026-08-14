@@ -80,7 +80,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       const isScrolledNow = window.scrollY > 20;
       setScrolled((prev) => (prev !== isScrolledNow ? isScrolledNow : prev));
 
-      if (isManualClickingRef.current || currentView === 'work') return;
+      if (isManualClickingRef.current || (currentView as string) === 'work') return;
 
       const isAtBottom =
         window.innerHeight + window.scrollY >=

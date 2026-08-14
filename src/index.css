@@ -1532,9 +1532,81 @@ header img,
   color: #71717a;
 }
 
-.dark .option-section-title,
-.dark-modal-context .option-section-title {
-  color: #a1a1aa !important;
+/* Pinned Dangling Open Badge Animation & Styles */
+@keyframes pinDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-24px) rotate(-16deg) scale(0.92);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(3px) rotate(10deg) scale(1.02);
+  }
+  65% {
+    transform: translateY(-1px) rotate(-8deg) scale(1);
+  }
+  85% {
+    transform: translateY(0) rotate(5deg) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(4deg) scale(1);
+  }
+}
+
+@keyframes dangle {
+  0% {
+    transform: rotate(4deg);
+  }
+  50% {
+    transform: rotate(-4deg);
+  }
+  100% {
+    transform: rotate(4deg);
+  }
+}
+
+.hero-pinned-badge {
+  position: absolute;
+  top: -30px;
+  left: -8px;
+  transform-origin: 50% -4px;
+  z-index: 15;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.2);
+  padding: 3px 9px 3px 8px;
+  border-radius: 6px;
+  color: #22c55e;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  white-space: nowrap;
+  animation: pinDrop 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards, dangle 3.5s ease-in-out 0.85s infinite;
+  will-change: transform;
+  user-select: none;
+}
+
+/* Metallic Pin at the top-center of the badge */
+.hero-pinned-badge::before {
+  content: '';
+  position: absolute;
+  top: -3.5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #cbd5e1 50%, #64748b 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  border: 0.5px solid rgba(0, 0, 0, 0.35);
+  z-index: 20;
 }
 
 
