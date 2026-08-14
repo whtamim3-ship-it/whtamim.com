@@ -765,51 +765,74 @@ export const BlogModal: React.FC<BlogModalProps> = ({
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
-  const handleSubscribeSubmit = async (e: React.FormEvent) => {
+  const handleSubscribeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!subscriberEmail || !subscriberEmail.includes('@')) {
       setSubscribeStatus('error');
       return;
     }
     playSubtleClickSound();
+
+    const formElement = e.currentTarget;
+    const formData = new FormData(formElement);
+    // Ensure access_key is included
+    formData.append("access_key", "bd98d320-290c-4361-a137-95905c5dbf4c");
+    if (!formData.get("subject")) {
+      formData.append("subject", "New Newsletter Subscriber for Journal");
+    }
+    if (!formData.get("email")) {
+      formData.append("email", subscriberEmail);
+    }
+    
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
     
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
+          "Content-Type": "application/json",
+          "Accept": "application/json"
         },
-        body: JSON.stringify({
-          access_key: 'bd98d320-290c-4361-a137-95905c5dbf4c',
-          subject: 'New Newsletter Subscriber for Journal',
-          from_name: 'Journal Subscriber (Dashboard Footer)',
-          email: subscriberEmail,
-        }),
+        body: json
       });
-      const data = await res.json();
-      if (!res.ok || (data.success !== true && data.status !== 'success')) {
+      
+      const responseText = await response.text();
+      let result: any = {};
+      try {
+        result = JSON.parse(responseText);
+      } catch {
+        result = { message: responseText };
+      }
+
+      if (response.status === 200 || result.success === true) {
+        // Show success message & reset form
+        formElement.reset();
+        setSubscribeStatus('success');
+        setSubscriberEmail('');
+        setTimeout(() => {
+          setSubscribeStatus('idle');
+        }, 5000);
+      } else {
         // Fallback to local server endpoint
         const fallbackRes = await fetch('/api/subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: subscriberEmail,
-            source: 'Blog Dashboard Newsletter',
-            access_key: 'bd98d320-290c-4361-a137-95905c5dbf4c',
-          }),
+          body: json,
         });
-        if (!fallbackRes.ok) {
-          throw new Error(data.message || 'Failed to subscribe');
+        if (fallbackRes.ok) {
+          formElement.reset();
+          setSubscribeStatus('success');
+          setSubscriberEmail('');
+          setTimeout(() => {
+            setSubscribeStatus('idle');
+          }, 5000);
+        } else {
+          setSubscribeStatus('error');
         }
       }
-      setSubscribeStatus('success');
-      setSubscriberEmail('');
-      setTimeout(() => {
-        setSubscribeStatus('idle');
-      }, 5000);
-    } catch (err) {
-      console.warn('Subscription fallback:', err);
+    } catch (error) {
+      console.error("Submission failed", error);
       // Fallback optimistic success for smooth UX
       setSubscribeStatus('success');
       setSubscriberEmail('');
@@ -819,7 +842,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({
     }
   };
 
-  const handleArticleSubscribeSubmit = async (e: React.FormEvent) => {
+  const handleArticleSubscribeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!articleSubscriberEmail || !articleSubscriberEmail.includes('@')) {
       setArticleSubscribeStatus('error');
@@ -827,42 +850,64 @@ export const BlogModal: React.FC<BlogModalProps> = ({
     }
     playSubtleClickSound();
 
+    const formElement = e.currentTarget;
+    const formData = new FormData(formElement);
+    // Ensure access_key is included
+    formData.append("access_key", "bd98d320-290c-4361-a137-95905c5dbf4c");
+    if (!formData.get("subject")) {
+      formData.append("subject", "New Newsletter Subscriber for Journal");
+    }
+    if (!formData.get("email")) {
+      formData.append("email", articleSubscriberEmail);
+    }
+
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
+          "Content-Type": "application/json",
+          "Accept": "application/json"
         },
-        body: JSON.stringify({
-          access_key: 'bd98d320-290c-4361-a137-95905c5dbf4c',
-          subject: 'New Newsletter Subscriber for Journal',
-          from_name: 'Journal Subscriber (Article Reader)',
-          email: articleSubscriberEmail,
-        }),
+        body: json
       });
-      const data = await res.json();
-      if (!res.ok || (data.success !== true && data.status !== 'success')) {
+
+      const responseText = await response.text();
+      let result: any = {};
+      try {
+        result = JSON.parse(responseText);
+      } catch {
+        result = { message: responseText };
+      }
+
+      if (response.status === 200 || result.success === true) {
+        formElement.reset();
+        setArticleSubscribeStatus('success');
+        setArticleSubscriberEmail('');
+        setTimeout(() => {
+          setArticleSubscribeStatus('idle');
+        }, 5000);
+      } else {
         const fallbackRes = await fetch('/api/subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: articleSubscriberEmail,
-            source: 'Article Reader Footer',
-            access_key: 'bd98d320-290c-4361-a137-95905c5dbf4c',
-          }),
+          body: json,
         });
-        if (!fallbackRes.ok) {
-          throw new Error(data.message || 'Failed to subscribe');
+        if (fallbackRes.ok) {
+          formElement.reset();
+          setArticleSubscribeStatus('success');
+          setArticleSubscriberEmail('');
+          setTimeout(() => {
+            setArticleSubscribeStatus('idle');
+          }, 5000);
+        } else {
+          setArticleSubscribeStatus('error');
         }
       }
-      setArticleSubscribeStatus('success');
-      setArticleSubscriberEmail('');
-      setTimeout(() => {
-        setArticleSubscribeStatus('idle');
-      }, 5000);
-    } catch (err) {
-      console.warn('Article subscription fallback:', err);
+    } catch (error) {
+      console.error("Submission failed", error);
       setArticleSubscribeStatus('success');
       setArticleSubscriberEmail('');
       setTimeout(() => {

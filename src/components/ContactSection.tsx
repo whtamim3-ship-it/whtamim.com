@@ -88,7 +88,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setTouched({ name: true, email: true, message: true });
 
@@ -101,61 +101,99 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
     setSubmitting(true);
     setErrorMessage(null);
 
+    const formElement = e.currentTarget;
+    const formData = new FormData(formElement);
+    // Ensure access_key is included
+    formData.append("access_key", "bd98d320-290c-4361-a137-95905c5dbf4c");
+    if (!formData.get("subject")) {
+      formData.append("subject", "New Contact Inquiry from whtamim.work");
+    }
+    if (!formData.get("from_name")) {
+      formData.append("from_name", `${name || 'Client'} (Contact Inquiry)`);
+    }
+
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
     try {
-      // Submit to Web3Forms API
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
+          "Content-Type": "application/json",
+          "Accept": "application/json"
         },
-        body: JSON.stringify({
-          access_key: 'bd98d320-290c-4361-a137-95905c5dbf4c',
-          subject: 'New Contact Inquiry from whtamim.work',
-          from_name: `${name} (Client Inquiry)`,
-          name,
-          email,
-          company: company || 'N/A',
-          projectType: projectType || 'Video Editing / Motion',
-          budget: budget || 'N/A',
-          message: `Name: ${name}\nEmail: ${email}\nCompany: ${company || 'N/A'}\nBudget: ${budget || 'N/A'}\n\nProject Brief:\n${message}`,
-        }),
+        body: json
       });
 
-      const data = await res.json();
-      if (!res.ok || (data.success !== true && data.status !== 'success')) {
-        // Fallback to local server endpoint if needed
+      // Safely parse JSON or text to prevent unexpected token errors if HTML is returned
+      const responseText = await response.text();
+      let result: any = {};
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        result = { message: responseText };
+      }
+
+      if (response.status === 200 || result.success === true) {
+        // Show success message & reset form
+        formElement.reset();
+        setName('');
+        setEmail('');
+        setCompany('');
+        setMessage('');
+        setErrors({});
+        setTouched({});
+        setSubmitted(true);
+        setToastMessage('Message Sent Successfully! whtamim will review your project requirements and respond within 24 hours.');
+        setShowToast(true);
+      } else {
+        // Show error message or fallback
         const fallbackRes = await fetch('/api/inquire', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name,
-            email,
-            company,
-            projectType,
-            budget,
-            message,
-            access_key: 'bd98d320-290c-4361-a137-95905c5dbf4c',
-          }),
+          body: json,
         });
-        if (!fallbackRes.ok) {
-          throw new Error(data.message || 'Failed to submit inquiry.');
+        if (fallbackRes.ok) {
+          formElement.reset();
+          setName('');
+          setEmail('');
+          setCompany('');
+          setMessage('');
+          setErrors({});
+          setTouched({});
+          setSubmitted(true);
+          setToastMessage('Message Sent Successfully! whtamim will review your project requirements and respond within 24 hours.');
+          setShowToast(true);
+        } else {
+          setErrorMessage(result.message || 'Error submitting inquiry. Please try emailing directly.');
         }
       }
-
-      // Clear form inputs after successful submission
-      setName('');
-      setEmail('');
-      setCompany('');
-      setMessage('');
-      setErrors({});
-      setTouched({});
-
-      setSubmitted(true);
-      setToastMessage('Message Sent Successfully! whtamim will review your project requirements and respond within 24 hours.');
-      setShowToast(true);
-    } catch (err: any) {
-      setErrorMessage(err.message || 'Error submitting inquiry. Please try emailing directly.');
+    } catch (error: any) {
+      console.error("Submission failed", error);
+      // Attempt local proxy fallback on network/CORS error
+      try {
+        const fallbackRes = await fetch('/api/inquire', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: json,
+        });
+        if (fallbackRes.ok) {
+          formElement.reset();
+          setName('');
+          setEmail('');
+          setCompany('');
+          setMessage('');
+          setErrors({});
+          setTouched({});
+          setSubmitted(true);
+          setToastMessage('Message Sent Successfully! whtamim will review your project requirements and respond within 24 hours.');
+          setShowToast(true);
+          return;
+        }
+      } catch (fallbackErr) {
+        console.error("Fallback failed", fallbackErr);
+      }
+      setErrorMessage(error?.message || 'Error submitting inquiry. Please try emailing directly.');
     } finally {
       setSubmitting(false);
     }
