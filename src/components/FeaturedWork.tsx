@@ -79,9 +79,13 @@ const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project }) =>
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // If video is already ready from cache
-    if (videoRef.current && videoRef.current.readyState >= 3) {
-      setIsMediaLoaded(true);
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(() => {});
+      if (videoRef.current.readyState >= 2) {
+        setIsMediaLoaded(true);
+      }
     }
   }, [project.heroVideoUrl]);
 
@@ -112,18 +116,19 @@ const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project }) =>
           </div>
         )}
 
-        {/* Video / Media Layer with smooth transition */}
+        {/* Video Layer with autoPlay, loop, muted, playsInline & no poster or controls */}
         <video
           ref={videoRef}
           src={project.heroVideoUrl}
-          poster={project.posterImage}
           autoPlay
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           onLoadedData={() => setIsMediaLoaded(true)}
           onCanPlay={() => setIsMediaLoaded(true)}
+          onPlay={() => setIsMediaLoaded(true)}
+          onPlaying={() => setIsMediaLoaded(true)}
           className={`w-full h-full object-cover transition-opacity duration-500 ease-out ${
             isMediaLoaded ? 'opacity-100' : 'opacity-0'
           }`}

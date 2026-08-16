@@ -41,6 +41,15 @@ const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) 
   const isYt = isYoutubeUrl(project.videoUrl);
   const ytId = isYt ? getYoutubeIdFromUrl(project.videoUrl) : '';
   const isCommercial = project.filterCategory === 'Commercials';
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+
+  React.useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [project.videoUrl]);
 
   return (
     <div
@@ -64,11 +73,13 @@ const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) 
           />
         ) : (
           <video
+            ref={videoRef}
             src={project.videoUrl}
             autoPlay
             loop
             muted
             playsInline
+            preload="auto"
             className="w-full h-full object-cover"
           />
         )}
@@ -107,6 +118,14 @@ const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) 
 
 const ALL_WORK_PROJECTS = [
   {
+    id: 'whatsapp-promo',
+    title: 'WhatsApp Promo',
+    category: 'Motion Design',
+    filterCategory: 'SaaS & UI',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786896348/Whatsapp_Ad_zrk3yc.mp4',
+    coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop'
+  },
+  {
     id: 'notchnook',
     title: 'music',
     category: 'UI animation',
@@ -127,7 +146,7 @@ const ALL_WORK_PROJECTS = [
     title: 'Ikigai',
     category: 'UI animation',
     filterCategory: 'SaaS & UI',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786896348/Whatsapp_Ad_zrk3yc.mp4',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057552/ikigai_lxe9jo.mp4',
     coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop'
   },
   {
