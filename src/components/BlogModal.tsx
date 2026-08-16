@@ -767,25 +767,33 @@ export const BlogModal: React.FC<BlogModalProps> = ({
 
   const handleSubscribeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!subscriberEmail || !subscriberEmail.includes('@')) {
+    const cleanEmail = (subscriberEmail || '').trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!cleanEmail || !emailRegex.test(cleanEmail)) {
       setSubscribeStatus('error');
       return;
     }
     playSubtleClickSound();
 
     const formElement = e.currentTarget;
-    const formData = new FormData(formElement);
-    // Ensure access_key is included
-    formData.append("access_key", "bd98d320-290c-4361-a137-95905c5dbf4c");
-    if (!formData.get("subject")) {
-      formData.append("subject", "New Newsletter Subscriber for Journal");
+
+    // Build sanitized dictionary with zero empty/invalid fields
+    const sanitizedPayload: Record<string, string> = {
+      access_key: "bd98d320-290c-4361-a137-95905c5dbf4c",
+      subject: "New Newsletter Subscriber for Journal",
+      from_name: "Journal Subscriber (Dashboard Footer)",
+      email: cleanEmail,
+      message: `New Journal Newsletter Subscriber: ${cleanEmail}`,
+    };
+
+    const cleanObject: Record<string, string> = {};
+    for (const [k, v] of Object.entries(sanitizedPayload)) {
+      if (v !== undefined && v !== null && String(v).trim().length > 0) {
+        cleanObject[k] = String(v).trim();
+      }
     }
-    if (!formData.get("email")) {
-      formData.append("email", subscriberEmail);
-    }
-    
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
+
+    const json = JSON.stringify(cleanObject);
     
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -807,7 +815,9 @@ export const BlogModal: React.FC<BlogModalProps> = ({
 
       if (response.status === 200 || result.success === true) {
         // Show success message & reset form
-        formElement.reset();
+        if (formElement && typeof formElement.reset === 'function') {
+          formElement.reset();
+        }
         setSubscribeStatus('success');
         setSubscriberEmail('');
         setTimeout(() => {
@@ -821,7 +831,9 @@ export const BlogModal: React.FC<BlogModalProps> = ({
           body: json,
         });
         if (fallbackRes.ok) {
-          formElement.reset();
+          if (formElement && typeof formElement.reset === 'function') {
+            formElement.reset();
+          }
           setSubscribeStatus('success');
           setSubscriberEmail('');
           setTimeout(() => {
@@ -844,25 +856,33 @@ export const BlogModal: React.FC<BlogModalProps> = ({
 
   const handleArticleSubscribeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!articleSubscriberEmail || !articleSubscriberEmail.includes('@')) {
+    const cleanEmail = (articleSubscriberEmail || '').trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!cleanEmail || !emailRegex.test(cleanEmail)) {
       setArticleSubscribeStatus('error');
       return;
     }
     playSubtleClickSound();
 
     const formElement = e.currentTarget;
-    const formData = new FormData(formElement);
-    // Ensure access_key is included
-    formData.append("access_key", "bd98d320-290c-4361-a137-95905c5dbf4c");
-    if (!formData.get("subject")) {
-      formData.append("subject", "New Newsletter Subscriber for Journal");
-    }
-    if (!formData.get("email")) {
-      formData.append("email", articleSubscriberEmail);
+
+    // Build sanitized dictionary with zero empty/invalid fields
+    const sanitizedPayload: Record<string, string> = {
+      access_key: "bd98d320-290c-4361-a137-95905c5dbf4c",
+      subject: "New Newsletter Subscriber for Journal",
+      from_name: "Journal Subscriber (Article Reader)",
+      email: cleanEmail,
+      message: `New Journal Newsletter Subscriber: ${cleanEmail}`,
+    };
+
+    const cleanObject: Record<string, string> = {};
+    for (const [k, v] of Object.entries(sanitizedPayload)) {
+      if (v !== undefined && v !== null && String(v).trim().length > 0) {
+        cleanObject[k] = String(v).trim();
+      }
     }
 
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
+    const json = JSON.stringify(cleanObject);
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -883,7 +903,9 @@ export const BlogModal: React.FC<BlogModalProps> = ({
       }
 
       if (response.status === 200 || result.success === true) {
-        formElement.reset();
+        if (formElement && typeof formElement.reset === 'function') {
+          formElement.reset();
+        }
         setArticleSubscribeStatus('success');
         setArticleSubscriberEmail('');
         setTimeout(() => {
@@ -896,7 +918,9 @@ export const BlogModal: React.FC<BlogModalProps> = ({
           body: json,
         });
         if (fallbackRes.ok) {
-          formElement.reset();
+          if (formElement && typeof formElement.reset === 'function') {
+            formElement.reset();
+          }
           setArticleSubscribeStatus('success');
           setArticleSubscriberEmail('');
           setTimeout(() => {

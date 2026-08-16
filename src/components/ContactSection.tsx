@@ -97,23 +97,44 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
       return;
     }
 
+    const cleanName = name.trim();
+    const cleanEmail = email.trim();
+    const cleanMessage = message.trim();
+    const cleanCompany = company.trim() || 'N/A';
+    const cleanBudget = budget.trim() || '$300 – $800';
+
+    if (!cleanName || !cleanEmail || !cleanMessage) {
+      setErrorMessage('Please fill in all required fields.');
+      return;
+    }
+
     playSubtleClickSound();
     setSubmitting(true);
     setErrorMessage(null);
 
     const formElement = e.currentTarget;
-    const formData = new FormData(formElement);
-    // Ensure access_key is included
-    formData.append("access_key", "bd98d320-290c-4361-a137-95905c5dbf4c");
-    if (!formData.get("subject")) {
-      formData.append("subject", "New Contact Inquiry from whtamim.work");
-    }
-    if (!formData.get("from_name")) {
-      formData.append("from_name", `${name || 'Client'} (Contact Inquiry)`);
+
+    // Build sanitized dictionary with zero empty/invalid fields
+    const sanitizedPayload: Record<string, string> = {
+      access_key: "bd98d320-290c-4361-a137-95905c5dbf4c",
+      subject: `New Contact Inquiry from ${cleanName} [whtamim.work]`,
+      from_name: `${cleanName} (Client Inquiry)`,
+      name: cleanName,
+      email: cleanEmail,
+      company: cleanCompany,
+      budget: cleanBudget,
+      message: `Name: ${cleanName}\nEmail: ${cleanEmail}\nCompany: ${cleanCompany}\nBudget Tier: ${cleanBudget}\n\nProject Brief & Goals:\n${cleanMessage}`,
+    };
+
+    // Filter to guarantee only valid non-empty string entries
+    const cleanObject: Record<string, string> = {};
+    for (const [k, v] of Object.entries(sanitizedPayload)) {
+      if (v !== undefined && v !== null && String(v).trim().length > 0) {
+        cleanObject[k] = String(v).trim();
+      }
     }
 
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
+    const json = JSON.stringify(cleanObject);
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -136,7 +157,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
 
       if (response.status === 200 || result.success === true) {
         // Show success message & reset form
-        formElement.reset();
+        if (formElement && typeof formElement.reset === 'function') {
+          formElement.reset();
+        }
         setName('');
         setEmail('');
         setCompany('');
@@ -147,14 +170,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
         setToastMessage('Message Sent Successfully! whtamim will review your project requirements and respond within 24 hours.');
         setShowToast(true);
       } else {
-        // Show error message or fallback
+        // Fallback to local server endpoint
         const fallbackRes = await fetch('/api/inquire', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: json,
         });
         if (fallbackRes.ok) {
-          formElement.reset();
+          if (formElement && typeof formElement.reset === 'function') {
+            formElement.reset();
+          }
           setName('');
           setEmail('');
           setCompany('');
@@ -178,7 +203,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preFilledBrief, 
           body: json,
         });
         if (fallbackRes.ok) {
-          formElement.reset();
+          if (formElement && typeof formElement.reset === 'function') {
+            formElement.reset();
+          }
           setName('');
           setEmail('');
           setCompany('');

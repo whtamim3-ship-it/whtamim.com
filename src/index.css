@@ -1532,55 +1532,63 @@ header img,
   color: #71717a;
 }
 
-/* Pinned Dangling Open Badge Animation & Styles */
+/* পিন হওয়ার স্পেশাল মোশন এনিমেশন */
 @keyframes pinDrop {
   0% {
     opacity: 0;
-    transform: translateY(-24px) rotate(-16deg) scale(0.92);
-  }
-  40% {
-    opacity: 1;
-    transform: translateY(3px) rotate(10deg) scale(1.02);
-  }
-  65% {
-    transform: translateY(-1px) rotate(-8deg) scale(1);
-  }
-  85% {
-    transform: translateY(0) rotate(5deg) scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) rotate(4deg) scale(1);
-  }
-}
-
-@keyframes dangle {
-  0% {
-    transform: rotate(4deg);
+    transform: translateY(-40px) scale(1.1); /* একটু বড় হয়ে উপর থেকে আসবে */
   }
   50% {
-    transform: rotate(-4deg);
+    opacity: 1;
+    transform: translateY(10px) scale(0.95); /* নিচে এসে একটু স্কুইজ হবে (overshoot) */
+  }
+  75% {
+    transform: translateY(-5px) scale(1.02); /* আবার হালকা উপরে উঠবে */
   }
   100% {
-    transform: rotate(4deg);
+    opacity: 1;
+    transform: translateY(0) scale(1); /* একদম পারফেক্ট জায়গায় সেটেল হবে */
   }
 }
 
-.hero-pinned-badge {
+/* ককর্বোর্ডে পিন নাড়ার ফিজিক্যাল সুইং/উইগল মোশন */
+@keyframes pinWiggle {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-9deg);
+  }
+  40% {
+    transform: rotate(7deg);
+  }
+  60% {
+    transform: rotate(-4deg);
+  }
+  80% {
+    transform: rotate(1.8deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* ========================================================= */
+/* OPEN BADGE / HERO PINNED BADGE STYLING                    */
+/* ========================================================= */
+
+.hero-pinned-badge,
+.open-badge {
   position: absolute;
   top: -30px;
   left: -8px;
-  transform-origin: 50% -4px;
+  transform-origin: 50% -1px; /* পিভট পয়েন্ট পিনের মাঝখানে ফিক্সড */
   z-index: 15;
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: rgba(34, 197, 94, 0.12);
-  border: 1px solid rgba(34, 197, 94, 0.35);
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.2);
   padding: 3px 9px 3px 8px;
   border-radius: 6px;
-  color: #22c55e;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
   font-size: 10px;
   font-weight: 700;
@@ -1588,13 +1596,48 @@ header img,
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   white-space: nowrap;
-  animation: pinDrop 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards, dangle 3.5s ease-in-out 0.85s infinite;
-  will-change: transform;
+  opacity: 0; /* পেজ লোডের শুরুতে লুকিয়ে রাখার জন্য */
+  animation: pinDrop 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 0.2s; /* ওয়েবসাইট লোড হওয়ার ঠিক ০.২ সেকেন্ড পর পিন হবে */
+  will-change: transform, opacity;
   user-select: none;
+  cursor: pointer;
+  transition: box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+/* হোভারে কর্কবোর্ডে ঝোলানো পিনের সুইং/উইগল এফেক্ট */
+.hero-pinned-badge:hover,
+.open-badge:hover {
+  animation: pinWiggle 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* Light Mode: Ultra-minimal, crisp, delicate styling without heavy shadows */
+html:not(.dark) .hero-pinned-badge,
+html:not(.dark) .open-badge,
+:root:not(.dark) .hero-pinned-badge,
+:root:not(.dark) .open-badge,
+.light-mode .hero-pinned-badge,
+.light-mode .open-badge {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(34, 197, 94, 0.08);
+  color: #15803d;
+}
+
+/* Dark Mode: Glowing neon badge with subtle ambient dark shadow */
+html.dark .hero-pinned-badge,
+html.dark .open-badge,
+.dark .hero-pinned-badge,
+.dark .open-badge {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.25), 0 2px 6px rgba(0, 0, 0, 0.5);
+  color: #22c55e;
 }
 
 /* Metallic Pin at the top-center of the badge */
-.hero-pinned-badge::before {
+.hero-pinned-badge::before,
+.open-badge::before {
   content: '';
   position: absolute;
   top: -3.5px;
@@ -1604,9 +1647,83 @@ header img,
   height: 6px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #ffffff 0%, #cbd5e1 50%, #64748b 100%);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.9);
-  border: 0.5px solid rgba(0, 0, 0, 0.35);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
   z-index: 20;
+}
+
+html.dark .hero-pinned-badge::before,
+html.dark .open-badge::before,
+.dark .hero-pinned-badge::before,
+.dark .open-badge::before {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  border: 0.5px solid rgba(0, 0, 0, 0.4);
+}
+
+/* Light Mode Dot indicator */
+html:not(.dark) .open-badge .open-badge-dot,
+html:not(.dark) .hero-pinned-badge .open-badge-dot,
+:root:not(.dark) .open-badge .open-badge-dot,
+:root:not(.dark) .hero-pinned-badge .open-badge-dot,
+.light-mode .open-badge .open-badge-dot,
+.light-mode .hero-pinned-badge .open-badge-dot {
+  background-color: #15803d;
+}
+
+/* ========================================================= */
+/* CSS HOVER TOOLTIP FOR OPEN BADGE                          */
+/* ========================================================= */
+
+.hero-pinned-badge::after,
+.open-badge::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px) scale(0.95);
+  transform-origin: 50% 100%;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.2s;
+  z-index: 30;
+}
+
+/* Fallback tooltip content if data-tooltip attribute is omitted */
+.hero-pinned-badge:not([data-tooltip])::after,
+.open-badge:not([data-tooltip])::after {
+  content: 'Accepting New Projects';
+}
+
+/* Tooltip Reveal on Hover */
+.hero-pinned-badge:hover::after,
+.open-badge:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* Light Mode Tooltip Theme */
+html:not(.dark) .hero-pinned-badge::after,
+html:not(.dark) .open-badge::after,
+:root:not(.dark) .hero-pinned-badge::after,
+:root:not(.dark) .open-badge::after,
+.light-mode .hero-pinned-badge::after,
+.light-mode .open-badge::after {
+  background: #18181b;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 

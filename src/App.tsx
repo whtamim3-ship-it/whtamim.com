@@ -218,7 +218,7 @@ export default function App() {
           />
 
           {/* About whtamim & Creative Philosophy */}
-          <AboutSection />
+          <AboutSection theme={theme} />
 
           {/* Frequently Asked Questions (FAQ) Accordion */}
           <FaqSection onOpenEstimator={() => setEstimatorOpen(true)} />

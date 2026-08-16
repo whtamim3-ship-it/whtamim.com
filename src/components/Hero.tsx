@@ -56,8 +56,8 @@ export const Hero: React.FC<HeroProps> = () => {
             className="main-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.04] text-[#1D1D1F] dark:text-white max-w-4xl mb-3.5 relative"
           >
             <motion.span variants={wordRevealVariants} className="relative inline-block mr-[0.26em]">
-              <span className="hero-pinned-badge" title="Open for projects">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse shrink-0" />
+              <span className="open-badge hero-pinned-badge" data-tooltip="Accepting New Projects">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#15803d] dark:bg-[#22c55e] open-badge-dot animate-pulse shrink-0" />
                 <span>OPEN</span>
               </span>
               Motion
@@ -119,8 +119,8 @@ export const Hero: React.FC<HeroProps> = () => {
           className="main-heading font-coolvetica text-[22px] sm:text-[24px] font-normal tracking-tight leading-[1.06] text-[#1D1D1F] dark:text-white w-[92%] max-w-xs mx-auto mb-2.5 text-center relative"
         >
           <motion.span variants={wordRevealVariants} className="relative inline-block mr-[0.26em]">
-            <span className="hero-pinned-badge" title="Open for projects">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse shrink-0" />
+            <span className="open-badge hero-pinned-badge" data-tooltip="Accepting New Projects">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#15803d] dark:bg-[#22c55e] open-badge-dot animate-pulse shrink-0" />
               <span>OPEN</span>
             </span>
             Motion
