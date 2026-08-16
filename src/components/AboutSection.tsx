@@ -67,9 +67,110 @@ const CapCutIcon = () => (
   </svg>
 );
 
+const MainBrandLogoIcon = () => (
+  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-linear-to-br from-[#1C1C22] via-[#0F1014] to-[#060608] border border-white/20 dark:border-white/15 flex items-center justify-center shrink-0 pointer-events-none select-none p-1.5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]">
+    <picture className="flex items-center justify-center w-full h-full">
+      <source srcSet="/logo.svg" type="image/svg+xml" />
+      <img
+        src="/logo.png"
+        alt="whtamim Brand Logo"
+        className="w-full h-full object-contain filter drop-shadow-[0_2px_4px_rgba(255,59,48,0.35)]"
+        draggable={false}
+      />
+    </picture>
+  </div>
+);
+
+const RAW_TOOLS = [
+  { name: 'whtamim (Creator & Studio)', icon: <MainBrandLogoIcon /> },
+  { name: 'Adobe Premiere Pro', icon: <PremiereProIcon /> },
+  { name: 'Adobe After Effects', icon: <AfterEffectsIcon /> },
+  { name: 'DaVinci Resolve', icon: <DaVinciResolveIcon /> },
+  { name: 'Adobe Photoshop', icon: <PhotoshopIcon /> },
+  { name: 'Adobe Illustrator', icon: <IllustratorIcon /> },
+  { name: 'Adobe Audition', icon: <AuditionIcon /> },
+  { name: 'CapCut', icon: <CapCutIcon /> },
+];
+
+interface ScatteredTool {
+  name: string;
+  icon: React.ReactNode;
+  baseRotate: number;
+  baseTranslateX: number;
+  baseTranslateY: number;
+  baseScale: number;
+  parallaxMultiplier: number;
+  tiltMultiplier: number;
+}
+
+// Generate randomized 'studio mess' scattering uniquely on every page reload
+function generateRandomizedStudioMess(toolsList: typeof RAW_TOOLS): ScatteredTool[] {
+  return toolsList.map((t, idx) => {
+    const sign = idx % 2 === 0 ? 1 : -1;
+    const randomInRange = (min: number, max: number) => min + Math.random() * (max - min);
+
+    // Random rotation between -16° and +16°
+    const baseRotate = Math.round(randomInRange(6, 16) * sign * (Math.random() > 0.35 ? 1 : -1));
+    
+    // Random vertical translation (-16px to +18px)
+    const baseTranslateY = Math.round(randomInRange(-16, 18));
+    
+    // Random horizontal translation (-10px to +10px)
+    const baseTranslateX = Math.round(randomInRange(-10, 10));
+    
+    // Subtle scale variation (0.96 to 1.10)
+    const baseScale = Number(randomInRange(0.96, 1.10).toFixed(2));
+    
+    // Parallax depth responsiveness
+    const depth = Number(randomInRange(0.8, 1.3).toFixed(2));
+    const parallaxMultiplier = Math.round(randomInRange(10, 18) * depth);
+    const tiltMultiplier = Number((randomInRange(12, 20) * depth).toFixed(1));
+
+    return {
+      name: t.name,
+      icon: t.icon,
+      baseRotate,
+      baseTranslateX,
+      baseTranslateY,
+      baseScale,
+      parallaxMultiplier,
+      tiltMultiplier,
+    };
+  });
+}
+
 export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
   const [currentTheme, setCurrentTheme] = React.useState<'light' | 'dark'>(theme || 'dark');
   const [hoveredTool, setHoveredTool] = React.useState<number | null>(null);
+
+  // Randomized scatter configuration initialized uniquely per page reload
+  const [scatteredTools] = React.useState<ScatteredTool[]>(() => generateRandomizedStudioMess(RAW_TOOLS));
+
+  // Responsive mouse position tracking for realistic 3D tilt & parallax
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [mouseOffset, setMouseOffset] = React.useState<{ x: number; y: number; active: boolean }>({
+    x: 0,
+    y: 0,
+    active: false,
+  });
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const normalizedX = (e.clientX - centerX) / (rect.width / 2);
+    const normalizedY = (e.clientY - centerY) / (rect.height / 2);
+    setMouseOffset({
+      x: Math.max(-1.2, Math.min(1.2, normalizedX)),
+      y: Math.max(-1.2, Math.min(1.2, normalizedY)),
+      active: true,
+    });
+  };
+
+  const handlePointerLeave = () => {
+    setMouseOffset({ x: 0, y: 0, active: false });
+  };
 
   React.useEffect(() => {
     if (theme) {
@@ -89,79 +190,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
   const dayImage = 'https://drive.google.com/uc?export=view&id=1t__vRPyKD3bVzCXagiT4rtoaL8FFyJs3';
   const nightImage = 'https://drive.google.com/uc?export=view&id=1Iw0TKqADERuDOqDo60bKzRBEWCIn-woJ';
   const imageSrc = currentTheme === 'light' ? dayImage : nightImage;
-
-  const tools = [
-    {
-      name: 'Adobe Premiere Pro',
-      icon: <PremiereProIcon />,
-      rotate: -12,
-      translateY: -14,
-      scale: 1.08,
-      floatAnim: 'floatScatter1',
-      floatDur: '4.4s',
-      floatDelay: '0s',
-    },
-    {
-      name: 'Adobe After Effects',
-      icon: <AfterEffectsIcon />,
-      rotate: 13,
-      translateY: 16,
-      scale: 0.95,
-      floatAnim: 'floatScatter2',
-      floatDur: '5.2s',
-      floatDelay: '-1.3s',
-    },
-    {
-      name: 'DaVinci Resolve',
-      icon: <DaVinciResolveIcon />,
-      rotate: -15,
-      translateY: -20,
-      scale: 1.14,
-      floatAnim: 'floatScatter3',
-      floatDur: '4.8s',
-      floatDelay: '-2.5s',
-    },
-    {
-      name: 'Adobe Photoshop',
-      icon: <PhotoshopIcon />,
-      rotate: 8,
-      translateY: 10,
-      scale: 1.0,
-      floatAnim: 'floatScatter4',
-      floatDur: '5.5s',
-      floatDelay: '-0.8s',
-    },
-    {
-      name: 'Adobe Illustrator',
-      icon: <IllustratorIcon />,
-      rotate: -13,
-      translateY: -12,
-      scale: 0.92,
-      floatAnim: 'floatScatter1',
-      floatDur: '4.6s',
-      floatDelay: '-3.1s',
-    },
-    {
-      name: 'Adobe Audition',
-      icon: <AuditionIcon />,
-      rotate: 15,
-      translateY: 18,
-      scale: 1.06,
-      floatAnim: 'floatScatter2',
-      floatDur: '5.3s',
-      floatDelay: '-1.9s',
-    },
-    {
-      name: 'CapCut',
-      icon: <CapCutIcon />,
-      rotate: -7,
-      translateY: -8,
-      scale: 0.96,
-      floatAnim: 'floatScatter3',
-      floatDur: '4.2s',
-      floatDelay: '-2.7s',
-    },
-  ];
 
   return (
     <SectionReveal
@@ -285,10 +313,43 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
               SOFTWARE EXPERTISE
             </TextReveal>
 
-            {/* 3D Scattered Floating Icons */}
-            <div className="relative flex flex-wrap items-center gap-6 sm:gap-8 pt-6 pb-8 sm:pt-8 sm:pb-10 px-1 select-none">
-              {tools.map((t, idx) => {
+            {/* 3D Scattered Responsive Tilt Icons (Studio Mess on Page Reload) */}
+            <div
+              ref={containerRef}
+              onPointerMove={handlePointerMove}
+              onPointerLeave={handlePointerLeave}
+              className="relative flex flex-wrap items-center gap-6 sm:gap-8 pt-6 pb-8 sm:pt-8 sm:pb-10 px-1 select-none"
+              style={{ perspective: 1000 }}
+            >
+              {scatteredTools.map((t, idx) => {
                 const isHovered = hoveredTool === idx;
+
+                // Responsive mouse tilt & parallax values
+                const currentRotateZ = isHovered
+                  ? 0
+                  : t.baseRotate + (mouseOffset.active ? mouseOffset.x * 4 : 0);
+
+                const currentTranslateX = isHovered
+                  ? 0
+                  : t.baseTranslateX + (mouseOffset.active ? mouseOffset.x * t.parallaxMultiplier : 0);
+
+                const currentTranslateY = isHovered
+                  ? -14
+                  : t.baseTranslateY + (mouseOffset.active ? mouseOffset.y * t.parallaxMultiplier : 0);
+
+                // 3D Tilt angles (pitch & yaw)
+                const rotateX = isHovered ? 0 : (mouseOffset.active ? -mouseOffset.y * t.tiltMultiplier : 0);
+                const rotateY = isHovered ? 0 : (mouseOffset.active ? mouseOffset.x * t.tiltMultiplier : 0);
+
+                const currentScale = isHovered ? t.baseScale * 1.2 : t.baseScale;
+
+                // Dynamic light / drop-shadow offset reacting to cursor position
+                const shadowX = mouseOffset.active ? Math.round(-mouseOffset.x * 12) : 0;
+                const shadowY = isHovered ? 26 : Math.round(16 - mouseOffset.y * 8);
+                const shadowBlur = isHovered ? 32 : 22;
+                const shadowOpacity1 = isHovered ? 0.65 : 0.42;
+                const shadowOpacity2 = isHovered ? 0.35 : 0.22;
+
                 return (
                   <TextReveal key={t.name} delay={0.24 + idx * 0.03} yOffset={12}>
                     <div
@@ -298,19 +359,16 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
                       onMouseLeave={() => setHoveredTool(null)}
                       className="relative cursor-pointer"
                       style={{
-                        animation: `${t.floatAnim} ${t.floatDur} ease-in-out ${t.floatDelay} infinite`,
                         zIndex: isHovered ? 40 : 10,
+                        perspective: 800,
                       }}
                     >
                       <div
-                        className="scatter-icon-raw transition-all duration-300 ease-out"
+                        className="scatter-icon-raw transition-all duration-200 ease-out will-change-transform"
                         style={{
-                          transform: isHovered
-                            ? `translateY(-10px) rotate(0deg) scale(${t.scale * 1.2})`
-                            : `translateY(${t.translateY}px) rotate(${t.rotate}deg) scale(${t.scale})`,
-                          filter: isHovered
-                            ? 'drop-shadow(0px 24px 30px rgba(0, 0, 0, 0.65)) drop-shadow(0px 8px 14px rgba(0, 0, 0, 0.35))'
-                            : 'drop-shadow(0px 15px 20px rgba(0, 0, 0, 0.42)) drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.25))',
+                          transform: `perspective(800px) translate3d(${currentTranslateX}px, ${currentTranslateY}px, ${isHovered ? 25 : 0}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${currentRotateZ}deg) scale(${currentScale})`,
+                          transformStyle: 'preserve-3d',
+                          filter: `drop-shadow(${shadowX}px ${shadowY}px ${shadowBlur}px rgba(0, 0, 0, ${shadowOpacity1})) drop-shadow(${Math.round(shadowX * 0.5)}px ${Math.round(shadowY * 0.4)}px 8px rgba(0, 0, 0, ${shadowOpacity2}))`,
                         }}
                       >
                         {t.icon}

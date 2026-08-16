@@ -127,7 +127,7 @@ const ALL_WORK_PROJECTS = [
     title: 'Ikigai',
     category: 'UI animation',
     filterCategory: 'SaaS & UI',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057552/ikigai_lxe9jo.mp4',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786896348/Whatsapp_Ad_zrk3yc.mp4',
     coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop'
   },
   {

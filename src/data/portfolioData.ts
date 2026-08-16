@@ -14,7 +14,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: '2026',
     budgetTier: '',
     duration: '30 Seconds',
-    heroVideoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057552/ikigai_lxe9jo.mp4',
+    heroVideoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786896348/Whatsapp_Ad_zrk3yc.mp4',
     posterImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop',
     thumbnailGridAspect: 'col-span-12 md:col-span-6',
     logline: 'A striking blend of typography and cinematic atmosphere.',

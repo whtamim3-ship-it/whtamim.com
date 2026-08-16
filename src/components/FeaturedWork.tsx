@@ -2,35 +2,24 @@ import React, { useState, useRef, useEffect } from 'react';
 import { CASE_STUDIES } from '../data/portfolioData';
 import { CaseStudy } from '../types';
 import { playSubtleClickSound } from '../utils/motion';
-import { ArrowRight, Calculator } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { TextReveal } from './TextReveal';
 import { SectionReveal } from './SectionReveal';
 import { ParallaxLayer } from '../utils/parallaxEngine';
-import { CustomYoutubePlayer } from './CustomYoutubePlayer';
+import { FeaturedWorkSkeleton, FeaturedCardSkeleton } from './FeaturedWorkSkeleton';
 
-const getYoutubeId = (url: string) => {
-  if (!url) return '';
-  let id = '';
-  if (url.includes('shorts/')) {
-    id = url.split('shorts/')[1]?.split('?')[0];
-  } else if (url.includes('youtu.be/')) {
-    id = url.split('youtu.be/')[1]?.split('?')[0];
-  } else if (url.includes('v=')) {
-    id = url.split('v=')[1]?.split('&')[0];
-  } else if (url.includes('embed/')) {
-    id = url.split('embed/')[1]?.split('?')[0];
-  }
-  return id;
-};
+export { FeaturedWorkSkeleton, FeaturedCardSkeleton };
 
 interface FeaturedWorkProps {
   onSelectCaseStudy: (study: CaseStudy) => void;
   onNavigateToWork: () => void;
   onOpenEstimator?: () => void;
+  isLoading?: boolean;
 }
 
 export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
   onNavigateToWork,
+  isLoading = false,
 }) => {
   // Showcase exactly 3 selected projects for the clean 3-column grid
   const featuredProjects = CASE_STUDIES.slice(0, 3);
@@ -57,21 +46,25 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
           </TextReveal>
         </div>
 
-        {/* Clean 3-column Equal Grid */}
-        <div className="selected-work-grid portfolio-grid grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 items-start">
-          {featuredProjects.map((project, idx) => {
-            const cardSpeeds = [-0.02, -0.03, -0.02];
-            return (
-              <ParallaxLayer key={project.id} speed={cardSpeeds[idx % cardSpeeds.length]} maxOffset={10}>
-                <TextReveal delay={0.08 * idx} yOffset={20}>
-                  <FeaturedProjectCard
-                    project={project}
-                  />
-                </TextReveal>
-              </ParallaxLayer>
-            );
-          })}
-        </div>
+        {/* Clean 3-column Equal Grid with Skeleton Fallback */}
+        {isLoading ? (
+          <FeaturedWorkSkeleton count={3} />
+        ) : (
+          <div className="selected-work-grid portfolio-grid grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 items-start">
+            {featuredProjects.map((project, idx) => {
+              const cardSpeeds = [-0.02, -0.03, -0.02];
+              return (
+                <ParallaxLayer key={project.id} speed={cardSpeeds[idx % cardSpeeds.length]} maxOffset={10}>
+                  <TextReveal delay={0.08 * idx} yOffset={20}>
+                    <FeaturedProjectCard
+                      project={project}
+                    />
+                  </TextReveal>
+                </ParallaxLayer>
+              );
+            })}
+          </div>
+        )}
       </div>
     </SectionReveal>
   );
@@ -82,6 +75,16 @@ interface FeaturedProjectCardProps {
 }
 
 const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project }) => {
+  const [isMediaLoaded, setIsMediaLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // If video is already ready from cache
+    if (videoRef.current && videoRef.current.readyState >= 3) {
+      setIsMediaLoaded(true);
+    }
+  }, [project.heroVideoUrl]);
+
   return (
     <div
       onClick={() => {
@@ -92,17 +95,38 @@ const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project }) =>
       }}
       className="group cursor-pointer relative bg-transparent transition-all duration-300 flex flex-col"
     >
-      {/* 16:9 Video Container */}
+      {/* 16:9 Media Container (Strict Fixed Aspect Ratio prevents Layout Shifts) */}
       <div 
-        className="relative aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-neutral-950 border border-neutral-200/20 dark:border-white/[0.05] shadow-[0_8px_20px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_35px_rgba(0,0,0,0.2)] transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)]"
+        className="relative aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-neutral-200/90 dark:bg-neutral-950 border border-neutral-200/40 dark:border-white/[0.05] shadow-[0_8px_20px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_35px_rgba(0,0,0,0.2)] transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)]"
       >
+        {/* Skeleton Shimmer Placeholder Layer (visible until media is ready) */}
+        {!isMediaLoaded && (
+          <div className="absolute inset-0 bg-neutral-200/80 dark:bg-neutral-900 z-10 overflow-hidden">
+            <div className="absolute inset-0 -translate-x-full animate-[skeletonShimmer_1.8s_infinite_ease-in-out] bg-gradient-to-r from-transparent via-white/40 dark:via-white/[0.08] to-transparent pointer-events-none" />
+            <div className="absolute inset-0 flex items-center justify-center opacity-20 dark:opacity-10 pointer-events-none">
+              <svg className="w-8 h-8 text-neutral-500 dark:text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+        )}
+
+        {/* Video / Media Layer with smooth transition */}
         <video
+          ref={videoRef}
           src={project.heroVideoUrl}
+          poster={project.posterImage}
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-cover"
+          preload="metadata"
+          onLoadedData={() => setIsMediaLoaded(true)}
+          onCanPlay={() => setIsMediaLoaded(true)}
+          className={`w-full h-full object-cover transition-opacity duration-500 ease-out ${
+            isMediaLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
         />
       </div>
 
