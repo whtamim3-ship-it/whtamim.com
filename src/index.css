@@ -1713,18 +1713,57 @@ html:not(.dark) .hero-pinned-badge .open-badge-dot,
   transform: translateX(-50%) translateY(0) scale(1);
 }
 
-/* Light Mode Tooltip Theme */
-html:not(.dark) .hero-pinned-badge::after,
-html:not(.dark) .open-badge::after,
-:root:not(.dark) .hero-pinned-badge::after,
-:root:not(.dark) .open-badge::after,
-.light-mode .hero-pinned-badge::after,
-.light-mode .open-badge::after {
-  background: #18181b;
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.1);
+/* ========================================================= */
+/* 3D SCATTERED FLOATING SOFTWARE ICONS                      */
+/* ========================================================= */
+
+@keyframes floatScatter1 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(2.5deg);
+  }
 }
+
+@keyframes floatScatter2 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(16px) rotate(-3deg);
+  }
+}
+
+@keyframes floatScatter3 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-18px) rotate(-2.5deg);
+  }
+}
+
+@keyframes floatScatter4 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(12px) rotate(3deg);
+  }
+}
+
+.scatter-icon-raw {
+  filter: drop-shadow(0px 15px 20px rgba(0, 0, 0, 0.42)) drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.25));
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              filter 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform, filter;
+}
+
+.scatter-icon-raw:hover {
+  filter: drop-shadow(0px 24px 30px rgba(0, 0, 0, 0.6)) drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.35));
+}
+
 
 
 
