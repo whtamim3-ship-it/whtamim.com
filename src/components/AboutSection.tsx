@@ -7,6 +7,12 @@ interface AboutSectionProps {
   theme?: 'light' | 'dark';
 }
 
+const DaVinciResolveIcon = () => (
+  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#121318] border border-white/20 flex items-center justify-center shrink-0 pointer-events-none select-none">
+    <SiDavinciresolve className="w-7 h-7 sm:w-8 sm:h-8 text-[#FF453A]" />
+  </div>
+);
+
 const PremiereProIcon = () => (
   <svg className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 block select-none pointer-events-none" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="32" height="32" rx="7" fill="#00005B" />
@@ -20,36 +26,6 @@ const AfterEffectsIcon = () => (
     <rect width="32" height="32" rx="7" fill="#000033" />
     <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" stroke="#D1A3FF" strokeOpacity="0.8" />
     <text x="16" y="21.5" textAnchor="middle" fill="#D1A3FF" fontSize="14" fontWeight="800" fontFamily="system-ui, -apple-system, sans-serif" letterSpacing="-0.5px">Ae</text>
-  </svg>
-);
-
-const DaVinciResolveIcon = () => (
-  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#121318] border border-white/20 flex items-center justify-center shrink-0 pointer-events-none select-none">
-    <SiDavinciresolve className="w-7 h-7 sm:w-8 sm:h-8 text-[#FF453A]" />
-  </div>
-);
-
-const PhotoshopIcon = () => (
-  <svg className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 block select-none pointer-events-none" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="32" height="32" rx="7" fill="#001E36" />
-    <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" stroke="#31A8FF" strokeOpacity="0.8" />
-    <text x="16" y="21.5" textAnchor="middle" fill="#31A8FF" fontSize="14" fontWeight="800" fontFamily="system-ui, -apple-system, sans-serif" letterSpacing="-0.5px">Ps</text>
-  </svg>
-);
-
-const IllustratorIcon = () => (
-  <svg className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 block select-none pointer-events-none" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="32" height="32" rx="7" fill="#330000" />
-    <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" stroke="#FF9A00" strokeOpacity="0.8" />
-    <text x="16" y="21.5" textAnchor="middle" fill="#FF9A00" fontSize="14" fontWeight="800" fontFamily="system-ui, -apple-system, sans-serif" letterSpacing="-0.5px">Ai</text>
-  </svg>
-);
-
-const AuditionIcon = () => (
-  <svg className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 block select-none pointer-events-none" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="32" height="32" rx="7" fill="#002D2E" />
-    <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" stroke="#00E4BB" strokeOpacity="0.8" />
-    <text x="16" y="21.5" textAnchor="middle" fill="#00E4BB" fontSize="14" fontWeight="800" fontFamily="system-ui, -apple-system, sans-serif" letterSpacing="-0.5px">Au</text>
   </svg>
 );
 
@@ -67,29 +43,29 @@ const CapCutIcon = () => (
   </svg>
 );
 
-const MainBrandLogoIcon = () => (
-  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-linear-to-br from-[#1C1C22] via-[#0F1014] to-[#060608] border border-white/20 dark:border-white/15 flex items-center justify-center shrink-0 pointer-events-none select-none p-1.5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]">
-    <picture className="flex items-center justify-center w-full h-full">
-      <source srcSet="/logo.svg" type="image/svg+xml" />
-      <img
-        src="/logo.png"
-        alt="whtamim Brand Logo"
-        className="w-full h-full object-contain filter drop-shadow-[0_2px_4px_rgba(255,59,48,0.35)]"
-        draggable={false}
-      />
-    </picture>
-  </div>
+const LightroomIcon = () => (
+  <svg className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 block select-none pointer-events-none" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="32" height="32" rx="7" fill="#001D26" />
+    <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" stroke="#31A8FF" strokeOpacity="0.8" />
+    <text x="16" y="21.5" textAnchor="middle" fill="#31A8FF" fontSize="14" fontWeight="800" fontFamily="system-ui, -apple-system, sans-serif" letterSpacing="-0.5px">Lr</text>
+  </svg>
+);
+
+const PhotoshopIcon = () => (
+  <svg className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 block select-none pointer-events-none" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="32" height="32" rx="7" fill="#001E36" />
+    <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" stroke="#31A8FF" strokeOpacity="0.8" />
+    <text x="16" y="21.5" textAnchor="middle" fill="#31A8FF" fontSize="14" fontWeight="800" fontFamily="system-ui, -apple-system, sans-serif" letterSpacing="-0.5px">Ps</text>
+  </svg>
 );
 
 const RAW_TOOLS = [
-  { name: 'whtamim (Creator & Studio)', icon: <MainBrandLogoIcon /> },
+  { name: 'DaVinci Resolve', icon: <DaVinciResolveIcon /> },
   { name: 'Adobe Premiere Pro', icon: <PremiereProIcon /> },
   { name: 'Adobe After Effects', icon: <AfterEffectsIcon /> },
-  { name: 'DaVinci Resolve', icon: <DaVinciResolveIcon /> },
-  { name: 'Adobe Photoshop', icon: <PhotoshopIcon /> },
-  { name: 'Adobe Illustrator', icon: <IllustratorIcon /> },
-  { name: 'Adobe Audition', icon: <AuditionIcon /> },
   { name: 'CapCut', icon: <CapCutIcon /> },
+  { name: 'Adobe Lightroom', icon: <LightroomIcon /> },
+  { name: 'Adobe Photoshop', icon: <PhotoshopIcon /> },
 ];
 
 interface ScatteredTool {
