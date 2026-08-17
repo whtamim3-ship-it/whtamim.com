@@ -33,6 +33,7 @@ interface WorkProjectCardProps {
     filterCategory: string;
     videoUrl: string;
     coverImage: string;
+    uploadDate: string;
   };
   onSelect: () => void;
 }
@@ -118,12 +119,22 @@ const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) 
 
 const ALL_WORK_PROJECTS = [
   {
+    id: 'chatgpt-saas-promo',
+    title: 'ChatGPT SaaS Promo',
+    category: 'MOTION DESIGN',
+    filterCategory: 'SaaS & UI',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1787005445/Chat_GPT_xs95dd.mp4',
+    coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop',
+    uploadDate: '2026-08-18'
+  },
+  {
     id: 'whatsapp-promo',
     title: 'WhatsApp Promo',
     category: 'Motion Design',
     filterCategory: 'SaaS & UI',
     videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786896348/Whatsapp_Ad_zrk3yc.mp4',
-    coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop'
+    coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop',
+    uploadDate: '2026-08-14'
   },
   {
     id: 'notchnook',
@@ -131,7 +142,8 @@ const ALL_WORK_PROJECTS = [
     category: 'UI animation',
     filterCategory: 'SaaS & UI',
     videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786054247/Music_jwuuat.mp4',
-    coverImage: 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?q=80&w=800&auto=format&fit=crop'
+    coverImage: 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?q=80&w=800&auto=format&fit=crop',
+    uploadDate: '2026-08-14'
   },
   {
     id: 'claude',
@@ -139,7 +151,8 @@ const ALL_WORK_PROJECTS = [
     category: 'UI animation',
     filterCategory: 'SaaS & UI',
     videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786053944/Time%20Ui.mp4',
-    coverImage: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800&auto=format&fit=crop'
+    coverImage: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800&auto=format&fit=crop',
+    uploadDate: '2026-08-14'
   },
   {
     id: 'ikigai',
@@ -147,7 +160,8 @@ const ALL_WORK_PROJECTS = [
     category: 'UI animation',
     filterCategory: 'SaaS & UI',
     videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057552/ikigai_lxe9jo.mp4',
-    coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop'
+    coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop',
+    uploadDate: '2026-08-14'
   },
   {
     id: 'make-a-saas',
@@ -155,7 +169,8 @@ const ALL_WORK_PROJECTS = [
     category: 'UI animation',
     filterCategory: 'SaaS & UI',
     videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057626/Make_a_SAAS_s5kbel.mp4',
-    coverImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop'
+    coverImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop',
+    uploadDate: '2026-08-14'
   },
   {
     id: 'hi-motion',
@@ -163,7 +178,8 @@ const ALL_WORK_PROJECTS = [
     category: 'UI animation',
     filterCategory: 'SaaS & UI',
     videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057680/Hi_lsfoyf.mp4',
-    coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop'
+    coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop',
+    uploadDate: '2026-08-14'
   },
   {
     id: 'valorant-whtamim',
@@ -171,7 +187,8 @@ const ALL_WORK_PROJECTS = [
     category: 'Motion Graphics',
     filterCategory: 'SaaS & UI',
     videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057656/VALORANT_x_WHTAMIM_fs0drm.mp4',
-    coverImage: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop'
+    coverImage: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop',
+    uploadDate: '2026-08-14'
   },
   {
     id: 'drive-motion',
@@ -179,7 +196,8 @@ const ALL_WORK_PROJECTS = [
     category: 'UI animation',
     filterCategory: 'SaaS & UI',
     videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057757/Drive_hkng6w.mp4',
-    coverImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop'
+    coverImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop',
+    uploadDate: '2026-08-14'
   }
 ];
 
@@ -258,7 +276,9 @@ export const WorkPage: React.FC<WorkPageProps> = () => {
 
         {/* Modular Category Sections */}
         {CATEGORY_SECTIONS.filter(section => activeFilter === 'All' || section.filterCategory === activeFilter).map((section) => {
-          const sectionProjects = ALL_WORK_PROJECTS.filter(p => p.filterCategory === section.filterCategory);
+          const sectionProjects = ALL_WORK_PROJECTS
+            .filter(p => p.filterCategory === section.filterCategory)
+            .sort((a, b) => new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime());
           if (sectionProjects.length === 0) return null;
 
           return (

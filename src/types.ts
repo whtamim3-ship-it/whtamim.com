@@ -50,6 +50,7 @@ export interface CaseStudy {
     avatarUrl?: string;
   };
   featured: boolean;
+  uploadDate?: string;
 }
 
 export interface StoryboardScene {

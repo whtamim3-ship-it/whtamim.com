@@ -27,7 +27,8 @@ export const CASE_STUDIES: CaseStudy[] = [
     behindTheScenes: [],
     multiFormatCuts: [],
     results: [],
-    featured: true
+    featured: true,
+    uploadDate: '2026-08-16'
   },
   {
     id: 'saas-animation-redlab',
@@ -70,7 +71,8 @@ export const CASE_STUDIES: CaseStudy[] = [
     results: [
       { metric: '100%', label: 'Pixel-Perfect Pacing' }
     ],
-    featured: true
+    featured: true,
+    uploadDate: '2026-08-14'
   },
   {
     id: 'documentary-project',
@@ -106,7 +108,8 @@ export const CASE_STUDIES: CaseStudy[] = [
     results: [
       { metric: '100%', label: 'Narrative Engagement' }
     ],
-    featured: true
+    featured: true,
+    uploadDate: '2026-08-14'
   },
   {
     id: 'ikigai-motion',
@@ -134,7 +137,8 @@ export const CASE_STUDIES: CaseStudy[] = [
     behindTheScenes: [],
     multiFormatCuts: [],
     results: [],
-    featured: false
+    featured: false,
+    uploadDate: '2026-08-14'
   },
   {
     id: 'pran-ghee-promo',
@@ -190,7 +194,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       title: 'Brand Lead',
       company: 'PRAN Group'
     },
-    featured: true
+    featured: true,
+    uploadDate: '2026-08-14'
   }
 ];
 
