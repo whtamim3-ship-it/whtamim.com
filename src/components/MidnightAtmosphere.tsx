@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { parallaxEngine } from '../utils/parallaxEngine';
 
 interface MidnightAtmosphereProps {
@@ -20,26 +20,29 @@ interface Star {
 
 export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [isDarkActive, setIsDarkActive] = useState(theme === 'dark');
 
   useEffect(() => {
-    // Strictly destroy and do nothing when in Light Mode
-    if (theme !== 'dark') {
-      return;
-    }
+    setIsDarkActive(theme === 'dark');
+  }, [theme]);
 
+  useEffect(() => {
     let isDestroyed = false;
     let animFrameId: number | null = null;
     let initTimeoutId: NodeJS.Timeout | null = null;
     let cleanupEventListeners: (() => void) | null = null;
 
-    // Loading strategy: Wait 400ms before initializing canvas and star system
+    if (theme !== 'dark') {
+      return;
+    }
+
     initTimeoutId = setTimeout(() => {
       if (isDestroyed) return;
 
       const canvas = canvasRef.current;
       if (!canvas) return;
 
-      const ctx = canvas.getContext('2d', { alpha: false });
+      const ctx = canvas.getContext('2d', { alpha: true });
       if (!ctx) return;
 
       // Check user reduced motion preference
@@ -55,19 +58,15 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
           navigator.hardwareConcurrency &&
           navigator.hardwareConcurrency <= 4;
 
-        if (w < 768) return isLowPerformance ? 10 : 14; // Mobile: 12-15
-        if (w < 1024) return isLowPerformance ? 16 : 20; // Tablet: 20
-        if (w < 1280) return isLowPerformance ? 24 : 30; // Laptop: 30
-        return isLowPerformance ? 32 : 42; // Desktop: 35-45
+        if (w < 768) return isLowPerformance ? 10 : 14;
+        if (w < 1024) return isLowPerformance ? 16 : 20;
+        if (w < 1280) return isLowPerformance ? 24 : 30;
+        return isLowPerformance ? 32 : 42;
       };
 
       let width = (canvas.width = document.documentElement.clientWidth || window.innerWidth);
       let height = (canvas.height = document.documentElement.clientHeight || window.innerHeight);
 
-      // Section distribution helper:
-      // Hero (0 - 0.25 Y): ~45% density
-      // Middle (0.25 - 0.75 Y): ~30% density
-      // Footer (0.75 - 1.0 Y): ~25% density
       const generateYPercent = (): number => {
         const rand = Math.random();
         if (rand < 0.45) {
@@ -79,16 +78,13 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
         }
       };
 
-      // Generate Stars according to specifications
       const starCount = getStarCount();
       const stars: Star[] = [];
 
-      // Distribution: 60% Static, 25% Slow parallax, 15% Faster parallax
       const staticCount = Math.round(starCount * 0.6);
       const slowCount = Math.round(starCount * 0.25);
 
       for (let i = 0; i < starCount; i++) {
-        // Star size: 1px (60%), 1.5px (28%), 2px (12%)
         const sizeRand = Math.random();
         let size = 1;
         if (sizeRand > 0.88) size = 2;
@@ -102,32 +98,28 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
           layerSpeed = 0;
         } else if (i < staticCount + slowCount) {
           motionType = 'slow';
-          // Layer 1 (8%) or Layer 2 (16%)
           layerSpeed = Math.random() < 0.5 ? 0.08 : 0.16;
         } else {
           motionType = 'fast';
-          // Layer 3 (28%)
           layerSpeed = 0.28;
         }
 
-        // Twinkle: ~18% of stars
         const twinkles = Math.random() < 0.18;
 
         stars.push({
           xPercent: 0.02 + Math.random() * 0.96,
           yPercent: generateYPercent(),
           size,
-          baseAlpha: 0.12 + Math.random() * 0.38, // Very subtle, low opacity
+          baseAlpha: 0.14 + Math.random() * 0.36,
           motionType,
           layerSpeed: prefersReducedMotion ? 0 : layerSpeed,
           twinkles: prefersReducedMotion ? false : twinkles,
           twinkleOffset: Math.random() * Math.PI * 2,
-          twinkleSpeed: 0.0006 + Math.random() * 0.0012, // Slow, unsynchronized
+          twinkleSpeed: 0.0006 + Math.random() * 0.0012,
           twinkleAmp: 0.06 + Math.random() * 0.12,
         });
       }
 
-      // Resize handler
       const handleResize = () => {
         if (!canvas) return;
         width = canvas.width = document.documentElement.clientWidth || window.innerWidth;
@@ -136,7 +128,6 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
 
       window.addEventListener('resize', handleResize, { passive: true });
 
-      // Animation Loop State
       const startTime = performance.now();
 
       const render = (time: number) => {
@@ -145,12 +136,14 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
         const elapsed = time - startTime;
         const currentScrollY = parallaxEngine.getCurrentScrollY();
 
-        // Ambient Depth: Extremely subtle background color shift over 20-30 seconds
+        // Clear canvas with transparent clearRect so underlying CSS gradient shines through smoothly
+        ctx.clearRect(0, 0, width, height);
+
+        // Ambient Depth: Extremely subtle background color shift
         const cycle = prefersReducedMotion
           ? 0
           : Math.sin((elapsed / 25000) * Math.PI * 2);
 
-        // Midnight gradient stops: Deep Black -> Very Deep Navy -> Almost Black -> Deep Midnight
         const r1 = Math.round(4 + cycle * 1.5);
         const g1 = Math.round(5 + cycle * 2.0);
         const b1 = Math.round(7 + cycle * 3.5);
@@ -160,8 +153,8 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
         const b2 = Math.round(18 + cycle * 4.0);
 
         const gradient = ctx.createLinearGradient(0, 0, 0, height);
-        gradient.addColorStop(0, `rgb(${r1}, ${g1}, ${b1})`);
-        gradient.addColorStop(1, `rgb(${r2}, ${g2}, ${b2})`);
+        gradient.addColorStop(0, `rgba(${r1}, ${g1}, ${b1}, 0.85)`);
+        gradient.addColorStop(1, `rgba(${r2}, ${g2}, ${b2}, 0.95)`);
 
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, width, height);
@@ -170,7 +163,6 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
         for (let i = 0; i < stars.length; i++) {
           const star = stars[i];
 
-          // Calculate vertical position with parallax and wrapping
           let yPos = star.yPercent * height;
           if (!prefersReducedMotion && star.layerSpeed > 0) {
             const parallaxOffset = currentScrollY * star.layerSpeed;
@@ -180,7 +172,6 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
 
           const xPos = star.xPercent * width;
 
-          // Twinkle alpha calculation
           let alpha = star.baseAlpha;
           if (star.twinkles && !prefersReducedMotion) {
             const twinkleVal = Math.sin(
@@ -189,7 +180,6 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
             alpha += twinkleVal * star.twinkleAmp;
           }
 
-          // Strict clamp (subtle opacity only, max 0.55)
           alpha = Math.max(0.05, Math.min(0.55, alpha));
 
           ctx.fillStyle = `rgba(215, 225, 240, ${alpha.toFixed(3)})`;
@@ -204,7 +194,6 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
         animFrameId = requestAnimationFrame(render);
       };
 
-      // Visibility API Handler
       const handleVisibilityChange = () => {
         if (document.hidden) {
           if (animFrameId) {
@@ -212,7 +201,7 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
             animFrameId = null;
           }
         } else {
-          if (!animFrameId && !isDestroyed) {
+          if (!animFrameId && !isDestroyed && theme === 'dark') {
             animFrameId = requestAnimationFrame(render);
           }
         }
@@ -220,15 +209,13 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
 
       document.addEventListener('visibilitychange', handleVisibilityChange);
 
-      // Store cleanup function
       cleanupEventListeners = () => {
         window.removeEventListener('resize', handleResize);
         document.removeEventListener('visibilitychange', handleVisibilityChange);
       };
 
-      // Start initial animation frame loop
       animFrameId = requestAnimationFrame(render);
-    }, 400);
+    }, 250);
 
     return () => {
       isDestroyed = true;
@@ -238,16 +225,46 @@ export const MidnightAtmosphere: React.FC<MidnightAtmosphereProps> = ({ theme })
     };
   }, [theme]);
 
-  // Completely omit DOM node when in Light Mode
-  if (theme !== 'dark') {
-    return null;
-  }
-
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0 w-full h-full"
+    <div
+      className="fixed inset-0 pointer-events-none z-0 w-full h-full overflow-hidden transition-all duration-700 ease-in-out"
       aria-hidden="true"
-    />
+    >
+      {/* Light Mode Atmosphere Gradient Layer */}
+      <div
+        className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
+          isDarkActive ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{
+          background:
+            'radial-gradient(ellipse 90% 70% at 50% -10%, rgba(238, 242, 255, 0.85) 0%, rgba(248, 249, 250, 0.6) 50%, rgba(245, 245, 247, 1) 100%)',
+        }}
+      >
+        {/* Subtle Light Mode Ambient Vignette & Highlights */}
+        <div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            background:
+              'radial-gradient(circle at 85% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 60%), radial-gradient(circle at 15% 75%, rgba(99, 102, 241, 0.03) 0%, transparent 50%)',
+          }}
+        />
+      </div>
+
+      {/* Dark Mode Midnight Atmosphere Canvas & Gradient Layer */}
+      <div
+        className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
+          isDarkActive ? 'opacity-100' : 'opacity-0'
+        }`}
+        style={{
+          background:
+            'radial-gradient(ellipse 90% 70% at 50% 0%, #0D1117 0%, #0A0A0C 60%, #060709 100%)',
+        }}
+      >
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full"
+        />
+      </div>
+    </div>
   );
 };

@@ -170,10 +170,10 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
   return (
     <SectionReveal
       id="about"
-      className="min-h-screen w-full flex flex-col justify-center items-center py-14 sm:py-20 lg:py-24 border-t border-neutral-200/80 dark:border-neutral-800 text-[#1D1D1F] dark:text-[#F5F5F7] relative overflow-hidden"
-      style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh' }}
+      className="relative w-full h-full min-h-screen flex flex-col justify-center items-center pt-28 sm:pt-32 md:pt-24 pb-16 sm:pb-20 lg:pb-24 border-t border-neutral-200/80 dark:border-neutral-800 text-[#1D1D1F] dark:text-[#F5F5F7] overflow-hidden"
+      style={{ position: 'relative', width: '100%', overflow: 'hidden' }}
     >
-      {/* Centering-Locked Full-Screen Day Background Image */}
+      {/* Full Dynamic-Height Day Background Image */}
       <img
         src={dayImage}
         alt="About Background Day"
@@ -184,22 +184,24 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
             target.src = 'https://lh3.googleusercontent.com/d/1t__vRPyKD3bVzCXagiT4rtoaL8FFyJs3';
           }
         }}
-        className="pointer-events-none select-none"
+        className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover object-center -z-10"
         style={{
           position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '101vw',
-          height: '101vh',
-          transform: 'translate(-50%, -50%)',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '100%',
+          height: '100%',
           objectFit: 'cover',
+          objectPosition: 'center',
           zIndex: -1,
           opacity: currentTheme === 'light' ? 1 : 0,
           transition: 'none',
         }}
       />
 
-      {/* Centering-Locked Full-Screen Night Background Image */}
+      {/* Full Dynamic-Height Night Background Image */}
       <img
         src={nightImage}
         alt="About Background Night"
@@ -210,15 +212,17 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
             target.src = 'https://lh3.googleusercontent.com/d/1Iw0TKqADERuDOqDo60bKzRBEWCIn-woJ';
           }
         }}
-        className="pointer-events-none select-none"
+        className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover object-center -z-10"
         style={{
           position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '101vw',
-          height: '101vh',
-          transform: 'translate(-50%, -50%)',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '100%',
+          height: '100%',
           objectFit: 'cover',
+          objectPosition: 'center',
           zIndex: -1,
           opacity: currentTheme === 'dark' ? 1 : 0,
           transition: 'none',
@@ -228,7 +232,16 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
       {/* Subtle text readability gradient wash on the left */}
       <div
         className="absolute inset-0 bg-gradient-to-r from-[#F5F5F7]/95 via-[#F5F5F7]/70 to-transparent dark:from-[#0a0a0c]/95 dark:via-[#0a0a0c]/70 dark:to-transparent pointer-events-none -z-10 md:max-w-[70%]"
-        style={{ zIndex: -1 }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: -1,
+        }}
       />
 
       <div

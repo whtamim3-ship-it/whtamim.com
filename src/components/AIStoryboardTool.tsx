@@ -101,7 +101,10 @@ export const AIStoryboardTool: React.FC<AIStoryboardToolProps> = ({
     try {
       const res = await fetch('/api/generate-storyboard', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
         body: JSON.stringify({
           productName,
           productDescription,
@@ -112,13 +115,35 @@ export const AIStoryboardTool: React.FC<AIStoryboardToolProps> = ({
         }),
       });
 
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Failed to generate storyboard.');
+      if (!res.ok) {
+        const text = await res.text();
+        let errorMessage = `API Error: ${res.status}`;
+        try {
+          const parsed = JSON.parse(text);
+          if (parsed && (parsed.error || parsed.message)) {
+            errorMessage = parsed.error || parsed.message;
+          }
+        } catch {
+          errorMessage = `API Error: ${res.status} - ${text.substring(0, 80)}...`;
+        }
+        throw new Error(errorMessage);
+      }
+
+      const text = await res.text();
+      let data: any;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error(`Invalid JSON response: ${text.substring(0, 80)}...`);
+      }
+
+      if (!data || !data.success || !data.storyboard) {
+        throw new Error(data?.error || 'Failed to generate storyboard.');
       }
 
       setStoryboard(data.storyboard);
     } catch (err: any) {
+      console.error('AI Storyboard generation error:', err);
       setError(err.message || 'Something went wrong while generating the storyboard.');
     } finally {
       setLoading(false);

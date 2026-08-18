@@ -5,6 +5,7 @@ import { TextReveal } from './TextReveal';
 import { SectionReveal } from './SectionReveal';
 import { SERVICES } from '../data/portfolioData';
 import { ParallaxLayer } from '../utils/parallaxEngine';
+import { PerformanceInsightsChart } from './PerformanceInsightsChart';
 
 interface ServicesSectionProps {
   onOpenEstimator?: () => void;
@@ -82,6 +83,11 @@ export const ServicesSection: React.FC<ServicesSectionProps> = () => {
             );
           })}
         </div>
+
+        {/* D3.js Performance Insights Chart */}
+        <TextReveal delay={0.2} yOffset={24}>
+          <PerformanceInsightsChart />
+        </TextReveal>
       </div>
     </SectionReveal>
   );

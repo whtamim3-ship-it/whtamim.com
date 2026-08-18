@@ -82,13 +82,19 @@ Do not enclose in markdown codeblocks if possible, or return plain JSON.`;
             },
           });
 
-          const responseText = response.text || "{}";
-          const parsedData = JSON.parse(responseText);
-          if (!parsedData.visualStyle) {
-            parsedData.visualStyle = selectedVisualStyle;
+          let responseText = (response.text || "").trim();
+          if (responseText.startsWith("```")) {
+            responseText = responseText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
           }
 
-          return res.json({ success: true, storyboard: parsedData });
+          if (responseText) {
+            const parsedData = JSON.parse(responseText);
+            if (!parsedData.visualStyle) {
+              parsedData.visualStyle = selectedVisualStyle;
+            }
+
+            return res.json({ success: true, storyboard: parsedData });
+          }
         } catch (geminiErr: any) {
           console.warn("Gemini API error, using intelligent fallback storyboard:", geminiErr.message);
         }
@@ -289,8 +295,28 @@ Do not enclose in markdown codeblocks if possible, or return plain JSON.`;
       });
     } catch (err: any) {
       console.error("Error subscribing email:", err);
-      return res.status(500).json({ error: "Failed to subscribe. Please try again." });
+      return res.status(500).json({ success: false, error: "Failed to subscribe. Please try again." });
     }
+  });
+
+  // API 404 Catch-All: Ensure any unmatched /api route returns JSON, never HTML
+  app.all("/api/*", (req, res) => {
+    res.status(404).json({
+      success: false,
+      error: `API route '${req.method} ${req.originalUrl}' not found.`,
+    });
+  });
+
+  // Global Error Handler for API routes
+  app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    console.error("Server API Error:", err);
+    if (req.originalUrl.startsWith("/api") || req.path.startsWith("/api")) {
+      return res.status(500).json({
+        success: false,
+        error: err.message || "Internal server error",
+      });
+    }
+    next(err);
   });
 
   // Vite middleware for development
