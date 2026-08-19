@@ -25,10 +25,10 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
   const featuredProjects = CASE_STUDIES.slice(0, 3);
 
   return (
-    <SectionReveal id="work" className="min-h-[100svh] md:min-h-[100dvh] w-full flex flex-col justify-center items-center py-12 sm:py-16 bg-[#F5F5F7] dark:bg-transparent">
-      <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-14 my-auto">
+    <SectionReveal id="work" className="w-full flex flex-col justify-center items-center py-16 sm:py-20 lg:py-24 bg-[#F5F5F7] dark:bg-transparent">
+      <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-14">
         {/* Section Header */}
-        <div className="flex items-center justify-between gap-4 mb-8 sm:mb-10">
+        <div className="flex items-center justify-between gap-4 mb-8 sm:mb-12">
           <TextReveal as="span" delay={0} yOffset={16} className="text-11px sm:text-12px font-mono uppercase tracking-widest text-[#86868B] dark:text-[#98989D] font-bold block">
             SELECTED WORK
           </TextReveal>

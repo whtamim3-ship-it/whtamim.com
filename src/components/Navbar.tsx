@@ -12,7 +12,6 @@ interface NavbarProps {
   onNavigateToHome: (targetSection?: string) => void;
   onNavigateToWork: () => void;
   onOpenEstimator?: () => void;
-  onOpenAIStoryboard: () => void;
   onOpenDatabaseDashboard: () => void;
   onOpenBlog?: () => void;
   theme: 'light' | 'dark';
@@ -25,7 +24,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentView,
   onNavigateToHome,
   onNavigateToWork,
-  onOpenAIStoryboard,
   onOpenDatabaseDashboard,
   onOpenBlog,
   theme,
@@ -157,16 +155,26 @@ export const Navbar: React.FC<NavbarProps> = ({
           <BrandLogo />
         </div>
 
-        {/* Center: Navigation Links in Floating Glass Capsule */}
-        <div className="nav-icons-desktop">
+        {/* Center: Navigation Links in Floating Glass Capsule with macOS Dock Magnification */}
+        <div className="nav-icons-desktop overflow-visible">
           {navLinks.map((link) => (
             <motion.a
               key={link.href}
               href={link.href}
               onClick={(e) => handleNavClick(link.href, e)}
-              className={`nav-link ${activeSection === link.href ? 'active' : ''}`}
-              whileHover={{ y: -1 }}
-              whileTap={{ y: 0 }}
+              className={`nav-link relative ${activeSection === link.href ? 'active' : ''}`}
+              style={{ transformOrigin: 'center bottom' }}
+              whileHover={{
+                scale: 1.28,
+                y: -4,
+                zIndex: 30,
+                transition: { type: 'spring', stiffness: 450, damping: 20, mass: 0.8 },
+              }}
+              whileTap={{
+                scale: 0.95,
+                y: 0,
+                transition: { type: 'spring', stiffness: 500, damping: 25 },
+              }}
             >
               <PremiumNavIcon 
                 name={link.name} 

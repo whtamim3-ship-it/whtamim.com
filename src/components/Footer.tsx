@@ -6,7 +6,6 @@ import { playSubtleClickSound } from '../utils/motion';
 
 interface FooterProps {
   onOpenEstimator?: () => void;
-  onOpenAIStoryboard?: () => void;
 }
 
 /**
@@ -58,7 +57,6 @@ const TailwindFadeIn: React.FC<{
 
 export const Footer: React.FC<FooterProps> = ({
   onOpenEstimator,
-  onOpenAIStoryboard,
 }) => {
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
 
@@ -143,19 +141,6 @@ export const Footer: React.FC<FooterProps> = ({
 
             {/* Action Buttons: Full width on mobile, aligned sm:w-auto */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
-              {onOpenAIStoryboard && (
-                <button
-                  onClick={() => {
-                    playSubtleClickSound();
-                    onOpenAIStoryboard();
-                  }}
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-200 hover:text-white hover:border-neutral-700 transition-all text-[12px] sm:text-[13px] font-medium cursor-pointer w-full sm:w-auto"
-                >
-                  <Sparkles className="w-4 h-3.5 text-amber-400" />
-                  <span>AI Storyboard</span>
-                </button>
-              )}
-
               <button
                 onClick={() => {
                   playSubtleClickSound();

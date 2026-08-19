@@ -18,7 +18,6 @@ import { CASE_STUDIES } from './data/portfolioData';
 
 // Dynamically imported components for optimized initial load
 const CaseStudyModal = lazy(() => import('./components/CaseStudyModal'));
-const AIStoryboardTool = lazy(() => import('./components/AIStoryboardTool'));
 const ProjectEstimator = lazy(() => import('./components/ProjectEstimator'));
 const DatabaseDashboard = lazy(() => import('./components/DatabaseDashboard'));
 const BlogModal = lazy(() => import('./components/BlogModal').then(m => ({ default: m.BlogModal })));
@@ -32,7 +31,6 @@ export default function App() {
   // Modals & Drawers state
   const [showreelOpen, setShowreelOpen] = useState<boolean>(false);
   const [estimatorOpen, setEstimatorOpen] = useState<boolean>(false);
-  const [aiStoryboardOpen, setAiStoryboardOpen] = useState<boolean>(false);
   const [dbDashboardOpen, setDbDashboardOpen] = useState<boolean>(false);
   const [blogOpen, setBlogOpen] = useState<boolean>(false);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
@@ -97,7 +95,6 @@ export default function App() {
         const isModalOpen =
           showreelOpen ||
           estimatorOpen ||
-          aiStoryboardOpen ||
           dbDashboardOpen ||
           blogOpen ||
           selectedCaseStudy !== null ||
@@ -107,7 +104,6 @@ export default function App() {
         if (isModalOpen) {
           if (showreelOpen) setShowreelOpen(false);
           if (estimatorOpen) setEstimatorOpen(false);
-          if (aiStoryboardOpen) setAiStoryboardOpen(false);
           if (dbDashboardOpen) setDbDashboardOpen(false);
           if (blogOpen) setBlogOpen(false);
           if (selectedCaseStudy) setSelectedCaseStudy(null);
@@ -125,7 +121,6 @@ export default function App() {
   }, [
     showreelOpen,
     estimatorOpen,
-    aiStoryboardOpen,
     dbDashboardOpen,
     blogOpen,
     selectedCaseStudy,
@@ -186,7 +181,6 @@ export default function App() {
         onNavigateToHome={handleNavigateToHome}
         onNavigateToWork={handleNavigateToWork}
         onOpenEstimator={() => setEstimatorOpen(true)}
-        onOpenAIStoryboard={() => setAiStoryboardOpen(true)}
         onOpenDatabaseDashboard={() => setDbDashboardOpen(true)}
         onOpenBlog={() => setBlogOpen(true)}
         theme={theme}
@@ -213,9 +207,7 @@ export default function App() {
           />
 
           {/* Services & Capabilities Section */}
-          <ServicesSection
-            onOpenAIStoryboard={() => setAiStoryboardOpen(true)}
-          />
+          <ServicesSection />
 
           {/* About whtamim & Creative Philosophy */}
           <AboutSection theme={theme} />
@@ -232,9 +224,7 @@ export default function App() {
       )}
 
       {/* Footer */}
-      <Footer
-        onOpenAIStoryboard={() => setAiStoryboardOpen(true)}
-      />
+      <Footer />
 
       {/* Fullscreen Showreel Cinema Modal */}
       <ShowreelModal
@@ -257,13 +247,6 @@ export default function App() {
             setSelectedCaseStudy(null);
             setEstimatorOpen(true);
           }}
-        />
-
-        {/* Live AI Script & Motion Storyboard Generator */}
-        <AIStoryboardTool
-          isOpen={aiStoryboardOpen}
-          onClose={() => setAiStoryboardOpen(false)}
-          onPreFillInquiry={handlePreFillInquiry}
         />
 
         {/* Project Scope & Budget Calculator Modal */}

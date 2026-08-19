@@ -61,9 +61,9 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenEstimator }) => {
   return (
     <SectionReveal
       id="faq"
-      className="min-h-[100svh] md:min-h-[100dvh] w-full flex flex-col justify-center items-center py-12 sm:py-16 lg:py-20 border-t border-neutral-200/80 dark:border-neutral-800 bg-[#F5F5F7] dark:bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7]"
+      className="w-full flex flex-col justify-center items-center py-16 sm:py-20 lg:py-24 border-t border-neutral-200/80 dark:border-neutral-800 bg-[#F5F5F7] dark:bg-transparent text-[#1D1D1F] dark:text-[#F5F5F7]"
     >
-      <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-14 my-auto">
+      <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-14">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-20 items-start">
         {/* Left Section Header */}
         <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-6 sm:space-y-8">

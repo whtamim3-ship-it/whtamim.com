@@ -3,6 +3,7 @@ import { Calculator, X, Clock, Cpu, Layers, Monitor, Film, Workflow, MonitorPlay
 import { motion } from 'motion/react';
 import { playSubtleClickSound } from '../utils/motion';
 import { useBodyScrollLock } from '../utils/scrollLock';
+import { PlanToggle, PlanType, BillingCycle } from './PlanToggle';
 
 interface ProjectEstimatorProps {
   isOpen: boolean;
@@ -22,6 +23,8 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
   onClose,
   onPreFillInquiry,
 }) => {
+  const [selectedPlan, setSelectedPlan] = useState<PlanType>('free');
+  const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly');
   const [projectType, setProjectType] = useState<'saas' | 'ui' | 'demo' | 'doc'>('saas');
   const [durationIndex, setDurationIndex] = useState<number>(2); // Default 60s (index 2)
   const [complexity, setComplexity] = useState<'standard' | 'advanced' | 'cinematic'>('advanced');
@@ -189,6 +192,28 @@ export const ProjectEstimator: React.FC<ProjectEstimatorProps> = ({
         {/* Form Body - Viewport Optimized for Desktop One-Screen Fit */}
         <div className="p-3.5 sm:p-5 overflow-y-auto space-y-3.5 sm:space-y-4 flex-1 scrollbar-thin">
           
+          {/* Plan Tier Selection with Dynamic Sliding Pill Toggle */}
+          <div className="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200/80 dark:border-neutral-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+            <div>
+              <div className="text-[12px] sm:text-[13px] font-semibold text-[#111827] dark:text-[#F5F5F7]">
+                Production Plan &amp; Retainer
+              </div>
+              <p className="text-[10px] sm:text-[11px] text-[#6b7280] dark:text-[#98989D] mt-0.5">
+                {selectedPlan === 'free'
+                  ? 'Standard project-by-project quote with standard production queue.'
+                  : `Dedicated ${billingCycle === 'annual' ? 'Annual (-20% discount)' : 'Monthly'} sprint retainer with priority queue.`}
+              </p>
+            </div>
+            <PlanToggle
+              initialPlan={selectedPlan}
+              initialBilling={billingCycle}
+              onChange={(plan, billing) => {
+                setSelectedPlan(plan);
+                setBillingCycle(billing);
+              }}
+            />
+          </div>
+
           {/* Step 1: Project Type */}
           <div>
             <label className="block text-[10px] sm:text-[11px] uppercase tracking-[0.05em] sm:tracking-[0.08em] text-[#71717a] dark:text-[#a1a1aa] mb-1.5 font-semibold option-section-title">

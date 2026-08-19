@@ -53,29 +53,6 @@ export interface CaseStudy {
   uploadDate?: string;
 }
 
-export interface StoryboardScene {
-  sceneNumber: number;
-  timestamp: string;
-  visualDescription: string;
-  uiAnimationDetails: string;
-  voiceoverText: string;
-  onScreenText: string;
-  transitionType: string;
-}
-
-export interface AIStoryboardResponse {
-  projectTitle: string;
-  logline: string;
-  recommendedDuration: string;
-  pacingAndTone: string;
-  musicStyle: string;
-  visualStyle?: string;
-  scenes: StoryboardScene[];
-  motionDesignKeyframes: string[];
-  estimatedProductionTimeline: string;
-  budgetTierEstimate: string;
-}
-
 export interface EstimatorState {
   projectType: string;
   duration: string;

@@ -5,24 +5,22 @@ import { TextReveal } from './TextReveal';
 import { SectionReveal } from './SectionReveal';
 import { SERVICES } from '../data/portfolioData';
 import { ParallaxLayer } from '../utils/parallaxEngine';
-import { PerformanceInsightsChart } from './PerformanceInsightsChart';
 
 interface ServicesSectionProps {
   onOpenEstimator?: () => void;
-  onOpenAIStoryboard?: () => void;
 }
 
 export const ServicesSection: React.FC<ServicesSectionProps> = () => {
   return (
-    <SectionReveal id="services" className="min-h-[100svh] md:min-h-[100dvh] w-full flex flex-col justify-center items-center py-20 sm:py-24 bg-[#F8F9FA] dark:bg-[#0A0A0C] text-[#111827] dark:text-[#F5F5F7]">
-      <div className="w-full max-w-[1240px] mx-auto px-6 sm:px-10 lg:px-12 my-auto">
+    <SectionReveal id="services" className="w-full flex flex-col justify-center items-center py-16 sm:py-20 lg:py-24 border-t border-neutral-200/80 dark:border-neutral-800 bg-[#F8F9FA] dark:bg-[#0A0A0C] text-[#111827] dark:text-[#F5F5F7]">
+      <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-14">
         {/* Services Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14">
           <div>
-            <TextReveal as="span" delay={0} yOffset={16} className="text-[12px] sm:text-[13px] font-semibold uppercase tracking-[2px] text-[#0066ff] dark:text-[#3B82F6] block mb-3">
+            <TextReveal as="span" delay={0} yOffset={16} className="text-[12px] sm:text-[13px] font-semibold uppercase tracking-[2px] text-[#0066ff] dark:text-[#3B82F6] block mb-3 font-mono">
               Services & Capabilities
             </TextReveal>
-            <TextReveal as="h2" delay={0.08} yOffset={20} className="text-3xl sm:text-4xl md:text-[2.75rem] font-bold tracking-[-1px] text-[#0F172A] dark:text-white leading-[1.2]">
+            <TextReveal as="h2" delay={0.08} yOffset={20} className="text-3xl sm:text-4xl md:text-[2.75rem] font-bold tracking-[-1px] text-[#0F172A] dark:text-white leading-[1.15]">
               Video Editing & Cinematography Services.
             </TextReveal>
           </div>
@@ -43,7 +41,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = () => {
         </div>
 
         {/* 4 Bento Grid Service Cards */}
-        <div className="services-grid grid grid-cols-1 md:grid-cols-2 gap-[28px]">
+        <div className="services-grid grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7 lg:gap-8">
           {SERVICES.map((service, idx) => {
             const cardSpeeds = [-0.02, -0.03, -0.035, -0.025];
             return (
@@ -83,11 +81,6 @@ export const ServicesSection: React.FC<ServicesSectionProps> = () => {
             );
           })}
         </div>
-
-        {/* D3.js Performance Insights Chart */}
-        <TextReveal delay={0.2} yOffset={24}>
-          <PerformanceInsightsChart />
-        </TextReveal>
       </div>
     </SectionReveal>
   );
