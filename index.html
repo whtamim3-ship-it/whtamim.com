@@ -1,6 +1,51 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Fetch API compatibility patch for iframe/getter-only window environments -->
+    <script>
+      (function() {
+        try {
+          var origFetch = (typeof window !== 'undefined' && window.fetch) ? window.fetch.bind(window) : null;
+          var currentFetch = origFetch;
+          var getter = function() { return currentFetch || (origFetch ? origFetch : window.fetch); };
+          var setter = function(v) { currentFetch = v; };
+
+          // 1. Prototype patch
+          if (typeof Window !== 'undefined' && Window.prototype) {
+            try {
+              Object.defineProperty(Window.prototype, 'fetch', {
+                get: getter,
+                set: setter,
+                configurable: true,
+                enumerable: true
+              });
+            } catch (e) {}
+          }
+
+          // 2. Window object patch
+          try {
+            Object.defineProperty(window, 'fetch', {
+              get: getter,
+              set: setter,
+              configurable: true,
+              enumerable: true
+            });
+          } catch (e) {}
+
+          // 3. GlobalThis patch
+          if (typeof globalThis !== 'undefined' && globalThis !== window) {
+            try {
+              Object.defineProperty(globalThis, 'fetch', {
+                get: getter,
+                set: setter,
+                configurable: true,
+                enumerable: true
+              });
+            } catch (e) {}
+          }
+        } catch (err) {}
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>whtamim — Motion Design & SaaS Video Studio</title>

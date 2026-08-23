@@ -120,6 +120,52 @@ async function startServer() {
     }
   });
 
+  // Video Stream Proxy for Google Drive / direct MP4 videos (supports byte-range streaming, looping, and autoplay)
+  app.get("/api/video-stream/:id", async (req, res) => {
+    try {
+      const driveId = req.params.id;
+      const targetUrl = `https://drive.usercontent.google.com/download?id=${driveId}&export=download&confirm=t`;
+
+      const headers: Record<string, string> = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      };
+      if (req.headers.range) {
+        headers["Range"] = req.headers.range;
+      }
+
+      const response = await fetch(targetUrl, { headers });
+
+      if (!response.ok && response.status !== 206) {
+        return res.status(response.status).json({ error: "Failed to fetch video stream" });
+      }
+
+      const contentType = response.headers.get("content-type") || "video/mp4";
+      const contentLength = response.headers.get("content-length");
+      const contentRange = response.headers.get("content-range");
+      const acceptRanges = response.headers.get("accept-ranges") || "bytes";
+
+      res.status(response.status);
+      res.setHeader("Content-Type", contentType.includes("html") ? "video/mp4" : contentType);
+      res.setHeader("Accept-Ranges", acceptRanges);
+      if (contentLength) res.setHeader("Content-Length", contentLength);
+      if (contentRange) res.setHeader("Content-Range", contentRange);
+      res.setHeader("Cache-Control", "public, max-age=86400");
+
+      if (response.body) {
+        const { Readable } = await import("stream");
+        // @ts-ignore
+        Readable.fromWeb(response.body).pipe(res);
+      } else {
+        res.end();
+      }
+    } catch (err: any) {
+      console.error("Video streaming error:", err);
+      if (!res.headersSent) {
+        res.status(500).json({ error: "Streaming error" });
+      }
+    }
+  });
+
   // API 404 Catch-All: Ensure any unmatched /api route returns JSON, never HTML
   app.all("/api/*", (req, res) => {
     res.status(404).json({
