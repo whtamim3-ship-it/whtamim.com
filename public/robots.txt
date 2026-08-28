@@ -1,0 +1,6 @@
+# Robots.txt for https://whtamim.work
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://whtamim.work/sitemap.xml

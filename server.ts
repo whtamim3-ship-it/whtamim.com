@@ -13,6 +13,64 @@ async function startServer() {
     res.json({ status: "ok", studio: "whtamim motion design" });
   });
 
+  // XML Sitemap for Google Search Console & Search Crawlers
+  app.get("/sitemap.xml", (req, res) => {
+    const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <url>
+    <loc>https://whtamim.work/</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://whtamim.work/#work</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://whtamim.work/#about</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://whtamim.work/#assets</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://whtamim.work/#faq</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://whtamim.work/#contact</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>`;
+
+    res.setHeader("Content-Type", "application/xml; charset=utf-8");
+    res.setHeader("Cache-Control", "public, max-age=86400");
+    res.status(200).send(sitemapXml.trim());
+  });
+
+  // Robots.txt
+  app.get("/robots.txt", (req, res) => {
+    const robotsTxt = `User-agent: *\nAllow: /\n\nSitemap: https://whtamim.work/sitemap.xml\n`;
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    res.setHeader("Cache-Control", "public, max-age=86400");
+    res.status(200).send(robotsTxt);
+  });
+
   // Contact / Project Inquiry endpoint (Destination: whtamim3@gmail.com)
   app.post("/api/inquire", async (req, res) => {
     try {
