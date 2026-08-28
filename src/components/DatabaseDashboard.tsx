@@ -117,7 +117,7 @@ const INITIAL_PORTFOLIO: PortfolioRecord[] = [
     title: 'NotchNook UI Motion',
     category: 'SaaS UI Motion',
     filterCategory: 'SaaS & UI',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057757/Drive_hkng6w.mp4',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786057757/Drive_hkng6w.mp4',
     coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop',
     views: 1420
   },
@@ -135,7 +135,7 @@ const INITIAL_PORTFOLIO: PortfolioRecord[] = [
     title: 'VALORANT x WHTAMIM',
     category: 'Motion Graphics',
     filterCategory: 'Cinematic / VFX',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057552/ikigai_lxe9jo.mp4',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786057552/ikigai_lxe9jo.mp4',
     coverImage: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop',
     views: 4150
   }
@@ -257,7 +257,7 @@ export const DatabaseDashboard: React.FC<DatabaseDashboardProps> = ({ isOpen, on
           title: currentRecord.title || 'Untitled Project',
           category: currentRecord.category || 'Motion Design',
           filterCategory: currentRecord.filterCategory || 'SaaS & UI',
-          videoUrl: currentRecord.videoUrl || 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057757/Drive_hkng6w.mp4',
+          videoUrl: currentRecord.videoUrl || 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786057757/Drive_hkng6w.mp4',
           coverImage: currentRecord.coverImage || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop',
           views: 100
         };

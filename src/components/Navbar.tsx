@@ -46,6 +46,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { name: 'About' as const, href: '#about' },
     { name: 'FAQ' as const, href: '#faq' },
     { name: 'Contact' as const, href: '#contact' },
+    { name: 'Assets' as const, href: '#assets' },
   ];
 
   useBodyScrollLock(mobileMenuOpen);
@@ -94,7 +95,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         return;
       }
 
-      const sections = ['#work', '#about', '#faq', '#contact'];
+      const sections = ['#work', '#about', '#assets', '#faq', '#contact'];
       for (const section of sections) {
         const element = document.querySelector(section);
         if (element) {

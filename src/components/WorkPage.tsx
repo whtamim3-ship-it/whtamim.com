@@ -6,6 +6,9 @@ import { CaseStudy } from '../types';
 import { CASE_STUDIES } from '../data/portfolioData';
 import { CustomYoutubePlayer } from './CustomYoutubePlayer';
 import { BlurUpImage } from './BlurUpImage';
+import { useInViewport } from '../utils/useInViewport';
+import { optimizeCloudinaryUrl } from '../utils/mediaOptimizer';
+import { applyPageSeo } from '../utils/seo';
 
 const isYoutubeUrl = (url: string) => {
   return url && (url.includes('youtube.com') || url.includes('youtu.be'));
@@ -45,24 +48,31 @@ interface WorkProjectCardProps {
 
 const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) => {
   const rawVideoUrl = project.src || project.videoUrl;
+  const optimizedVideoUrl = isYoutubeUrl(rawVideoUrl) ? rawVideoUrl : optimizeCloudinaryUrl(rawVideoUrl);
   const isYt = isYoutubeUrl(rawVideoUrl);
   const ytId = isYt ? getYoutubeIdFromUrl(rawVideoUrl) : '';
   const videoRef = React.useRef<HTMLVideoElement>(null);
 
+  const [containerRef, inView] = useInViewport<HTMLDivElement>({
+    rootMargin: '250px 0px',
+    triggerOnce: true,
+  });
+
   React.useEffect(() => {
-    if (videoRef.current) {
+    if (inView && videoRef.current) {
       videoRef.current.defaultMuted = true;
       videoRef.current.muted = true;
       videoRef.current.playsInline = true;
       videoRef.current.loop = true;
       videoRef.current.play().catch(() => {});
     }
-  }, [rawVideoUrl]);
+  }, [inView, optimizedVideoUrl]);
 
   const extUrl = project.externalUrl || (isYt ? (rawVideoUrl.includes('embed/') && ytId ? `https://www.youtube.com/watch?v=${ytId}` : rawVideoUrl) : rawVideoUrl.replace('/preview', '/view'));
 
   return (
     <div
+      ref={containerRef}
       onClick={onSelect}
       className="group cursor-pointer relative flex flex-col w-full"
     >
@@ -71,6 +81,7 @@ const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) 
           <iframe
             src={rawVideoUrl}
             title={project.title}
+            loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             className="w-full h-full object-cover rounded-[inherit] pointer-events-none border-0"
@@ -83,15 +94,15 @@ const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) 
             className="w-full h-full"
             imgClassName="group-hover:scale-105 transition-transform duration-500"
           />
-        ) : (
+        ) : inView ? (
           <video
             ref={videoRef}
-            src={rawVideoUrl}
+            src={optimizedVideoUrl}
             autoPlay
             loop
             muted
             playsInline
-            preload="auto"
+            preload="metadata"
             onLoadedMetadata={(e) => {
               e.currentTarget.muted = true;
               e.currentTarget.play().catch(() => {});
@@ -102,6 +113,10 @@ const WorkProjectCard: React.FC<WorkProjectCardProps> = ({ project, onSelect }) 
             }}
             className="w-full h-full object-cover"
           />
+        ) : (
+          <div className="w-full h-full bg-neutral-900 flex items-center justify-center">
+            <div className="w-6 h-6 rounded-full border border-white/20 border-t-white/80 animate-spin opacity-40" />
+          </div>
         )}
         {/* External Link Icon Button */}
         <a
@@ -195,8 +210,8 @@ const ALL_WORK_PROJECTS: Array<WorkProjectCardProps['project']> = [
     category: 'MOTION DESIGN',
     tag: 'MOTION DESIGN',
     filterCategory: 'SaaS & UI',
-    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1787005445/Chat_GPT_xs95dd.mp4',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1787005445/Chat_GPT_xs95dd.mp4',
+    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1787005445/Chat_GPT_xs95dd.mp4',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1787005445/Chat_GPT_xs95dd.mp4',
     coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop',
     uploadDate: '2026-08-18'
   },
@@ -206,8 +221,8 @@ const ALL_WORK_PROJECTS: Array<WorkProjectCardProps['project']> = [
     category: 'Motion Design',
     tag: 'MOTION DESIGN',
     filterCategory: 'SaaS & UI',
-    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786896348/Whatsapp_Ad_zrk3yc.mp4',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786896348/Whatsapp_Ad_zrk3yc.mp4',
+    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786896348/Whatsapp_Ad_zrk3yc.mp4',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786896348/Whatsapp_Ad_zrk3yc.mp4',
     coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop',
     uploadDate: '2026-08-14'
   },
@@ -217,8 +232,8 @@ const ALL_WORK_PROJECTS: Array<WorkProjectCardProps['project']> = [
     category: 'UI animation',
     tag: 'UI ANIMATION',
     filterCategory: 'SaaS & UI',
-    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786054247/Music_jwuuat.mp4',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786054247/Music_jwuuat.mp4',
+    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786054247/Music_jwuuat.mp4',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786054247/Music_jwuuat.mp4',
     coverImage: 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?q=80&w=800&auto=format&fit=crop',
     uploadDate: '2026-08-14'
   },
@@ -228,8 +243,8 @@ const ALL_WORK_PROJECTS: Array<WorkProjectCardProps['project']> = [
     category: 'UI animation',
     tag: 'UI ANIMATION',
     filterCategory: 'SaaS & UI',
-    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786053944/Time%20Ui.mp4',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786053944/Time%20Ui.mp4',
+    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786053944/Time%20Ui.mp4',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786053944/Time%20Ui.mp4',
     coverImage: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800&auto=format&fit=crop',
     uploadDate: '2026-08-14'
   },
@@ -239,8 +254,8 @@ const ALL_WORK_PROJECTS: Array<WorkProjectCardProps['project']> = [
     category: 'UI animation',
     tag: 'UI ANIMATION',
     filterCategory: 'SaaS & UI',
-    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057552/ikigai_lxe9jo.mp4',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057552/ikigai_lxe9jo.mp4',
+    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786057552/ikigai_lxe9jo.mp4',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786057552/ikigai_lxe9jo.mp4',
     coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop',
     uploadDate: '2026-08-14'
   },
@@ -250,8 +265,8 @@ const ALL_WORK_PROJECTS: Array<WorkProjectCardProps['project']> = [
     category: 'UI animation',
     tag: 'UI ANIMATION',
     filterCategory: 'SaaS & UI',
-    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057626/Make_a_SAAS_s5kbel.mp4',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057626/Make_a_SAAS_s5kbel.mp4',
+    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786057626/Make_a_SAAS_s5kbel.mp4',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786057626/Make_a_SAAS_s5kbel.mp4',
     coverImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop',
     uploadDate: '2026-08-14'
   },
@@ -261,8 +276,8 @@ const ALL_WORK_PROJECTS: Array<WorkProjectCardProps['project']> = [
     category: 'UI animation',
     tag: 'UI ANIMATION',
     filterCategory: 'SaaS & UI',
-    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057680/Hi_lsfoyf.mp4',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057680/Hi_lsfoyf.mp4',
+    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786057680/Hi_lsfoyf.mp4',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786057680/Hi_lsfoyf.mp4',
     coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop',
     uploadDate: '2026-08-14'
   },
@@ -272,8 +287,8 @@ const ALL_WORK_PROJECTS: Array<WorkProjectCardProps['project']> = [
     category: 'Motion Graphics',
     tag: 'MOTION GRAPHICS',
     filterCategory: 'SaaS & UI',
-    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057656/VALORANT_x_WHTAMIM_fs0drm.mp4',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057656/VALORANT_x_WHTAMIM_fs0drm.mp4',
+    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786057656/VALORANT_x_WHTAMIM_fs0drm.mp4',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786057656/VALORANT_x_WHTAMIM_fs0drm.mp4',
     coverImage: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop',
     uploadDate: '2026-08-14'
   },
@@ -283,8 +298,8 @@ const ALL_WORK_PROJECTS: Array<WorkProjectCardProps['project']> = [
     category: 'UI animation',
     tag: 'UI ANIMATION',
     filterCategory: 'SaaS & UI',
-    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057757/Drive_hkng6w.mp4',
-    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/v1786057757/Drive_hkng6w.mp4',
+    src: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786057757/Drive_hkng6w.mp4',
+    videoUrl: 'https://res.cloudinary.com/grjdsu5n/video/upload/q_auto,f_auto/v1786057757/Drive_hkng6w.mp4',
     coverImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop',
     uploadDate: '2026-08-14'
   }
@@ -328,6 +343,7 @@ export const WorkPage: React.FC<WorkPageProps> = ({ onSelectCaseStudy }) => {
   const filters = ['All', 'SaaS & UI', 'Commercials', 'Cinematic / VFX', 'Documentary', 'Talking Head'];
 
   useEffect(() => {
+    applyPageSeo('work');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
@@ -506,7 +522,7 @@ export const WorkPage: React.FC<WorkPageProps> = ({ onSelectCaseStudy }) => {
                   />
                 ) : (
                   <video
-                    src={activeVideoModal.src}
+                    src={optimizeCloudinaryUrl(activeVideoModal.src)}
                     controls
                     autoPlay
                     loop

@@ -9,12 +9,14 @@ import { FeaturedWork } from './components/FeaturedWork';
 import { WorkPage } from './components/WorkPage';
 import { ServicesSection } from './components/ServicesSection';
 import { AboutSection } from './components/AboutSection';
+import { AssetsSection } from './components/AssetsSection';
 import { FaqSection } from './components/FaqSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { ScrollVelocityBlurController } from './components/ScrollVelocityBlurController';
 import { CaseStudy } from './types';
 import { CASE_STUDIES } from './data/portfolioData';
+import { applyPageSeo, SeoSectionKey } from './utils/seo';
 
 // Dynamically imported components for optimized initial load
 const CaseStudyModal = lazy(() => import('./components/CaseStudyModal'));
@@ -68,6 +70,71 @@ export default function App() {
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
+
+  // Dynamic European SaaS & Motion Design SEO Management
+  useEffect(() => {
+    const updateActiveSeo = () => {
+      if (currentView === 'work') {
+        applyPageSeo('work');
+        return;
+      }
+
+      const hash = window.location.hash.toLowerCase();
+      if (hash === '#work' || hash === '#work-all' || hash === '#work-archive') {
+        applyPageSeo('work');
+        return;
+      }
+      if (hash === '#about') {
+        applyPageSeo('about');
+        return;
+      }
+      if (hash === '#assets') {
+        applyPageSeo('assets');
+        return;
+      }
+
+      // If at top or home
+      if (window.scrollY < 250) {
+        applyPageSeo('home');
+        return;
+      }
+
+      // Check sections in viewport
+      const sections: { key: SeoSectionKey; selector: string }[] = [
+        { key: 'work', selector: '#work' },
+        { key: 'about', selector: '#about' },
+        { key: 'assets', selector: '#assets' },
+      ];
+
+      let matched = false;
+      for (const sec of sections) {
+        const el = document.querySelector(sec.selector);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= window.innerHeight * 0.45 && rect.bottom >= window.innerHeight * 0.25) {
+            applyPageSeo(sec.key);
+            matched = true;
+            break;
+          }
+        }
+      }
+
+      if (!matched && window.scrollY < 600) {
+        applyPageSeo('home');
+      }
+    };
+
+    updateActiveSeo();
+    window.addEventListener('scroll', updateActiveSeo, { passive: true });
+    window.addEventListener('hashchange', updateActiveSeo);
+    window.addEventListener('popstate', updateActiveSeo);
+
+    return () => {
+      window.removeEventListener('scroll', updateActiveSeo);
+      window.removeEventListener('hashchange', updateActiveSeo);
+      window.removeEventListener('popstate', updateActiveSeo);
+    };
+  }, [currentView]);
 
   // Handle Hash/URL routing on initial load or manual navigation
   useEffect(() => {
@@ -211,6 +278,9 @@ export default function App() {
 
           {/* About whtamim & Creative Philosophy */}
           <AboutSection theme={theme} />
+
+          {/* Creative Motion Design & Video Assets Section */}
+          <AssetsSection />
 
           {/* Frequently Asked Questions (FAQ) Accordion */}
           <FaqSection onOpenEstimator={() => setEstimatorOpen(true)} />

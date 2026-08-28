@@ -7,6 +7,8 @@ import { TextReveal } from './TextReveal';
 import { SectionReveal } from './SectionReveal';
 import { ParallaxLayer } from '../utils/parallaxEngine';
 import { FeaturedWorkSkeleton, FeaturedCardSkeleton } from './FeaturedWorkSkeleton';
+import { useInViewport } from '../utils/useInViewport';
+import { optimizeCloudinaryUrl } from '../utils/mediaOptimizer';
 
 export { FeaturedWorkSkeleton, FeaturedCardSkeleton };
 
@@ -58,6 +60,7 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
                   <TextReveal delay={0.08 * idx} yOffset={20}>
                     <FeaturedProjectCard
                       project={project}
+                      priority={idx === 0}
                     />
                   </TextReveal>
                 </ParallaxLayer>
@@ -72,14 +75,23 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
 
 interface FeaturedProjectCardProps {
   project: CaseStudy;
+  priority?: boolean;
 }
 
-const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project }) => {
+const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project, priority = false }) => {
   const [isMediaLoaded, setIsMediaLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [containerRef, inView] = useInViewport<HTMLDivElement>({
+    rootMargin: '250px 0px',
+    triggerOnce: true,
+    initialInView: priority,
+  });
+
+  const shouldRenderVideo = priority || inView;
+  const optimizedUrl = optimizeCloudinaryUrl(project.heroVideoUrl);
 
   useEffect(() => {
-    if (videoRef.current) {
+    if (shouldRenderVideo && videoRef.current) {
       videoRef.current.defaultMuted = true;
       videoRef.current.muted = true;
       videoRef.current.play().catch(() => {});
@@ -87,14 +99,15 @@ const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project }) =>
         setIsMediaLoaded(true);
       }
     }
-  }, [project.heroVideoUrl]);
+  }, [shouldRenderVideo, optimizedUrl]);
 
   return (
     <div
+      ref={containerRef}
       onClick={() => {
         playSubtleClickSound();
         if ((window as any).openVideoLightbox) {
-          (window as any).openVideoLightbox(project.heroVideoUrl);
+          (window as any).openVideoLightbox(optimizedUrl);
         }
       }}
       className="group cursor-pointer relative bg-transparent transition-all duration-300 flex flex-col"
@@ -117,22 +130,24 @@ const FeaturedProjectCard: React.FC<FeaturedProjectCardProps> = ({ project }) =>
         )}
 
         {/* Video Layer with autoPlay, loop, muted, playsInline & no poster or controls */}
-        <video
-          ref={videoRef}
-          src={project.heroVideoUrl}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          onLoadedData={() => setIsMediaLoaded(true)}
-          onCanPlay={() => setIsMediaLoaded(true)}
-          onPlay={() => setIsMediaLoaded(true)}
-          onPlaying={() => setIsMediaLoaded(true)}
-          className={`w-full h-full object-cover transition-opacity duration-500 ease-out ${
-            isMediaLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
+        {shouldRenderVideo && (
+          <video
+            ref={videoRef}
+            src={optimizedUrl}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload={priority ? 'auto' : 'metadata'}
+            onLoadedData={() => setIsMediaLoaded(true)}
+            onCanPlay={() => setIsMediaLoaded(true)}
+            onPlay={() => setIsMediaLoaded(true)}
+            onPlaying={() => setIsMediaLoaded(true)}
+            className={`w-full h-full object-cover transition-opacity duration-500 ease-out ${
+              isMediaLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        )}
       </div>
 
       {/* Details: Title & Category Badge Only */}

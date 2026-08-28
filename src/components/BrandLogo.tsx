@@ -31,7 +31,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         <source srcSet="/logo.svg" type="image/svg+xml" />
         <img
           src="/logo.png"
-          alt="whtamim official brand logo"
+          alt="whtamim logo"
           width="120"
           height="70"
           fetchPriority="high"

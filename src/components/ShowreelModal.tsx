@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { X, Play, Pause, Volume2, VolumeX, Sparkles, Download, Loader2, CheckCircle2 } from 'lucide-react';
-import JSZip from 'jszip';
 import { playSubtleClickSound } from '../utils/motion';
 import { useBodyScrollLock } from '../utils/scrollLock';
 
@@ -150,7 +149,9 @@ export const ShowreelModal: React.FC<ShowreelModalProps> = ({ isOpen, onClose, o
     setDownloadSuccess(false);
 
     try {
-      const zip = new JSZip();
+      const JSZipModule = await import('jszip');
+      const JSZipConstructor = (JSZipModule.default || JSZipModule) as unknown as typeof import('jszip');
+      const zip = new JSZipConstructor();
       const folder = zip.folder('whtamim_showreel_stills_4k');
 
       // Project stills dataset
@@ -307,7 +308,7 @@ Contact & Inquiries:
               loop
               muted={isMuted}
               playsInline
-              preload="auto"
+              preload="metadata"
               src="https://vjs.zencdn.net/v/oceans.mp4"
               onTimeUpdate={() => setCurrentTime(videoRef.current?.currentTime || 0)}
               onLoadedMetadata={() => setDuration(videoRef.current?.duration || 0)}

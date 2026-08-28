@@ -5,11 +5,12 @@ import {
   User, 
   HelpCircle, 
   Mail, 
+  FolderDown,
   LucideIcon 
 } from 'lucide-react';
 
 interface PremiumNavIconProps {
-  name: 'Home' | 'Work' | 'About' | 'FAQ' | 'Contact';
+  name: 'Home' | 'Work' | 'About' | 'FAQ' | 'Contact' | 'Assets';
   isActive: boolean;
 }
 
@@ -23,6 +24,7 @@ export const PremiumNavIcon: React.FC<PremiumNavIconProps> = ({
     'About': User,
     'FAQ': HelpCircle,
     'Contact': Mail,
+    'Assets': FolderDown,
   };
 
   const IconComponent = iconMap[name] || Home;

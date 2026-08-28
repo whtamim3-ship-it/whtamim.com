@@ -3,6 +3,7 @@ import { CaseStudy } from '../types';
 import { playSubtleClickSound } from '../utils/motion';
 import { useBodyScrollLock } from '../utils/scrollLock';
 import { BlurUpImage } from './BlurUpImage';
+import { optimizeCloudinaryUrl } from '../utils/mediaOptimizer';
 import {
   X,
   Play,
@@ -212,6 +213,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
               <iframe
                 src={getYoutubeEmbedUrl(caseStudy.heroVideoUrl)}
                 className="w-full h-full object-cover border-none"
+                loading="lazy"
                 allow="autoplay; encrypted-media; picture-in-picture"
                 title={caseStudy.title}
               />
@@ -222,9 +224,9 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                 loop
                 muted={isMuted}
                 playsInline
-                preload="auto"
+                preload="metadata"
                 poster={caseStudy.posterImage}
-                src={caseStudy.heroVideoUrl}
+                src={optimizeCloudinaryUrl(caseStudy.heroVideoUrl)}
                 onTimeUpdate={() => setCurrentTime(videoRef.current?.currentTime || 0)}
                 onLoadedMetadata={() => setDuration(videoRef.current?.duration || 0)}
                 onWaiting={() => setIsBuffering(true)}
@@ -466,7 +468,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
               {caseStudy.multiFormatCuts.map((cut, cIdx) => (
                 <div key={cIdx} className="p-4 rounded-[20px] bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-xs flex flex-col items-center">
                   <div className={`w-full ${cut.aspectRatioClass} rounded-xl overflow-hidden bg-black mb-3`}>
-                    <video autoPlay loop muted playsInline preload="metadata" src={cut.videoUrl} className="w-full h-full object-cover" />
+                    <video autoPlay loop muted playsInline preload="metadata" src={optimizeCloudinaryUrl(cut.videoUrl)} className="w-full h-full object-cover" />
                   </div>
                   <span className="text-13px font-bold text-[#1D1D1F] dark:text-[#F5F5F7] text-center">{cut.title}</span>
                   <span className="text-11px font-mono text-[#86868B] dark:text-[#98989D] uppercase">{cut.format} Aspect Ratio</span>
