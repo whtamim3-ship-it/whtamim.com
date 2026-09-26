@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>whtamim.work | Redirecting...</title>
+    <script>
+      // Single Page Apps for GitHub Pages, Cloud Run, Nginx, and static hosting
+      // Preserves path, search, and hash for client-side routing
+      (function() {
+        var path = window.location.pathname;
+        var search = window.location.search;
+        var hash = window.location.hash;
+        
+        // If route is /admin or starts with /admin, redirect preserving route
+        if (path === '/admin' || path.startsWith('/admin')) {
+          window.location.replace('/admin/' + (search || '') + (hash || ''));
+        } else {
+          // Standard SPA fallback
+          window.location.replace('/' + (search ? search + '&' : '?') + 'p=' + encodeURIComponent(path) + (hash || ''));
+        }
+      })();
+    </script>
+  </head>
+  <body style="background: #0A0A0C; color: #86868B; font-family: monospace; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+    <div>Redirecting to whtamim.work...</div>
+  </body>
+</html>

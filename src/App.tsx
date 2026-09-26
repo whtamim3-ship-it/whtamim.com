@@ -9,7 +9,7 @@ import { FeaturedWork } from './components/FeaturedWork';
 import { WorkPage } from './components/WorkPage';
 import { ServicesSection } from './components/ServicesSection';
 import { AboutSection } from './components/AboutSection';
-import { AssetsSection } from './components/AssetsSection';
+import { AssetsPage } from './components/AssetsPage';
 import { FaqSection } from './components/FaqSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
@@ -17,18 +17,54 @@ import { ScrollVelocityBlurController } from './components/ScrollVelocityBlurCon
 import { CaseStudy } from './types';
 import { CASE_STUDIES } from './data/portfolioData';
 import { applyPageSeo, SeoSectionKey } from './utils/seo';
+import { PortfolioProvider, usePortfolio } from './context/PortfolioContext';
 
 // Dynamically imported components for optimized initial load
 const CaseStudyModal = lazy(() => import('./components/CaseStudyModal'));
 const ProjectEstimator = lazy(() => import('./components/ProjectEstimator'));
-const DatabaseDashboard = lazy(() => import('./components/DatabaseDashboard'));
+const DatabaseDashboard = lazy(() => import('./components/DatabaseDashboard').then(m => ({ default: m.DatabaseDashboard })));
 const BlogModal = lazy(() => import('./components/BlogModal').then(m => ({ default: m.BlogModal })));
+const AdminPage = lazy(() => import('./components/admin/AdminPage').then(m => ({ default: m.AdminPage })));
 
-export default function App() {
+function MainAppContent() {
+  const { isAdminAuthenticated } = usePortfolio();
   const [cursorEnabled] = useState<boolean>(true);
 
-  // View state: 'home' or 'work'
-  const [currentView, setCurrentView] = useState<'home' | 'work'>('home');
+  // View state: 'home', 'work', 'assets', or 'admin'
+  const [currentView, setCurrentView] = useState<'home' | 'work' | 'assets' | 'admin'>(() => {
+    if (typeof window !== 'undefined') {
+      const pathname = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+      const search = window.location.search.toLowerCase();
+      if (
+        pathname === '/admin' ||
+        pathname === '/admin/' ||
+        pathname.startsWith('/admin/') ||
+        pathname === '/admin/index' ||
+        pathname === '/admin/index.html' ||
+        hash === '#admin' ||
+        hash.startsWith('#admin') ||
+        search.includes('view=admin') ||
+        search.includes('p=%2fadmin') ||
+        search.includes('p=/admin')
+      ) {
+        return 'admin';
+      }
+      if (pathname === '/assets' || pathname === '/assets/' || hash === '#assets' || search.includes('p=%2fassets')) {
+        return 'assets';
+      }
+      if (
+        pathname === '/work' ||
+        pathname === '/work/' ||
+        hash === '#work-all' ||
+        hash === '#work-archive' ||
+        search.includes('p=%2fwork')
+      ) {
+        return 'work';
+      }
+    }
+    return 'home';
+  });
 
   // Modals & Drawers state
   const [showreelOpen, setShowreelOpen] = useState<boolean>(false);
@@ -74,8 +110,16 @@ export default function App() {
   // Dynamic European SaaS & Motion Design SEO Management
   useEffect(() => {
     const updateActiveSeo = () => {
+      if (currentView === 'admin') {
+        document.title = 'Studio Admin | whtamim.work';
+        return;
+      }
       if (currentView === 'work') {
         applyPageSeo('work');
+        return;
+      }
+      if (currentView === 'assets') {
+        applyPageSeo('assets');
         return;
       }
 
@@ -99,11 +143,10 @@ export default function App() {
         return;
       }
 
-      // Check sections in viewport
+      // Check sections in viewport on home page
       const sections: { key: SeoSectionKey; selector: string }[] = [
         { key: 'work', selector: '#work' },
         { key: 'about', selector: '#about' },
-        { key: 'assets', selector: '#assets' },
       ];
 
       let matched = false;
@@ -139,13 +182,51 @@ export default function App() {
   // Handle Hash/URL routing on initial load or manual navigation
   useEffect(() => {
     const handleRouting = () => {
-      if (window.location.hash === '#work-all' || window.location.hash === '#work-archive') {
+      const pathname = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+      const search = window.location.search.toLowerCase();
+
+      if (
+        pathname === '/admin' ||
+        pathname === '/admin/' ||
+        pathname.startsWith('/admin/') ||
+        pathname === '/admin/index' ||
+        pathname === '/admin/index.html' ||
+        hash === '#admin' ||
+        hash.startsWith('#admin') ||
+        search.includes('view=admin') ||
+        search.includes('p=%2fadmin') ||
+        search.includes('p=/admin')
+      ) {
+        setCurrentView('admin');
+      } else if (pathname === '/assets' || pathname === '/assets/' || hash === '#assets' || search.includes('p=%2fassets')) {
+        setCurrentView('assets');
+      } else if (
+        pathname === '/work' ||
+        pathname === '/work/' ||
+        hash === '#work-all' ||
+        hash === '#work-archive' ||
+        search.includes('p=%2fwork')
+      ) {
         setCurrentView('work');
+      } else if (
+        (pathname === '/' || pathname === '') &&
+        !hash.includes('assets') &&
+        !hash.includes('work-all') &&
+        !hash.includes('work-archive') &&
+        !hash.includes('admin') &&
+        !search.includes('admin')
+      ) {
+        if (currentView === 'assets' || currentView === 'work' || currentView === 'admin') {
+          setCurrentView('home');
+        }
       }
-      if (window.location.pathname === '/blog' || window.location.hash === '#blog') {
+
+      if (pathname === '/blog' || hash === '#blog') {
         setBlogOpen(true);
       }
     };
+
     handleRouting();
     window.addEventListener('hashchange', handleRouting);
     window.addEventListener('popstate', handleRouting);
@@ -153,7 +234,7 @@ export default function App() {
       window.removeEventListener('hashchange', handleRouting);
       window.removeEventListener('popstate', handleRouting);
     };
-  }, []);
+  }, [currentView]);
 
   // Global Escape (Esc) key keyboard listener
   useEffect(() => {
@@ -175,10 +256,11 @@ export default function App() {
           if (blogOpen) setBlogOpen(false);
           if (selectedCaseStudy) setSelectedCaseStudy(null);
         } else {
-          if (currentView === 'work') {
-            setCurrentView('home');
+          if (currentView === 'work' || currentView === 'assets' || currentView === 'admin') {
+            handleNavigateToHome('#');
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           }
-          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       }
     };
@@ -196,6 +278,11 @@ export default function App() {
 
   const handleNavigateToHome = (targetSection?: string) => {
     setCurrentView('home');
+    const newUrl = targetSection && targetSection !== '#' ? `/${targetSection}` : '/';
+    if (window.location.pathname !== '/' || (targetSection && window.location.hash !== targetSection)) {
+      window.history.pushState(null, '', newUrl);
+    }
+
     if (targetSection && targetSection !== '#') {
       requestAnimationFrame(() => {
         setTimeout(() => {
@@ -214,6 +301,25 @@ export default function App() {
 
   const handleNavigateToWork = () => {
     setCurrentView('work');
+    if (window.location.pathname !== '/work') {
+      window.history.pushState(null, '', '/work');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigateToAssets = () => {
+    setCurrentView('assets');
+    if (window.location.pathname !== '/assets') {
+      window.history.pushState(null, '', '/assets');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigateToAdmin = () => {
+    setCurrentView('admin');
+    if (window.location.pathname !== '/admin') {
+      window.history.pushState(null, '', '/admin');
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -242,25 +348,47 @@ export default function App() {
       {/* Liquid Glass Water Drop Custom Cursor */}
       <CustomCursor enabled={cursorEnabled} />
 
-      {/* Global Navigation Header */}
-      <Navbar
-        currentView={currentView}
-        onNavigateToHome={handleNavigateToHome}
-        onNavigateToWork={handleNavigateToWork}
-        onOpenEstimator={() => setEstimatorOpen(true)}
-        onOpenDatabaseDashboard={() => setDbDashboardOpen(true)}
-        onOpenBlog={() => setBlogOpen(true)}
-        theme={theme}
-        onToggleTheme={toggleTheme}
-        isAmbientPlaying={isAmbientPlaying}
-        onToggleAmbient={setIsAmbientPlaying}
-      />
+      {/* Global Navigation Header (Hidden on dedicated admin page for clean focused workspace) */}
+      {currentView !== 'admin' && (
+        <Navbar
+          currentView={currentView}
+          onNavigateToHome={handleNavigateToHome}
+          onNavigateToWork={handleNavigateToWork}
+          onNavigateToAssets={handleNavigateToAssets}
+          onNavigateToAdmin={handleNavigateToAdmin}
+          onOpenEstimator={() => setEstimatorOpen(true)}
+          onOpenDatabaseDashboard={() => setDbDashboardOpen(true)}
+          onOpenBlog={() => setBlogOpen(true)}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+          isAmbientPlaying={isAmbientPlaying}
+          onToggleAmbient={setIsAmbientPlaying}
+        />
+      )}
 
-      {/* View Switcher: Work Page Archive vs Main Home Flow */}
-      {currentView === 'work' ? (
+      {/* View Switcher: Dedicated Admin Route vs Work Page vs Dedicated Assets Page vs Main Home Flow */}
+      {currentView === 'admin' ? (
+        <Suspense fallback={
+          <div className="min-h-screen w-full bg-[#0A0A0C] text-[#F5F5F7] flex flex-col items-center justify-center font-mono text-sm">
+            <div className="w-8 h-8 rounded-full border-2 border-white/20 border-t-blue-500 animate-spin mb-4" />
+            <span className="text-neutral-400">Loading Studio Admin Control...</span>
+          </div>
+        }>
+          <AdminPage
+            onNavigateHome={() => handleNavigateToHome('#')}
+            onNavigateWork={handleNavigateToWork}
+            onNavigateAssets={handleNavigateToAssets}
+          />
+        </Suspense>
+      ) : currentView === 'work' ? (
         <WorkPage
           onSelectCaseStudy={(study) => setSelectedCaseStudy(study)}
           onBackToHome={() => handleNavigateToHome('#')}
+        />
+      ) : currentView === 'assets' ? (
+        <AssetsPage
+          onBackToHome={() => handleNavigateToHome('#')}
+          onOpenInquiry={handlePreFillInquiry}
         />
       ) : (
         <main className="relative w-full min-w-full max-w-full overflow-x-clip">
@@ -279,9 +407,6 @@ export default function App() {
           {/* About whtamim & Creative Philosophy */}
           <AboutSection theme={theme} />
 
-          {/* Creative Motion Design & Video Assets Section */}
-          <AssetsSection />
-
           {/* Frequently Asked Questions (FAQ) Accordion */}
           <FaqSection onOpenEstimator={() => setEstimatorOpen(true)} />
 
@@ -293,8 +418,10 @@ export default function App() {
         </main>
       )}
 
-      {/* Footer */}
-      <Footer />
+      {/* Footer (Rendered on non-admin pages) */}
+      {currentView !== 'admin' && (
+        <Footer onNavigateToAdmin={handleNavigateToAdmin} />
+      )}
 
       {/* Fullscreen Showreel Cinema Modal */}
       <ShowreelModal
@@ -326,10 +453,14 @@ export default function App() {
           onPreFillInquiry={handlePreFillInquiry}
         />
 
-        {/* Studio Database & CMS Dashboard */}
+        {/* Studio Database & CMS Dashboard Modal */}
         <DatabaseDashboard
           isOpen={dbDashboardOpen}
           onClose={() => setDbDashboardOpen(false)}
+          onOpenFullAdmin={() => {
+            setDbDashboardOpen(false);
+            handleNavigateToAdmin();
+          }}
         />
 
         {/* Blog & Editorial Modal */}
@@ -340,5 +471,13 @@ export default function App() {
         />
       </Suspense>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <PortfolioProvider>
+      <MainAppContent />
+    </PortfolioProvider>
   );
 }

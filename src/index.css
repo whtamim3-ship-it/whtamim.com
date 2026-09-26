@@ -1531,49 +1531,9 @@ header img,
   color: #71717a;
 }
 
-/* পিন হওয়ার স্পেশাল মোশন এনিমেশন */
-@keyframes pinDrop {
-  0% {
-    opacity: 0;
-    transform: translateY(-40px) scale(1.1); /* একটু বড় হয়ে উপর থেকে আসবে */
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(10px) scale(0.95); /* নিচে এসে একটু স্কুইজ হবে (overshoot) */
-  }
-  75% {
-    transform: translateY(-5px) scale(1.02); /* আবার হালকা উপরে উঠবে */
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1); /* একদম পারফেক্ট জায়গায় সেটেল হবে */
-  }
-}
-
-/* ককর্বোর্ডে পিন নাড়ার ফিজিক্যাল সুইং/উইগল মোশন */
-@keyframes pinWiggle {
-  0% {
-    transform: rotate(0deg);
-  }
-  20% {
-    transform: rotate(-9deg);
-  }
-  40% {
-    transform: rotate(7deg);
-  }
-  60% {
-    transform: rotate(-4deg);
-  }
-  80% {
-    transform: rotate(1.8deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
 /* ========================================================= */
 /* OPEN BADGE / HERO PINNED BADGE STYLING                    */
+/* Pinned permanently like a floating UI badge               */
 /* ========================================================= */
 
 .hero-pinned-badge,
@@ -1581,9 +1541,8 @@ header img,
   position: absolute;
   top: -30px;
   left: -8px;
-  transform-origin: 50% -1px; /* পিভট পয়েন্ট পিনের মাঝখানে ফিক্সড */
-  z-index: 15;
-  display: inline-flex;
+  z-index: 25;
+  display: inline-flex !important;
   align-items: center;
   gap: 5px;
   padding: 3px 9px 3px 8px;
@@ -1595,19 +1554,41 @@ header img,
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   white-space: nowrap;
-  opacity: 0; /* পেজ লোডের শুরুতে লুকিয়ে রাখার জন্য */
-  animation: pinDrop 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  animation-delay: 0.2s; /* ওয়েবসাইট লোড হওয়ার ঠিক ০.২ সেকেন্ড পর পিন হবে */
-  will-change: transform, opacity;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
   user-select: none;
-  cursor: pointer;
-  transition: box-shadow 0.25s ease, background-color 0.25s ease;
+  cursor: default !important;
+  transform: none !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;
 }
 
-/* হোভারে কর্কবোর্ডে ঝোলানো পিনের সুইং/উইগল এফেক্ট */
+/* Ensure inner elements never capture or interrupt pointer events */
+.hero-pinned-badge *,
+.open-badge * {
+  pointer-events: none !important;
+}
+
+/* Strictly disable any floating pseudo tooltip from causing hover oscillation */
+.hero-pinned-badge::after,
+.open-badge::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Rock-solid: Completely immune to cursor interactions making it vanish, wiggle, or shift */
 .hero-pinned-badge:hover,
-.open-badge:hover {
-  animation: pinWiggle 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+.open-badge:hover,
+.hero-pinned-badge:focus,
+.open-badge:focus,
+.hero-pinned-badge:active,
+.open-badge:active {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline-flex !important;
+  transform: none !important;
+  pointer-events: auto !important;
+  animation: none !important;
 }
 
 /* Light Mode: Ultra-minimal, crisp, delicate styling without heavy shadows */
@@ -1623,6 +1604,12 @@ html:not(.dark) .open-badge,
   color: #15803d;
 }
 
+html:not(.dark) .hero-pinned-badge:hover,
+html:not(.dark) .open-badge:hover {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
 /* Dark Mode: Glowing neon badge with subtle ambient dark shadow */
 html.dark .hero-pinned-badge,
 html.dark .open-badge,
@@ -1632,6 +1619,12 @@ html.dark .open-badge,
   border: 1px solid rgba(34, 197, 94, 0.35);
   box-shadow: 0 0 12px rgba(34, 197, 94, 0.25), 0 2px 6px rgba(0, 0, 0, 0.5);
   color: #22c55e;
+}
+
+html.dark .hero-pinned-badge:hover,
+html.dark .open-badge:hover {
+  background: rgba(34, 197, 94, 0.16);
+  border-color: rgba(34, 197, 94, 0.45);
 }
 
 /* Metallic Pin at the top-center of the badge */
@@ -1649,6 +1642,7 @@ html.dark .open-badge,
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.9);
   border: 0.5px solid rgba(0, 0, 0, 0.2);
   z-index: 20;
+  pointer-events: none;
 }
 
 html.dark .hero-pinned-badge::before,
@@ -1659,6 +1653,13 @@ html.dark .open-badge::before,
   border: 0.5px solid rgba(0, 0, 0, 0.4);
 }
 
+.hero-pinned-badge:hover::before,
+.open-badge:hover::before {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateX(-50%) !important;
+}
+
 /* Light Mode Dot indicator */
 html:not(.dark) .open-badge .open-badge-dot,
 html:not(.dark) .hero-pinned-badge .open-badge-dot,
@@ -1667,49 +1668,6 @@ html:not(.dark) .hero-pinned-badge .open-badge-dot,
 .light-mode .open-badge .open-badge-dot,
 .light-mode .hero-pinned-badge .open-badge-dot {
   background-color: #15803d;
-}
-
-/* ========================================================= */
-/* CSS HOVER TOOLTIP FOR OPEN BADGE                          */
-/* ========================================================= */
-
-.hero-pinned-badge::after,
-.open-badge::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: calc(100% + 9px);
-  left: 50%;
-  transform: translateX(-50%) translateY(4px) scale(0.95);
-  transform-origin: 50% 100%;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  text-transform: none;
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 0.2s;
-  z-index: 30;
-}
-
-/* Fallback tooltip content if data-tooltip attribute is omitted */
-.hero-pinned-badge:not([data-tooltip])::after,
-.open-badge:not([data-tooltip])::after {
-  content: 'Accepting New Projects';
-}
-
-/* Tooltip Reveal on Hover */
-.hero-pinned-badge:hover::after,
-.open-badge:hover::after {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0) scale(1);
 }
 
 /* ========================================================= */

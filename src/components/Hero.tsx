@@ -56,23 +56,26 @@ export const Hero: React.FC<HeroProps> = () => {
             className="main-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.04] text-[#1D1D1F] dark:text-white max-w-4xl mb-3.5 relative"
           >
             <motion.span variants={wordRevealVariants} className="relative inline-block mr-[0.26em]">
-              <span className="open-badge hero-pinned-badge" data-tooltip="Accepting New Projects">
+              <span
+                className="open-badge hero-pinned-badge"
+                title="Accepting New Projects"
+                style={{ opacity: 1, visibility: 'visible', pointerEvents: 'auto', userSelect: 'none' }}
+              >
                 <span className="w-1.5 h-1.5 rounded-full bg-[#15803d] dark:bg-[#22c55e] open-badge-dot animate-pulse shrink-0" />
                 <span>OPEN</span>
               </span>
-              Motion
+              Elevating
             </motion.span>
-            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">that</motion.span>
-            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">makes</motion.span>
-            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">products</motion.span>
-            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">feel</motion.span>
-            <motion.span variants={wordRevealVariants} className="inline-block highlight-blue font-bold mr-[0.26em]">premium,</motion.span>
-            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">not</motion.span>
-            <motion.span variants={wordRevealVariants} className="inline-block">advertised.</motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">SaaS</motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">Brands</motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">Through</motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block highlight-blue font-bold mr-[0.26em]">Premium</motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">Motion</motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block">Design.</motion.span>
           </motion.h1>
 
           <TextReveal as="p" delay={0.32} yOffset={14} className="sub-tagline tagline text-sm sm:text-base leading-relaxed text-neutral-600 dark:text-[#cccccc] max-w-2xl mb-8 text-center">
-            I'm <strong className="font-bold text-neutral-900 dark:text-white">Tamim</strong>, a Video Editor &amp; Motion Designer creating premium commercials, SaaS product films, and cinematic brand stories designed to leave a lasting impression.
+            Hi, I'm W.H. Tamim. I specialize in transforming complex software interfaces into engaging, high-converting visual stories. Let’s make your product impossible to ignore.
           </TextReveal>
           
 
@@ -88,7 +91,7 @@ export const Hero: React.FC<HeroProps> = () => {
               }}
               className="px-7 py-3 sm:px-8 sm:py-3.5 rounded-full bg-[#0066FF] hover:bg-[#0052CC] text-white font-semibold text-14px tracking-wide transition-all shadow-md hover:shadow-lg active:scale-95"
             >
-              Start Project
+              Let's Build Your SaaS Promo
             </a>
             <a
               href="#work"
@@ -99,7 +102,7 @@ export const Hero: React.FC<HeroProps> = () => {
               }}
               className="px-7 py-3 sm:px-8 sm:py-3.5 rounded-full bg-white dark:bg-[#161618] border border-neutral-200 dark:border-neutral-800 text-[#1D1D1F] dark:text-[#F5F5F7] font-semibold text-14px hover:border-neutral-400 dark:hover:border-neutral-600 transition-all shadow-xs active:scale-95"
             >
-              See Work
+              View My Work
             </a>
           </TextReveal>
         </ParallaxLayer>
@@ -119,24 +122,27 @@ export const Hero: React.FC<HeroProps> = () => {
           className="main-heading font-coolvetica text-[22px] sm:text-[24px] font-normal tracking-tight leading-[1.06] text-[#1D1D1F] dark:text-white w-[92%] max-w-xs mx-auto mb-2.5 text-center relative"
         >
           <motion.span variants={wordRevealVariants} className="relative inline-block mr-[0.26em]">
-            <span className="open-badge hero-pinned-badge" data-tooltip="Accepting New Projects">
+            <span
+              className="open-badge hero-pinned-badge"
+              title="Accepting New Projects"
+              style={{ opacity: 1, visibility: 'visible', pointerEvents: 'auto', userSelect: 'none' }}
+            >
               <span className="w-1.5 h-1.5 rounded-full bg-[#15803d] dark:bg-[#22c55e] open-badge-dot animate-pulse shrink-0" />
               <span>OPEN</span>
             </span>
-            Motion
+            Elevating
           </motion.span>
-          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">that</motion.span>
-          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">makes</motion.span>
-          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">products</motion.span>
-          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">feel</motion.span>
-          <motion.span variants={wordRevealVariants} className="inline-block highlight-blue font-coolvetica italic font-bold mr-[0.26em]">premium,</motion.span>
-          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">not</motion.span>
-          <motion.span variants={wordRevealVariants} className="inline-block">advertised.</motion.span>
+          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">SaaS</motion.span>
+          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">Brands</motion.span>
+          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">Through</motion.span>
+          <motion.span variants={wordRevealVariants} className="inline-block highlight-blue font-coolvetica italic font-bold mr-[0.26em]">Premium</motion.span>
+          <motion.span variants={wordRevealVariants} className="inline-block mr-[0.26em]">Motion</motion.span>
+          <motion.span variants={wordRevealVariants} className="inline-block">Design.</motion.span>
         </motion.h1>
 
         {/* Mobile Tagline */}
         <TextReveal as="p" delay={0.10} yOffset={10} className="sub-tagline tagline font-sans italic text-[13px] sm:text-[14px] leading-relaxed text-neutral-600 dark:text-[#cccccc] w-[92%] max-w-sm mx-auto mb-6 text-center" style={{ fontFamily: "'Poppins', sans-serif" }}>
-          I'm <strong className="font-bold not-italic text-neutral-900 dark:text-white">Tamim</strong>, a Video Editor &amp; Motion Designer creating premium commercials, SaaS product films, and cinematic brand stories designed to leave a lasting impression.
+          Hi, I'm W.H. Tamim. I specialize in transforming complex software interfaces into engaging, high-converting visual stories. Let’s make your product impossible to ignore.
         </TextReveal>
 
 
@@ -152,7 +158,7 @@ export const Hero: React.FC<HeroProps> = () => {
             }}
             className="px-5 py-2.5 rounded-full bg-[#0066FF] hover:bg-[#0052CC] text-white font-semibold text-13px tracking-wide transition-all shadow-md active:scale-95"
           >
-            Start Project
+            Let's Build Your SaaS Promo
           </a>
           <a
             href="#work"
@@ -163,7 +169,7 @@ export const Hero: React.FC<HeroProps> = () => {
             }}
             className="px-5 py-2.5 rounded-full bg-white dark:bg-[#161618] border border-neutral-200 dark:border-neutral-800 text-[#1D1D1F] dark:text-white font-semibold text-13px hover:border-neutral-400 dark:hover:border-neutral-600 transition-all shadow-xs active:scale-95"
           >
-            See Work
+            View My Work
           </a>
         </TextReveal>
       </div>

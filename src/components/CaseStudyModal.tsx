@@ -368,7 +368,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                 <p className="text-15px leading-relaxed text-[#86868B] dark:text-[#98989D]">{caseStudy.overview}</p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <div className="p-5 rounded-[20px] bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-xs">
                   <h4 className="text-14px font-mono font-bold text-[#007AFF] dark:text-[#0A84FF] uppercase tracking-wider mb-2">
                     The Challenge
@@ -377,9 +377,19 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                 </div>
                 <div className="p-5 rounded-[20px] bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-xs">
                   <h4 className="text-14px font-mono font-bold text-[#1D1D1F] dark:text-[#F5F5F7] uppercase tracking-wider mb-2">
-                    The Goal
+                    My Role &amp; Solution
                   </h4>
-                  <p className="text-13px leading-relaxed text-[#86868B] dark:text-[#98989D]">{caseStudy.goal}</p>
+                  <p className="text-13px leading-relaxed text-[#86868B] dark:text-[#98989D]">{caseStudy.strategy || caseStudy.goal}</p>
+                </div>
+                <div className="p-5 rounded-[20px] bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-xs">
+                  <h4 className="text-14px font-mono font-bold text-[#007AFF] dark:text-[#0A84FF] uppercase tracking-wider mb-2">
+                    The Result
+                  </h4>
+                  <p className="text-13px leading-relaxed text-[#86868B] dark:text-[#98989D]">
+                    {caseStudy.results && caseStudy.results.length > 0
+                      ? caseStudy.results.map((res) => `${res.metric} ${res.label}`).join(' • ')
+                      : 'Delivered high-converting visual engagement and seamless product clarity.'}
+                  </p>
                 </div>
               </div>
 
@@ -480,7 +490,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
           {/* Results & Key Metrics */}
           <div className="mb-16 p-8 rounded-[24px] bg-white dark:bg-[#161618] border border-neutral-200/80 dark:border-neutral-800 shadow-md">
             <h3 className="text-12px font-mono text-[#007AFF] dark:text-[#0A84FF] uppercase tracking-widest font-bold mb-6">
-              MEASURABLE RESULTS & IMPACT
+              The Result
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
               {caseStudy.results.map((res, rIdx) => (

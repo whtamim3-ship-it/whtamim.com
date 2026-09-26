@@ -6,6 +6,7 @@ import { playSubtleClickSound } from '../utils/motion';
 
 interface FooterProps {
   onOpenEstimator?: () => void;
+  onNavigateToAdmin?: () => void;
 }
 
 /**
@@ -57,6 +58,7 @@ const TailwindFadeIn: React.FC<{
 
 export const Footer: React.FC<FooterProps> = ({
   onOpenEstimator,
+  onNavigateToAdmin,
 }) => {
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
 
@@ -120,8 +122,11 @@ export const Footer: React.FC<FooterProps> = ({
               className="text-[26px] md:text-[42px] font-bold text-white leading-tight tracking-tight max-w-4xl"
               style={{ fontFamily: 'var(--font-display)' }}
             >
-              Have a project worth doing right? Let's tell a story worth remembering.
+              Ready to Make Your Product Stand Out?
             </h2>
+            <p className="text-[15px] sm:text-[17px] text-neutral-400 mt-2 max-w-2xl leading-relaxed">
+              Let’s collaborate to build visually stunning content that drives real results for your business.
+            </p>
           </TailwindFadeIn>
 
           {/* 3. Action Buttons & Studio Info */}
@@ -146,11 +151,22 @@ export const Footer: React.FC<FooterProps> = ({
                   playSubtleClickSound();
                   scrollToContact();
                 }}
-                className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#0066FF] hover:bg-[#0052CC] text-white font-semibold transition-all text-[12px] sm:text-[13px] cursor-pointer shadow-md w-full sm:w-auto"
+                className="flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#0066FF] hover:bg-[#0052CC] text-white font-semibold transition-all text-[13px] sm:text-[14px] cursor-pointer shadow-md w-full sm:w-auto"
               >
                 <Mail className="w-4 h-3.5 text-white" />
-                <span>Start Project</span>
+                <span>Start Your Project Today</span>
               </button>
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  playSubtleClickSound();
+                  scrollToContact();
+                }}
+                className="flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold transition-all text-[13px] sm:text-[14px] cursor-pointer border border-white/10 w-full sm:w-auto text-center"
+              >
+                <span>Book a Quick Chat</span>
+              </a>
             </div>
           </TailwindFadeIn>
 
@@ -162,7 +178,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <div className="w-full pb-3 border-b border-neutral-800/60">
                   <span>© {currentYear} whtamim. All rights reserved.</span>
                 </div>
-                <div>
+                <div className="flex items-center justify-center gap-4">
                   <a
                     href="#privacy"
                     onClick={openPrivacyModal}
@@ -170,6 +186,19 @@ export const Footer: React.FC<FooterProps> = ({
                   >
                     <Shield className="w-3.5 h-3.5 text-neutral-400" />
                     <span>Privacy Policy</span>
+                  </a>
+                  <span className="text-neutral-700">•</span>
+                  <a
+                    href="/admin"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      playSubtleClickSound();
+                      if (onNavigateToAdmin) onNavigateToAdmin();
+                    }}
+                    className="inline-flex items-center justify-center gap-1.5 hover:text-white transition-colors cursor-pointer text-neutral-400 hover:text-white"
+                  >
+                    <Lock className="w-3.5 h-3.5 text-neutral-500" />
+                    <span>Admin</span>
                   </a>
                 </div>
               </div>
@@ -180,7 +209,7 @@ export const Footer: React.FC<FooterProps> = ({
                   <span>© {currentYear} whtamim. All rights reserved.</span>
                 </div>
 
-                <div className="text-right">
+                <div className="text-right flex items-center gap-4">
                   <a
                     href="#privacy"
                     onClick={openPrivacyModal}
@@ -188,6 +217,19 @@ export const Footer: React.FC<FooterProps> = ({
                   >
                     <Shield className="w-3.5 h-3.5 text-neutral-400" />
                     <span>Privacy Policy</span>
+                  </a>
+                  <span className="text-neutral-700">•</span>
+                  <a
+                    href="/admin"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      playSubtleClickSound();
+                      if (onNavigateToAdmin) onNavigateToAdmin();
+                    }}
+                    className="inline-flex items-center gap-1.5 text-neutral-500 hover:text-white transition-colors cursor-pointer"
+                  >
+                    <Lock className="w-3.5 h-3.5" />
+                    <span>Admin Control</span>
                   </a>
                 </div>
               </div>

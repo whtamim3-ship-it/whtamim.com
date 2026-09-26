@@ -9,6 +9,7 @@ import { ParallaxLayer } from '../utils/parallaxEngine';
 import { FeaturedWorkSkeleton, FeaturedCardSkeleton } from './FeaturedWorkSkeleton';
 import { useInViewport } from '../utils/useInViewport';
 import { optimizeCloudinaryUrl } from '../utils/mediaOptimizer';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export { FeaturedWorkSkeleton, FeaturedCardSkeleton };
 
@@ -23,8 +24,43 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({
   onNavigateToWork,
   isLoading = false,
 }) => {
+  const { caseStudies, featuredProjects: dynamicFeatured, isLoading: contextLoading } = usePortfolio();
+
   // Showcase exactly 3 selected projects for the clean 3-column grid
-  const featuredProjects = CASE_STUDIES.slice(0, 3);
+  const featuredProjects = dynamicFeatured.length > 0
+    ? dynamicFeatured.map((p) => {
+        const found = caseStudies.find((c) => c.id === p.id);
+        if (found) return found;
+        return {
+          id: p.id,
+          title: p.title,
+          subtitle: p.subtitle || `${p.category} Showpiece`,
+          client: p.client || 'Client Project',
+          industry: p.industry || p.category,
+          services: [p.tag || p.category.toUpperCase()],
+          role: p.role || 'Lead Motion Designer',
+          deliverables: ['Promotional Master'],
+          tools: ['After Effects'],
+          year: '2026',
+          budgetTier: 'Custom Scope',
+          duration: p.duration || '30 Seconds',
+          heroVideoUrl: p.videoUrl,
+          posterImage: p.coverImage,
+          logline: p.logline || 'Precision visual storytelling.',
+          overview: p.overview || p.description || 'Dynamic motion design project.',
+          challenge: 'Visual clarity and kinetic pacing.',
+          goal: 'High-impact conversion visuals.',
+          strategy: 'Modern kinetic typography and sound-synced animation.',
+          storytellingApproach: 'Clear kinetic pacing.',
+          motionDesignBreakdown: [],
+          behindTheScenes: [],
+          multiFormatCuts: [],
+          results: [{ metric: '100%', label: 'Visual Precision' }],
+          featured: p.featured,
+          uploadDate: p.uploadDate,
+        } as CaseStudy;
+      })
+    : CASE_STUDIES.slice(0, 3);
 
   return (
     <SectionReveal id="work" className="w-full flex flex-col justify-center items-center py-16 sm:py-20 lg:py-24 bg-[#F5F5F7] dark:bg-transparent">

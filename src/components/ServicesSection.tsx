@@ -21,7 +21,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = () => {
               Services & Capabilities
             </TextReveal>
             <TextReveal as="h2" delay={0.08} yOffset={20} className="text-3xl sm:text-4xl md:text-[2.75rem] font-bold tracking-[-1px] text-[#0F172A] dark:text-white leading-[1.15]">
-              Video Editing & Cinematography Services.
+              How I Can Help Your Brand Grow
             </TextReveal>
           </div>
           <TextReveal delay={0.16} yOffset={16}>
@@ -40,8 +40,8 @@ export const ServicesSection: React.FC<ServicesSectionProps> = () => {
           </TextReveal>
         </div>
 
-        {/* 4 Bento Grid Service Cards */}
-        <div className="services-grid grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7 lg:gap-8">
+        {/* 3 Bento Grid Service Cards */}
+        <div className="services-grid grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7 lg:gap-8">
           {SERVICES.map((service, idx) => {
             const cardSpeeds = [-0.02, -0.03, -0.035, -0.025];
             return (

@@ -1,6 +1,8 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import { createServer as createViteServer } from "vite";
+import { adminStore } from "./server/adminStore";
 
 async function startServer() {
   const app = express();
@@ -13,13 +15,191 @@ async function startServer() {
     res.json({ status: "ok", studio: "whtamim motion design" });
   });
 
+  // Admin Authentication Middleware
+  const requireAdminAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ success: false, error: "Unauthorized: Admin authentication token required." });
+    }
+    const token = authHeader.split(" ")[1];
+    const verification = adminStore.verifySession(token);
+    if (!verification.valid) {
+      return res.status(401).json({ success: false, error: "Unauthorized: Session expired or invalid." });
+    }
+    (req as any).adminUser = verification.user;
+    next();
+  };
+
+  // --- Dynamic Content Endpoints ---
+  // Public content endpoint for frontend hydration
+  app.get("/api/content", (req, res) => {
+    try {
+      const content = adminStore.getContent();
+      res.json({ success: true, data: content });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: "Failed to retrieve site content" });
+    }
+  });
+
+  // --- Admin Authentication Endpoints ---
+  app.post("/api/admin/login", (req, res) => {
+    try {
+      const { email, password } = req.body;
+      if (!email || !password) {
+        return res.status(400).json({ success: false, error: "Email and password are required." });
+      }
+      const result = adminStore.login(email, password);
+      if (!result.success) {
+        return res.status(401).json(result);
+      }
+      return res.json(result);
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Login failed" });
+    }
+  });
+
+  app.get("/api/admin/verify", (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : "";
+      const result = adminStore.verifySession(token);
+      if (!result.valid) {
+        return res.status(401).json({ success: false, valid: false, error: "Session invalid or expired" });
+      }
+      return res.json({ success: true, valid: true, user: result.user });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Verification failed" });
+    }
+  });
+
+  app.post("/api/admin/logout", (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : "";
+      adminStore.logout(token);
+      return res.json({ success: true, message: "Logged out successfully" });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Logout failed" });
+    }
+  });
+
+  app.post("/api/admin/update-credentials", requireAdminAuth, (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const result = adminStore.updateCredentials(email, password);
+      return res.json(result);
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Failed to update credentials" });
+    }
+  });
+
+  // --- Protected Content Management Endpoints ---
+  app.put("/api/admin/settings", requireAdminAuth, (req, res) => {
+    try {
+      const updated = adminStore.updateSettings(req.body);
+      return res.json({ success: true, settings: updated });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Failed to update settings" });
+    }
+  });
+
+  app.post("/api/admin/projects", requireAdminAuth, (req, res) => {
+    try {
+      const newProj = adminStore.addProject(req.body);
+      return res.status(201).json({ success: true, project: newProj });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Failed to add project" });
+    }
+  });
+
+  app.put("/api/admin/projects/:id", requireAdminAuth, (req, res) => {
+    try {
+      const updated = adminStore.updateProject(req.params.id, req.body);
+      if (!updated) {
+        return res.status(404).json({ success: false, error: "Project not found" });
+      }
+      return res.json({ success: true, project: updated });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Failed to update project" });
+    }
+  });
+
+  app.delete("/api/admin/projects/:id", requireAdminAuth, (req, res) => {
+    try {
+      const deleted = adminStore.deleteProject(req.params.id);
+      if (!deleted) {
+        return res.status(404).json({ success: false, error: "Project not found" });
+      }
+      return res.json({ success: true, message: "Project deleted successfully" });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Failed to delete project" });
+    }
+  });
+
+  app.put("/api/admin/assets/:id", requireAdminAuth, (req, res) => {
+    try {
+      const updated = adminStore.updateAssetPack(req.params.id, req.body);
+      if (!updated) {
+        return res.status(404).json({ success: false, error: "Asset pack not found" });
+      }
+      return res.json({ success: true, assetPack: updated });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Failed to update asset pack" });
+    }
+  });
+
+  app.post("/api/admin/reset", requireAdminAuth, (req, res) => {
+    try {
+      const content = adminStore.resetToDefaults();
+      return res.json({ success: true, data: content, message: "Site content restored to original defaults" });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Failed to reset content" });
+    }
+  });
+
+  // --- Inquiries & Leads Endpoints ---
+  app.get("/api/admin/inquiries", requireAdminAuth, (req, res) => {
+    try {
+      const inquiries = adminStore.getInquiries();
+      return res.json({ success: true, inquiries });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Failed to fetch inquiries" });
+    }
+  });
+
+  app.put("/api/admin/inquiries/:id/status", requireAdminAuth, (req, res) => {
+    try {
+      const { status } = req.body;
+      const ok = adminStore.updateInquiryStatus(req.params.id, status);
+      if (!ok) {
+        return res.status(404).json({ success: false, error: "Inquiry not found" });
+      }
+      return res.json({ success: true, message: "Status updated" });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Failed to update inquiry status" });
+    }
+  });
+
+  app.delete("/api/admin/inquiries/:id", requireAdminAuth, (req, res) => {
+    try {
+      const ok = adminStore.deleteInquiry(req.params.id);
+      if (!ok) {
+        return res.status(404).json({ success: false, error: "Inquiry not found" });
+      }
+      return res.json({ success: true, message: "Inquiry deleted" });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Failed to delete inquiry" });
+    }
+  });
+
+
+  // Serve public static assets directory directly (sitemap.xml, robots.txt, icons, etc.)
+  app.use(express.static(path.join(process.cwd(), "public")));
+
   // XML Sitemap for Google Search Console & Search Crawlers
-  app.get("/sitemap.xml", (req, res) => {
+  const serveSitemap = (req: express.Request, res: express.Response) => {
     const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://whtamim.work/</loc>
     <lastmod>2026-08-28</lastmod>
@@ -29,6 +209,12 @@ async function startServer() {
   <url>
     <loc>https://whtamim.work/#work</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://whtamim.work/assets</loc>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -58,17 +244,23 @@ async function startServer() {
   </url>
 </urlset>`;
 
+    res.status(200);
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
-    res.setHeader("Cache-Control", "public, max-age=86400");
-    res.status(200).send(sitemapXml.trim());
-  });
+    res.setHeader("Cache-Control", "public, max-age=86400, s-maxage=86400");
+    res.send(sitemapXml.trim());
+  };
+
+  app.get("/sitemap.xml", serveSitemap);
+  app.get("/sitemap", serveSitemap);
+  app.get("/api/sitemap.xml", serveSitemap);
 
   // Robots.txt
   app.get("/robots.txt", (req, res) => {
     const robotsTxt = `User-agent: *\nAllow: /\n\nSitemap: https://whtamim.work/sitemap.xml\n`;
+    res.status(200);
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
     res.setHeader("Cache-Control", "public, max-age=86400");
-    res.status(200).send(robotsTxt);
+    res.send(robotsTxt);
   });
 
   // Contact / Project Inquiry endpoint (Destination: whtamim3@gmail.com)
@@ -89,6 +281,21 @@ async function startServer() {
       console.log(`Message:\n${message || 'No message provided'}`);
       console.log(`Timestamp: ${new Date().toISOString()}`);
       console.log("------------------------------------------");
+
+      // Save to adminStore so it appears in the Admin Dashboard inquiries inbox
+      try {
+        adminStore.addInquiry({
+          name,
+          email,
+          company: company || 'N/A',
+          projectType: projectType || 'General Inquiry',
+          budget: budget || 'Undisclosed',
+          timeline: timeline || 'Flexible',
+          message: message || 'No message provided'
+        });
+      } catch (storeErr) {
+        console.warn("Could not save inquiry to adminStore:", storeErr);
+      }
 
       // Forward to Web3Forms if access_key is available
       const web3Key = access_key || process.env.WEB3FORMS_ACCESS_KEY;
@@ -251,9 +458,48 @@ async function startServer() {
       appType: "spa",
     });
     app.use(vite.middlewares);
+
+    // Dev mode SPA fallback handler: ensures /admin, /work, /assets never return 404
+    app.get("*", async (req, res, next) => {
+      const url = req.originalUrl;
+      // Skip API routes so they return proper API 404s
+      if (url.startsWith("/api")) {
+        return next();
+      }
+
+      try {
+        let htmlFile = path.resolve(process.cwd(), "index.html");
+        // If visiting /admin directly, prefer admin/index.html if present
+        if (url === "/admin" || url.startsWith("/admin/") || url.startsWith("/admin?")) {
+          const adminHtml = path.resolve(process.cwd(), "admin", "index.html");
+          if (fs.existsSync(adminHtml)) {
+            htmlFile = adminHtml;
+          }
+        }
+
+        let template = fs.readFileSync(htmlFile, "utf-8");
+        template = await vite.transformIndexHtml(url, template);
+        res.status(200).set({ "Content-Type": "text/html" }).end(template);
+      } catch (e: any) {
+        vite.ssrFixStacktrace(e);
+        next(e);
+      }
+    });
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
+
+    // Production explicit routes for admin
+    app.get(["/admin", "/admin/*", "/admin/index", "/admin/index.html"], (req, res) => {
+      const adminHtml = path.join(distPath, "admin", "index.html");
+      if (fs.existsSync(adminHtml)) {
+        res.sendFile(adminHtml);
+      } else {
+        res.sendFile(path.join(distPath, "index.html"));
+      }
+    });
+
+    // General SPA catch-all for all client-side routes (e.g. /work, /assets, /)
     app.get("*", (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });

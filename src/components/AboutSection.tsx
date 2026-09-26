@@ -266,7 +266,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
               yOffset={16}
               className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#1D1D1F] dark:text-[#F5F5F7] leading-[1.15]"
             >
-              Craftsmanship, Precision, &amp; Authentic Storytelling.
+              More Than Just an Editor—Your Creative Partner.
             </TextReveal>
           </div>
 
@@ -286,8 +286,14 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
                 className="text-[15px] sm:text-[16px] leading-[1.65] font-normal text-[#1D1D1F] dark:text-[#F5F5F7]"
                 style={{ fontFamily: 'SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif' }}
               >
-                I am a video editor and visual storyteller focused on crafting compelling cinematic narratives. Every project I handle combines rhythm, technical precision, and emotional depth to transform raw footage into impactful stories. Rather than relying on authentic hype, I focus on authentic pacing and clean visual flow. My workflow spans full post-production—from initial pacing and sound design to advanced motion graphics and color grading. I help brands, creators, and studios communicate their vision with clarity and authority.
+                With a strong focus on SaaS and tech products, I don't just edit videos; I craft visual narratives. My goal is to make complex platforms feel intuitive, seamless, and irresistible to your users. Combining deep technical expertise in tools like After Effects and Premiere Pro with a keen eye for storytelling, I help brands bridge the gap between their software's capabilities and their audience's needs. Whether it's a dynamic UI animation or a full-scale commercial promo, I ensure every frame adds value to your brand.
               </p>
+            </TextReveal>
+
+            <TextReveal delay={0.18} yOffset={14}>
+              <div className="pt-2 text-[13px] sm:text-[14px] font-mono font-medium text-[#007AFF] dark:text-[#0A84FF]">
+                Specialized in SaaS &amp; UI Animation | Premium Motion Graphics | End-to-End Post-Production
+              </div>
             </TextReveal>
           </div>
 

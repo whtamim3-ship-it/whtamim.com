@@ -8,9 +8,11 @@ import { ThemeToggle } from './ThemeToggle';
 import { PremiumNavIcon } from './PremiumNavIcon';
 
 interface NavbarProps {
-  currentView: 'home' | 'work';
+  currentView: 'home' | 'work' | 'assets' | 'admin';
   onNavigateToHome: (targetSection?: string) => void;
   onNavigateToWork: () => void;
+  onNavigateToAssets: () => void;
+  onNavigateToAdmin?: () => void;
   onOpenEstimator?: () => void;
   onOpenDatabaseDashboard: () => void;
   onOpenBlog?: () => void;
@@ -24,6 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentView,
   onNavigateToHome,
   onNavigateToWork,
+  onNavigateToAssets,
   onOpenDatabaseDashboard,
   onOpenBlog,
   theme,
@@ -34,8 +37,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   const isManualClickingRef = React.useRef(false);
   const [activeSection, setActiveSection] = useState<string>(() => {
     if (currentView === 'work') return '#work';
-    if (typeof window !== 'undefined' && window.location.hash) {
-      return window.location.hash;
+    if (currentView === 'assets') return '/assets';
+    if (typeof window !== 'undefined') {
+      if (window.location.pathname === '/assets') return '/assets';
+      if (window.location.hash) return window.location.hash;
     }
     return '#';
   });
@@ -46,7 +51,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { name: 'About' as const, href: '#about' },
     { name: 'FAQ' as const, href: '#faq' },
     { name: 'Contact' as const, href: '#contact' },
-    { name: 'Assets' as const, href: '#assets' },
+    { name: 'Assets' as const, href: '/assets' },
   ];
 
   useBodyScrollLock(mobileMenuOpen);
@@ -69,6 +74,10 @@ export const Navbar: React.FC<NavbarProps> = ({
       setActiveSection('#work');
       return;
     }
+    if (currentView === 'assets') {
+      setActiveSection('/assets');
+      return;
+    }
 
     const handleHashChange = () => {
       const hash = window.location.hash || '#';
@@ -79,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       const isScrolledNow = window.scrollY > 20;
       setScrolled((prev) => (prev !== isScrolledNow ? isScrolledNow : prev));
 
-      if (isManualClickingRef.current || (currentView as string) === 'work') return;
+      if (isManualClickingRef.current || currentView !== 'home') return;
 
       const isAtBottom =
         window.innerHeight + window.scrollY >=
@@ -95,7 +104,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         return;
       }
 
-      const sections = ['#work', '#about', '#assets', '#faq', '#contact'];
+      const sections = ['#work', '#about', '#faq', '#contact'];
       for (const section of sections) {
         const element = document.querySelector(section);
         if (element) {
@@ -116,6 +125,16 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
   }, [currentView]);
 
+  const isLinkActive = (linkHref: string) => {
+    if (currentView === 'assets' && (linkHref === '/assets' || linkHref === '#assets')) return true;
+    if (currentView === 'work' && (linkHref === '#work' || linkHref === '/work')) return true;
+    if (currentView === 'home') {
+      if (linkHref === '/assets' || linkHref === '#assets') return false;
+      return activeSection === linkHref;
+    }
+    return false;
+  };
+
   const handleNavClick = (href: string, e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     playSubtleClickSound();
@@ -123,7 +142,9 @@ export const Navbar: React.FC<NavbarProps> = ({
     setActiveSection(href);
     setMobileMenuOpen(false);
 
-    if (href === '#work') {
+    if (href === '/assets' || href === '#assets') {
+      onNavigateToAssets();
+    } else if (href === '#work' || href === '/work') {
       onNavigateToWork();
     } else {
       onNavigateToHome(href === '#' ? undefined : href);
@@ -158,32 +179,35 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Center: Navigation Links in Floating Glass Capsule with macOS Dock Magnification */}
         <div className="nav-icons-desktop overflow-visible">
-          {navLinks.map((link) => (
-            <motion.a
-              key={link.href}
-              href={link.href}
-              onClick={(e) => handleNavClick(link.href, e)}
-              className={`nav-link relative ${activeSection === link.href ? 'active' : ''}`}
-              style={{ transformOrigin: 'center bottom' }}
-              whileHover={{
-                scale: 1.28,
-                y: -4,
-                zIndex: 30,
-                transition: { type: 'spring', stiffness: 450, damping: 20, mass: 0.8 },
-              }}
-              whileTap={{
-                scale: 0.95,
-                y: 0,
-                transition: { type: 'spring', stiffness: 500, damping: 25 },
-              }}
-            >
-              <PremiumNavIcon 
-                name={link.name} 
-                isActive={activeSection === link.href}
-              />
-              <span className="nav-label">{link.name}</span>
-            </motion.a>
-          ))}
+          {navLinks.map((link) => {
+            const active = isLinkActive(link.href);
+            return (
+              <motion.a
+                key={link.href}
+                href={link.href}
+                onClick={(e) => handleNavClick(link.href, e)}
+                className={`nav-link relative ${active ? 'active' : ''}`}
+                style={{ transformOrigin: 'center bottom' }}
+                whileHover={{
+                  scale: 1.28,
+                  y: -4,
+                  zIndex: 30,
+                  transition: { type: 'spring', stiffness: 450, damping: 20, mass: 0.8 },
+                }}
+                whileTap={{
+                  scale: 0.95,
+                  y: 0,
+                  transition: { type: 'spring', stiffness: 500, damping: 25 },
+                }}
+              >
+                <PremiumNavIcon 
+                  name={link.name} 
+                  isActive={active}
+                />
+                <span className="nav-label">{link.name}</span>
+              </motion.a>
+            );
+          })}
         </div>
 
         {/* Right: Blog Button + Theme Toggle + CTA Button on Desktop */}
@@ -237,21 +261,24 @@ export const Navbar: React.FC<NavbarProps> = ({
             transition={{ duration: 0.2 }}
           >
             <div className="mobile-nav-items">
-              {navLinks.map((link) => (
-                <motion.a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(link.href, e)}
-                  className={`mobile-nav-item ${activeSection === link.href ? 'active' : ''}`}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <PremiumNavIcon 
-                    name={link.name} 
-                    isActive={activeSection === link.href}
-                  />
-                  <span>{link.name}</span>
-                </motion.a>
-              ))}
+              {navLinks.map((link) => {
+                const active = isLinkActive(link.href);
+                return (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => handleNavClick(link.href, e)}
+                    className={`mobile-nav-item ${active ? 'active' : ''}`}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <PremiumNavIcon 
+                      name={link.name} 
+                      isActive={active}
+                    />
+                    <span>{link.name}</span>
+                  </motion.a>
+                );
+              })}
             </div>
 
             <div className="mobile-actions-row">

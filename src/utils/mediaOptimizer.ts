@@ -15,6 +15,11 @@ export function optimizeCloudinaryUrl(url: string): string {
     return url;
   }
 
+  // Preserve exact Cloudinary asset URLs that do not require or support eager transformations
+  if (url.includes('sahrey6n') || url.includes('ibm9kfbm') || url.includes('ahuv4pom')) {
+    return url;
+  }
+
   // Inject q_auto,f_auto right after /upload/
   return url.replace('/upload/', '/upload/q_auto,f_auto/');
 }

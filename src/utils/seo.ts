@@ -10,12 +10,12 @@ export interface SeoData {
 
 export const SEO_PAGES: Record<SeoSectionKey, SeoData> = {
   home: {
-    title: 'W.H. Tamim | Premium SaaS Video Editor & Motion Designer',
+    title: 'W.H. Tamim | Elevating SaaS Brands Through Premium Motion Design',
     description:
-      'Elevate your SaaS product with premium motion design and cinematic video editing. Specialized in UI animations and brand stories for startups. Make your product feel premium, not advertised.',
-    ogTitle: 'W.H. Tamim | Premium SaaS Video Editor & Motion Designer',
+      'Hi, I\'m W.H. Tamim. I specialize in transforming complex software interfaces into engaging, high-converting visual stories. Let’s make your product impossible to ignore.',
+    ogTitle: 'W.H. Tamim | Elevating SaaS Brands Through Premium Motion Design',
     ogDescription:
-      'Elevate your SaaS product with premium motion design and cinematic video editing. Specialized in UI animations and brand stories for startups. Make your product feel premium, not advertised.',
+      'Hi, I\'m W.H. Tamim. I specialize in transforming complex software interfaces into engaging, high-converting visual stories. Let’s make your product impossible to ignore.',
     ogType: 'website',
   },
   work: {
@@ -28,12 +28,12 @@ export const SEO_PAGES: Record<SeoSectionKey, SeoData> = {
     ogType: 'website',
   },
   about: {
-    title: 'About Tamim | Expert Video Editor & Motion Designer for Startups',
+    title: 'About Tamim | More Than Just an Editor—Your Creative Partner',
     description:
-      'I am a professional video editor and motion designer dedicated to helping modern brands and SaaS companies tell cinematic stories that leave a lasting impression.',
-    ogTitle: 'About Tamim | Expert Video Editor & Motion Designer for Startups',
+      'With a strong focus on SaaS and tech products, I don\'t just edit videos; I craft visual narratives. My goal is to make complex platforms feel intuitive, seamless, and irresistible to your users.',
+    ogTitle: 'About Tamim | More Than Just an Editor—Your Creative Partner',
     ogDescription:
-      'I am a professional video editor and motion designer dedicated to helping modern brands and SaaS companies tell cinematic stories that leave a lasting impression.',
+      'With a strong focus on SaaS and tech products, I don\'t just edit videos; I craft visual narratives. My goal is to make complex platforms feel intuitive, seamless, and irresistible to your users.',
     ogType: 'website',
   },
   assets: {
