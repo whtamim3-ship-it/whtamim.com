@@ -1,0 +1,200 @@
+
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="50%" stop-color="#FAFAFC" />
+      <stop offset="100%" stop-color="#F1F3F9" />
+    </linearGradient>
+
+    <!-- Silk Fabric Flow Gradients -->
+    <linearGradient id="silk1" x1="0%" y1="30%" x2="100%" y2="70%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9" />
+      <stop offset="40%" stop-color="#E2E8F0" stop-opacity="0.45" />
+      <stop offset="70%" stop-color="#CBD5E1" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.9" />
+    </linearGradient>
+
+    <linearGradient id="silk2" x1="100%" y1="10%" x2="0%" y2="90%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
+      <stop offset="50%" stop-color="#E2E8F0" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#F8FAFC" stop-opacity="0.3" />
+    </linearGradient>
+
+    <!-- Typography Script Gradient -->
+    <linearGradient id="blueScriptGrad" x1="0%" y1="0%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#0052CC" />
+      <stop offset="45%" stop-color="#0066FF" />
+      <stop offset="85%" stop-color="#0A84FF" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+
+    <!-- Chair Velvet Gradient -->
+    <linearGradient id="chairVelvet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="50%" stop-color="#1D4ED8" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+
+    <!-- Drop Shadows -->
+    <filter id="shadowSoft" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#0F172A" flood-opacity="0.12" />
+    </filter>
+    <filter id="shadowFloor" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="24" />
+      <feOffset dx="0" dy="20" />
+      <feComponentTransfer><feFuncA type="linear" slope="0.2" /></feComponentTransfer>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Clean Studio Backdrop -->
+  <rect width="1920" height="1080" fill="url(#bgGrad)" />
+
+  <!-- Flowing White Silk Curves in the Background -->
+  <path d="M-100,200 C300,50 600,350 1100,120 C1500,-50 1800,250 2050,150 L2050,900 C1700,750 1300,950 800,800 C400,680 150,920 -100,850 Z" fill="url(#silk1)" />
+  <path d="M-80,-50 C400,180 800,-80 1300,160 C1750,350 1850,50 2050,-20 L2050,450 C1600,200 1200,450 750,220 C350,50 50,300 -80,200 Z" fill="url(#silk2)" />
+  <path d="M-50,600 C350,450 850,750 1350,580 C1700,450 1900,720 2050,650 L2050,1100 L-50,1100 Z" fill="url(#silk1)" opacity="0.6" />
+
+  <!-- Floor Soft Reflection & Ambient Shadow -->
+  <ellipse cx="920" cy="860" rx="280" ry="35" fill="#CBD5E1" opacity="0.45" filter="blur(14px)" />
+  <ellipse cx="930" cy="850" rx="210" ry="22" fill="#94A3B8" opacity="0.35" filter="blur(8px)" />
+
+  <!-- WH Tamim on Royal Blue Velvet Chair Silhouette/Illustration -->
+  <g id="wh-tamim-figure" filter="url(#shadowFloor)">
+    <!-- Chair Legs -->
+    <line x1="810" y1="760" x2="790" y2="860" stroke="#0F172A" stroke-width="11" stroke-linecap="round" />
+    <line x1="980" y1="760" x2="960" y2="850" stroke="#0F172A" stroke-width="10" stroke-linecap="round" />
+    <line x1="740" y1="740" x2="725" y2="830" stroke="#090D16" stroke-width="9" stroke-linecap="round" />
+    <line x1="915" y1="730" x2="900" y2="820" stroke="#090D16" stroke-width="8" stroke-linecap="round" />
+
+    <!-- Royal Blue Velvet Chair Backrest & Seat Cushion -->
+    <path d="M700,430 C710,410 760,420 780,450 L840,650 C845,670 820,700 780,700 L730,690 C700,680 685,650 680,620 L695,440 Z" fill="#1E3A8A" />
+    <!-- Velvet Rich Blue Seat Pad -->
+    <path d="M710,650 C760,630 880,620 940,650 C960,660 970,685 950,710 C930,735 840,750 780,745 C730,740 700,710 710,650 Z" fill="url(#chairVelvet)" />
+    <path d="M730,450 C745,430 790,440 810,480 L855,640 C850,660 830,680 800,680 L760,670 C735,660 720,630 715,600 Z" fill="#2563EB" opacity="0.65" />
+
+    <!-- WH Tamim Seated Pose (Black streetwear aesthetic) -->
+    <!-- Torso / Black Casual Hoodie -->
+    <path d="M745,420 C770,390 840,390 880,420 C910,445 925,500 930,560 C935,610 930,660 880,670 C830,680 770,665 745,620 C730,580 725,500 735,450 Z" fill="#0F172A" />
+    <!-- Hoodie Folds & Volume -->
+    <path d="M770,440 C800,430 850,430 875,445 C860,480 855,540 865,600 C830,610 790,600 775,570 Z" fill="#1E293B" opacity="0.8" />
+    
+    <!-- Left Arm raised/leaning behind head -->
+    <path d="M750,430 C720,390 690,330 715,310 C740,290 775,340 795,385 Z" fill="#0F172A" />
+    <path d="M715,310 C725,295 760,305 770,340" stroke="#1E293B" stroke-width="16" stroke-linecap="round" />
+    <!-- Hand near hair -->
+    <path d="M775,315 C785,305 810,300 815,320 C810,335 795,340 780,335 Z" fill="#E2B091" />
+
+    <!-- Head & Face (Profile / 3/4 looking right) -->
+    <!-- Neck -->
+    <path d="M805,370 L830,370 L835,410 L795,410 Z" fill="#D49B7A" />
+    <!-- Jaw and Face -->
+    <path d="M810,290 C840,285 865,300 875,325 C885,350 870,375 845,385 C825,390 805,375 800,350 Z" fill="#E5B292" />
+    <!-- Stylish Tousled Dark Hair -->
+    <path d="M790,290 C785,250 825,225 865,235 C900,245 915,280 890,305 C880,310 870,295 850,295 C830,295 810,310 790,290 Z" fill="#090D16" />
+    <path d="M825,230 C850,220 875,235 885,260" stroke="#1E293B" stroke-width="12" stroke-linecap="round" />
+    <!-- Eyebrow, eye, smile line -->
+    <path d="M850,315 Q865,312 872,318" stroke="#2D1F17" stroke-width="3" fill="none" stroke-linecap="round" />
+    <circle cx="865" cy="325" r="3.5" fill="#1A120B" />
+    <path d="M860,350 Q872,352 878,344" stroke="#B86B52" stroke-width="3" fill="none" stroke-linecap="round" />
+
+    <!-- Legs & Casual Crossed-Leg Stance -->
+    <!-- Left Leg supporting -->
+    <path d="M760,650 C770,690 780,750 800,810 L840,810 C830,760 820,700 810,650 Z" fill="#0F172A" />
+    <!-- Right Leg crossed horizontally across left knee -->
+    <path d="M840,580 C880,590 950,620 990,660 C1015,690 1010,725 960,735 C900,740 850,710 810,670 Z" fill="#1E293B" />
+    <path d="M980,670 C1005,685 1000,730 965,745 L890,750" stroke="#0F172A" stroke-width="22" stroke-linecap="round" />
+    <!-- Chunky Modern Black Sneakers -->
+    <!-- Left Foot Sneaker on floor -->
+    <path d="M800,820 L860,820 C875,820 885,835 880,855 C875,875 840,880 800,880 C780,880 770,860 775,845 Z" fill="#090D16" />
+    <path d="M780,875 L880,875" stroke="#334155" stroke-width="6" stroke-linecap="round" />
+    <!-- Right Foot Sneaker suspended in air (crossed) -->
+    <path d="M900,680 C935,660 970,680 975,710 C980,740 945,765 915,750 Z" fill="#090D16" />
+    <path d="M920,705 L965,720" stroke="#475569" stroke-width="5" stroke-linecap="round" />
+  </g>
+
+  <!-- Big Central Branding Typography: "My services" -->
+  <g transform="translate(980, 420)">
+    <!-- "My" in Grand Black High-Contrast Editorial Serif -->
+    <text x="20" y="80" font-family="'Playfair Display', 'Didot', 'Bodoni MT', 'Georgia', serif" font-size="148" font-weight="800" fill="#090D16" letter-spacing="-3px">My</text>
+
+    <!-- "services" in Fluid Elegant Script -->
+    <text x="40" y="190" font-family="'Dancing Script', 'Brush Script MT', 'Great Vibes', 'Playwrite', cursive, sans-serif" font-size="160" font-weight="700" font-style="italic" fill="url(#blueScriptGrad)" letter-spacing="1px" filter="url(#shadowSoft)">services</text>
+  </g>
+
+  <!-- 11 Floating Radial Service Callouts with Crisp Typographic Design -->
+  <!-- Common Font Styling: system-ui / SF Pro / sans-serif with perfect line spacing -->
+  <g font-family="system-ui, -apple-system, 'SF Pro Display', BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="32" font-weight="600" fill="#0F172A" text-anchor="middle">
+    
+    <!-- 1. Top-Center: Cinematic Video Editing -->
+    <g transform="translate(960, 140)">
+      <text x="0" y="0">Cinematic</text>
+      <text x="0" y="38">Video Editing</text>
+    </g>
+
+    <!-- 2. Top-Right: Color Grading -->
+    <g transform="translate(1330, 210)">
+      <text x="0" y="0">Color</text>
+      <text x="0" y="38">Grading</text>
+    </g>
+
+    <!-- 3. Upper-Right: YouTube Video Editing -->
+    <g transform="translate(1560, 340)">
+      <text x="0" y="0">YouTube</text>
+      <text x="0" y="38">Video Editing</text>
+    </g>
+
+    <!-- 4. Middle-Right: Social Media Video Editing -->
+    <g transform="translate(1540, 540)">
+      <text x="0" y="0">Social Media</text>
+      <text x="0" y="38">Video Editing</text>
+    </g>
+
+    <!-- 5. Lower-Right: 3D & Visual Effects -->
+    <g transform="translate(1440, 680)">
+      <text x="0" y="0">3D &amp;</text>
+      <text x="0" y="38">Visual Effects</text>
+    </g>
+
+    <!-- 6. Bottom-Right: Explainer Video Editing -->
+    <g transform="translate(1510, 860)">
+      <text x="0" y="0">Explainer</text>
+      <text x="0" y="38">Video Editing</text>
+    </g>
+
+    <!-- 7. Bottom-Center: Sound Design -->
+    <g transform="translate(660, 880)">
+      <text x="0" y="0">Sound</text>
+      <text x="0" y="38">Design</text>
+    </g>
+
+    <!-- 8. Bottom-Left: AI Video Creation -->
+    <g transform="translate(560, 710)">
+      <text x="0" y="0">AI Video</text>
+      <text x="0" y="38">Creation</text>
+    </g>
+
+    <!-- 9. Middle-Left: Commercial Video Editing -->
+    <g transform="translate(530, 560)">
+      <text x="0" y="0">Commercial</text>
+      <text x="0" y="38">Video Editing</text>
+    </g>
+
+    <!-- 10. Upper-Left: SaaS Video Editing -->
+    <g transform="translate(480, 390)">
+      <text x="0" y="0">SaaS</text>
+      <text x="0" y="38">Video Editing</text>
+    </g>
+
+    <!-- 11. Top-Left: Motion Design -->
+    <g transform="translate(590, 230)">
+      <text x="0" y="0">Motion</text>
+      <text x="0" y="38">Design</text>
+    </g>
+  </g>
+</svg>
